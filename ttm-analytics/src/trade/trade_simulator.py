@@ -1,3 +1,5 @@
+from functools import reduce
+
 import pandas as pd
 
 # from binance.binance_k_line_loader import load_binance_k_lines
@@ -58,3 +60,8 @@ ticks = load_binance_ticks(k_lines, 0.01)
 
 trade_simulator: TradeSimulator = TradeSimulator()
 trade_simulator.process_ticks(ticks, 0.01)
+
+closed_orders: [TradeSimulatorOrder] = filter(lambda order: not order.is_open, trade_simulator.orders)
+profit: float = reduce(lambda profit, order: profit + order.get_profit(), closed_orders, 0)
+
+print(f"Profit: {profit}")
