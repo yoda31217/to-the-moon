@@ -26,8 +26,8 @@ class TradeSimulatorOrder:
     def close(self, tick: TradeSimulatorTick):
         self.close_tick = tick
         self.is_open = False
-        print(f"Close Order: {self.id} {self.close_tick.get_date_time()} {self.type} {self.get_close_price()}"
-              + f" {self.get_profit()}")
+        # print(f"Close Order: {self.id} {self.close_tick.get_date_time()} {self.type} {self.get_close_price()}"
+        #       + f" {self.get_profit()}")
 
     def notify(self, tick: TradeSimulatorTick):
         if not self.is_open:

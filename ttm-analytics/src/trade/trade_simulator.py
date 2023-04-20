@@ -1,3 +1,5 @@
+from functools import reduce
+
 import pandas as pd
 
 from trade.trade_simulator_order import TradeSimulatorOrder
@@ -21,19 +23,25 @@ class TradeSimulator:
 
             if self.check_point_tick is None:
                 self.check_point_tick = tick
-                print(f"Initial checkpoint set at {tick.get_date_time()} and bid price: {tick.bid_price}")
+                # print(f"Initial checkpoint set at {tick.get_date_time()} and bid price: {tick.bid_price}")
 
             elif self.check_point_tick.is_growth_step(tick, price_step_ratio):
                 order = TradeSimulatorOrder(tick, TradeSimulatorOrderType.SELL, price_step_ratio)
                 self.orders.append(order)
                 self.check_point_tick = tick
-                print(f"New Order: {order.id} {order.open_tick.get_date_time()} {order.type} {order.get_open_price()}")
+                # print(f"New Order: {order.id} {order.open_tick.get_date_time()} {order.type} {order.get_open_price()}")
 
             elif self.check_point_tick.is_falling_step(tick, price_step_ratio):
                 order = TradeSimulatorOrder(tick, TradeSimulatorOrderType.BUY, price_step_ratio)
                 self.orders.append(order)
                 self.check_point_tick = tick
-                print(f"New Order: {order.id} {order.open_tick.get_date_time()} {order.type} {order.get_open_price()}")
+                # print(f"New Order: {order.id} {order.open_tick.get_date_time()} {order.type} {order.get_open_price()}")
+
+    def get_closed_orders(self):
+        return filter(lambda order: not order.is_open, self.orders)
+
+    def get_profit(self):
+        return reduce(lambda profit, order: profit + order.get_profit(), self.get_closed_orders(), 0)
 
     def _notify_orders(self, tick):
         order: TradeSimulatorOrder
