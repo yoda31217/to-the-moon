@@ -58,8 +58,7 @@ class TradeSimulatorOrder:
     def close(self, tick: TradeSimulatorTick):
         self.close_tick = tick
         self.is_open = False
-        print(f"Closed Order: {self.id}, {tick.get_date_time()}, {self.type}, "
-              + f"{tick.bid_price if self.type is TradeSimulatorOrderType.BUY else tick.ask_price}")
+        print(f"Close Order: {self.id} {self.close_tick.get_date_time()} {self.type} {self.get_close_price()}")
 
     def on_new_tick(self, tick: TradeSimulatorTick):
         if not self.is_open:
@@ -73,16 +72,19 @@ class TradeSimulatorOrder:
                 if self.type is TradeSimulatorOrderType.SELL
                 else self.open_tick.ask_price)
 
+    def get_close_price(self):
+        return (self.close_tick.ask_price
+                if self.type is TradeSimulatorOrderType.SELL
+                else self.close_tick.bid_price)
+
     def _get_profit(self, new_tick: TradeSimulatorTick):
-        return (new_tick.bid_price - self.open_tick.ask_price
+        return (self.get_close_price() - self.get_open_price()
                 if self.type is TradeSimulatorOrderType.BUY
-                else self.open_tick.bid_price - new_tick.ask_price)
+                else self.get_open_price() - self.get_close_price())
 
     def _should_auto_close(self, tick: TradeSimulatorTick):
         profit = self._get_profit(tick)
-        profit_ratio = (profit / self.open_tick.ask_price
-                        if self.type is TradeSimulatorOrderType.BUY
-                        else profit / self.open_tick.bid_price)
+        profit_ratio = profit / self.get_open_price()
         return profit_ratio >= abs(self.stop_loss_take_profit_ratio)
 
 
