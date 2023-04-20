@@ -54,10 +54,11 @@ class TradeSimulator:
             cumulative_profits.append(cumulative_profit)
 
         return pd.DataFrame({
-            'timestamp': list((closed_order.open_tick.timestamp for closed_order in closed_orders)),
+            'open_timestamp': list((closed_order.open_tick.timestamp for closed_order in closed_orders)),
             'type': list((closed_order.type.name for closed_order in closed_orders)),
             'open_price': list((closed_order.get_open_price() for closed_order in closed_orders)),
             'close_price': list((closed_order.get_close_price() for closed_order in closed_orders)),
+            'close_timestamp': list((closed_order.close_tick.timestamp for closed_order in closed_orders)),
             'profit': list((closed_order.get_profit() for closed_order in closed_orders)),
             'cumulative_profit': cumulative_profits,
         })
