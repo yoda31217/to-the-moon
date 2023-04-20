@@ -20,7 +20,7 @@ def _load_binance_k_lines_data_frames(csv_file_paths):
 
 def _load_binance_k_lines_data_frame(csv_file_path: str):
     return pd.read_csv(
-        csv_file_path, sep=",", header=None,
-        names=["open_timestamp_millis", "open_price", "high_price", "low_price", "close_price", "volume",
-               "close_timestamp_millis", "quote_asset_volume", "trades_count", "taker_buy_base_asset_volume",
-               "taker_buy_quote_asset_volume", "ignore"])
+        csv_file_path, sep=',', header=None,
+        names=['open_timestamp_millis', 'open_price', 'high_price', 'low_price', 'close_price', 'volume',
+               'close_timestamp_millis', 'quote_asset_volume', 'trades_count', 'taker_buy_base_asset_volume',
+               'taker_buy_quote_asset_volume', 'ignore'])
