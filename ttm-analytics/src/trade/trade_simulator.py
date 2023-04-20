@@ -73,14 +73,17 @@ class TradeSimulatorOrder:
                 else self.open_tick.ask_price)
 
     def get_close_price(self):
-        return (self.close_tick.ask_price
-                if self.type is TradeSimulatorOrderType.SELL
-                else self.close_tick.bid_price)
+        return self._get_close_price(self.close_tick)
 
-    def _get_profit(self, new_tick: TradeSimulatorTick):
-        return (self.get_close_price() - self.get_open_price()
+    def _get_close_price(self, possible_close_tick: TradeSimulatorTick):
+        return (possible_close_tick.ask_price
+                if self.type is TradeSimulatorOrderType.SELL
+                else possible_close_tick.bid_price)
+
+    def _get_profit(self, possible_close_tick: TradeSimulatorTick):
+        return (self._get_close_price(possible_close_tick) - self.get_open_price()
                 if self.type is TradeSimulatorOrderType.BUY
-                else self.get_open_price() - self.get_close_price())
+                else self.get_open_price() - self._get_close_price(possible_close_tick))
 
     def _should_auto_close(self, tick: TradeSimulatorTick):
         profit = self._get_profit(tick)
@@ -121,10 +124,10 @@ class TradeSimulator:
                 print(f"New Order: {order.id} {order.open_tick.get_date_time()} {order.type} {order.get_open_price()}")
 
     @staticmethod
-    def _get_tick(ticks, i):
-        tick_timestamp = ticks.timestamp[i]
-        tick_bid_price = ticks.bid_price[i]
-        tick_ask_price = ticks.ask_price[i]
+    def _get_tick(ticks: pd.DataFrame, index: int):
+        tick_timestamp = ticks.timestamp[index]
+        tick_bid_price = ticks.bid_price[index]
+        tick_ask_price = ticks.ask_price[index]
         return TradeSimulatorTick(tick_timestamp, tick_bid_price, tick_ask_price)
 
 
