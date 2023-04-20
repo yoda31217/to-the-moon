@@ -38,9 +38,9 @@ class TradeSimulator:
                 # print(f"New Order: {order.id} {order.open_tick.get_date_time()} {order.type} {order.get_open_price()}")
 
     def get_closed_orders(self):
-        return filter(lambda order: not order.is_open, self.orders)
+        return list(filter(lambda order: not order.is_open, self.orders))
 
-    def get_profit(self):
+    def get_profit(self) -> float:
         return reduce(lambda profit, order: profit + order.get_profit(), self.get_closed_orders(), 0)
 
     def _notify_orders(self, tick):
