@@ -38,7 +38,7 @@ class TradeSimulatorOrder:
 
     def get_open_price(self):
         return (self.open_tick.bid_price
-                if self.type is TradeSimulatorOrderType.SELL
+                if self.type == TradeSimulatorOrderType.SELL
                 else self.open_tick.ask_price)
 
     def get_close_price(self):
@@ -46,12 +46,12 @@ class TradeSimulatorOrder:
 
     def _get_close_price(self, possible_close_tick: TradeSimulatorTick):
         return (possible_close_tick.ask_price
-                if self.type is TradeSimulatorOrderType.SELL
+                if self.type == TradeSimulatorOrderType.SELL
                 else possible_close_tick.bid_price)
 
     def _get_profit(self, possible_close_tick: TradeSimulatorTick):
         return (self._get_close_price(possible_close_tick) - self.get_open_price()
-                if self.type is TradeSimulatorOrderType.BUY
+                if self.type == TradeSimulatorOrderType.BUY
                 else self.get_open_price() - self._get_close_price(possible_close_tick))
 
     def _should_auto_close(self, tick: TradeSimulatorTick):
