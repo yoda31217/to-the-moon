@@ -56,12 +56,11 @@ class TradeSimulatorOrder:
                 else self.get_open_price() - self._get_close_price(possible_close_tick))
 
     def _should_auto_close(self, tick: TradeSimulatorTick):
-        # TODO replace with modern implementation in future
+        # Old version
         price_step = self.open_tick.bid_price * self.stop_loss_take_profit_ratio
         return (tick.bid_price >= self.open_tick.ask_price + price_step
                 or tick.ask_price <= self.open_tick.bid_price - price_step)
 
-        # Modern implementation
         # profit = self._get_profit(tick)
         # profit_ratio = profit / self.get_open_price()
         # return abs(profit_ratio) >= self.stop_loss_take_profit_ratio

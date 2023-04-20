@@ -18,8 +18,8 @@ class TradeSimulator:
         self.closed_orders = []
 
     def process_ticks(self, ticks: pd.DataFrame, price_step_ratio: float):
-        for i in range(len(ticks.timestamp)):
-            tick = self._get_tick(ticks, i)
+        for tick_index, tick_row in ticks.iterrows():
+            tick = self._to_tick(tick_row)
 
             self._notify_orders(tick)
 
@@ -65,8 +65,8 @@ class TradeSimulator:
             order.notify(tick)
 
     @staticmethod
-    def _get_tick(ticks: pd.DataFrame, index: int):
-        tick_timestamp = ticks.iloc[index].timestamp + 0
-        tick_bid_price = ticks.iloc[index].bid_price + 0.0
-        tick_ask_price = ticks.iloc[index].ask_price + 0.0
-        return TradeSimulatorTick(tick_timestamp, tick_bid_price, tick_ask_price)
+    def _to_tick(tick_row: pd.Series):
+        return TradeSimulatorTick(
+            tick_row.get('timestamp'),
+            tick_row.get('bid_price'),
+            tick_row.get('ask_price'))
