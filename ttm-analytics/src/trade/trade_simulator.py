@@ -43,6 +43,16 @@ class TradeSimulator:
     def get_profit(self) -> float:
         return reduce(lambda profit, order: profit + order.get_profit(), self.get_closed_orders(), 0)
 
+    def get_profits(self) -> [float]:
+        closed_orders = self.get_closed_orders()
+        return pd.DataFrame({
+            'timestamp': list((closed_order.open_tick.timestamp for closed_order in closed_orders)),
+            'type': list((closed_order.type.name for closed_order in closed_orders)),
+            'open_price': list((closed_order.get_open_price() for closed_order in closed_orders)),
+            'close_price': list((closed_order.get_close_price() for closed_order in closed_orders)),
+            'profit': list((closed_order.get_profit() for closed_order in closed_orders)),
+        })
+
     def _notify_orders(self, tick):
         order: TradeSimulatorOrder
         for order in self.orders:
