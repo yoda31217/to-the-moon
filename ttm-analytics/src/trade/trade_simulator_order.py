@@ -26,9 +26,10 @@ class TradeSimulatorOrder:
     def close(self, tick: TradeSimulatorTick):
         self.close_tick = tick
         self.is_open = False
-        print(f"Close Order: {self.id} {self.close_tick.get_date_time()} {self.type} {self.get_close_price()}")
+        print(f"Close Order: {self.id} {self.close_tick.get_date_time()} {self.type} {self.get_close_price()}"
+              + f" {self.get_profit()}")
 
-    def on_new_tick(self, tick: TradeSimulatorTick):
+    def notify(self, tick: TradeSimulatorTick):
         if not self.is_open:
             return
 
@@ -56,4 +57,4 @@ class TradeSimulatorOrder:
     def _should_auto_close(self, tick: TradeSimulatorTick):
         profit = self._get_profit(tick)
         profit_ratio = profit / self.get_open_price()
-        return profit_ratio >= abs(self.stop_loss_take_profit_ratio)
+        return abs(profit_ratio) >= self.stop_loss_take_profit_ratio

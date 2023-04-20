@@ -22,9 +22,7 @@ class TradeSimulator:
         for i in range(len(ticks.timestamp)):
             tick = self._get_tick(ticks, i)
 
-            order: TradeSimulatorOrder
-            for order in self.orders:
-                order.on_new_tick(tick)
+            self._notify_orders(tick)
 
             if self.check_point_tick is None:
                 self.check_point_tick = tick
@@ -41,6 +39,11 @@ class TradeSimulator:
                 self.orders.append(order)
                 self.check_point_tick = tick
                 print(f"New Order: {order.id} {order.open_tick.get_date_time()} {order.type} {order.get_open_price()}")
+
+    def _notify_orders(self, tick):
+        order: TradeSimulatorOrder
+        for order in self.orders:
+            order.notify(tick)
 
     @staticmethod
     def _get_tick(ticks: pd.DataFrame, index: int):
