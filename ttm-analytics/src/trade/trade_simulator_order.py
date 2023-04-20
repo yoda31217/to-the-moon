@@ -19,6 +19,7 @@ class TradeSimulatorOrder:
         self.close_tick = None
         self.is_open = True
         self.stop_loss_take_profit_ratio = stop_loss_take_profit_ratio
+        # print(f"New Order: {order.id} {order.open_tick.get_date_time()} {order.type} {order.get_open_price()}")
 
     def get_profit(self):
         return self._get_profit(self.close_tick)

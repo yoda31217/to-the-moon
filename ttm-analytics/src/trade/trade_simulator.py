@@ -28,16 +28,12 @@ class TradeSimulator:
                 # print(f"Initial checkpoint set at {tick.get_date_time()} and bid price: {tick.bid_price}")
 
             elif self.check_point_tick.is_growth_step(tick, price_step_ratio):
-                order = TradeSimulatorOrder(tick, TradeSimulatorOrderType.SELL, price_step_ratio)
-                self.orders.append(order)
+                self.orders.append(TradeSimulatorOrder(tick, TradeSimulatorOrderType.SELL, price_step_ratio))
                 self.check_point_tick = tick
-                # print(f"New Order: {order.id} {order.open_tick.get_date_time()} {order.type} {order.get_open_price()}")
 
             elif self.check_point_tick.is_falling_step(tick, price_step_ratio):
-                order = TradeSimulatorOrder(tick, TradeSimulatorOrderType.BUY, price_step_ratio)
-                self.orders.append(order)
+                self.orders.append(TradeSimulatorOrder(tick, TradeSimulatorOrderType.BUY, price_step_ratio))
                 self.check_point_tick = tick
-                # print(f"New Order: {order.id} {order.open_tick.get_date_time()} {order.type} {order.get_open_price()}")
 
             self.closed_orders.extend(list(filter(lambda order: not order.is_open, self.orders)))
             self.orders = list(filter(lambda order: order.is_open, self.orders))
