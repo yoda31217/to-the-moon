@@ -2,6 +2,8 @@ import pandas as pd
 # from binance.binance_k_line_loader import load_binance_k_lines
 # from binance.binance_tick_loader import load_binance_ticks
 # from chart.ttm_chart import draw_line_chart
+from binance.binance_k_line_loader import load_binance_k_lines
+from binance.binance_tick_loader import load_binance_ticks
 
 
 class TradeSimulatorTick:
@@ -30,7 +32,12 @@ class TradeSimulator:
 
 
 
-# k_lines = load_binance_k_lines(f"../ttm-data/{symbol}-{symbol_k_lines_interval}-2023-03-01.csv")
-#
-# ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
+k_lines = load_binance_k_lines(f"../../../ttm-data/ETHUSDT-1s-2023-03-01.csv")
+
+ticks = load_binance_ticks(k_lines, 0.01)
+
+trade_simulator: TradeSimulator = TradeSimulator()
+t2 = trade_simulator.process_ticks(ticks)
+
+print(t2)
 
