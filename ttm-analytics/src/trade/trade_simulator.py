@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 from enum import Enum
 
@@ -36,6 +37,7 @@ class TradeSimulatorOrderType(Enum):
 
 
 class TradeSimulatorOrder:
+    id: uuid.UUID
     type: TradeSimulatorOrderType
     open_tick: TradeSimulatorTick
     close_tick: TradeSimulatorTick | None
@@ -43,6 +45,7 @@ class TradeSimulatorOrder:
     stop_loss_take_profit_ratio: float
 
     def __init__(self, tick: TradeSimulatorTick, type: TradeSimulatorOrderType, stop_loss_take_profit_ratio: float):
+        self.id = uuid.uuid4()
         self.type = type
         self.open_tick = tick
         self.close_tick = None
@@ -55,7 +58,7 @@ class TradeSimulatorOrder:
     def close(self, tick: TradeSimulatorTick):
         self.close_tick = tick
         self.is_open = False
-        print(f"Closed Order: {tick.get_date_time()}, {self.type}, "
+        print(f"Closed Order: {self.id}, {tick.get_date_time()}, {self.type}, "
               + f"{tick.bid_price if self.type is TradeSimulatorOrderType.BUY else tick.ask_price}")
 
     def on_new_tick(self, tick: TradeSimulatorTick):
@@ -64,6 +67,11 @@ class TradeSimulatorOrder:
 
         if self._should_auto_close(tick):
             self.close(tick)
+
+    def get_open_price(self):
+        return (self.open_tick.bid_price
+                if self.type is TradeSimulatorOrderType.SELL
+                else self.open_tick.ask_price)
 
     def _get_profit(self, new_tick: TradeSimulatorTick):
         return (new_tick.bid_price - self.open_tick.ask_price
@@ -99,14 +107,16 @@ class TradeSimulator:
                 print(f"Initial checkpoint set at {tick.get_date_time()} and bid price: {tick.bid_price}")
 
             elif self.check_point_tick.is_growth_step(tick, price_step_ratio):
-                self.orders.append(TradeSimulatorOrder(tick, TradeSimulatorOrderType.SELL, price_step_ratio))
+                order = TradeSimulatorOrder(tick, TradeSimulatorOrderType.SELL, price_step_ratio)
+                self.orders.append(order)
                 self.check_point_tick = tick
-                print(f"New Order: {tick.get_date_time()}, SELL, {tick.bid_price}")
+                print(f"New Order: {order.id} {order.open_tick.get_date_time()} {order.type} {order.get_open_price()}")
 
             elif self.check_point_tick.is_falling_step(tick, price_step_ratio):
-                self.orders.append(TradeSimulatorOrder(tick, TradeSimulatorOrderType.BUY, price_step_ratio))
+                order = TradeSimulatorOrder(tick, TradeSimulatorOrderType.BUY, price_step_ratio)
+                self.orders.append(order)
                 self.check_point_tick = tick
-                print(f"New Order: {tick.get_date_time()}, BUY , {tick.ask_price}")
+                print(f"New Order: {order.id} {order.open_tick.get_date_time()} {order.type} {order.get_open_price()}")
 
     @staticmethod
     def _get_tick(ticks, i):
