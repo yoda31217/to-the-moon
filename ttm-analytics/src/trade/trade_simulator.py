@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 
 import pandas as pd
 
@@ -10,10 +11,14 @@ from binance.binance_tick_loader import load_binance_ticks
 
 
 class TradeSimulatorTick:
+    timestamp: int
+    ask_price: float
+    bid_price: float
+
     def __init__(self, timestamp: int, bid_price: float, ask_price: float):
-        self.timestamp: int = timestamp
-        self.bid_price: float = bid_price
-        self.ask_price: float = ask_price
+        self.timestamp = timestamp
+        self.ask_price = ask_price
+        self.bid_price = bid_price
 
     def get_date_time(self):
         return datetime.utcfromtimestamp(self.timestamp / 1000)
@@ -25,10 +30,28 @@ class TradeSimulatorTick:
         return tick.ask_price <= self.bid_price - self.bid_price * price_step_ratio
 
 
+class TradeSimulatorOrderType(Enum):
+    BUY = 0
+    SELL = 1
+
+
+class TradeSimulatorOrder:
+    type: TradeSimulatorOrderType
+    open_tick: TradeSimulatorTick
+    close_tick: TradeSimulatorTick | None
+
+    def __init__(self, tick: TradeSimulatorTick, type: TradeSimulatorOrderType) -> None:
+        self.type = type
+        self.open_tick = tick
+
+
 class TradeSimulator:
+    check_point_tick: TradeSimulatorTick | None
+    orders: [TradeSimulatorOrder]
 
     def __init__(self) -> None:
-        self.check_point_tick: TradeSimulatorTick | None = None
+        self.check_point_tick = None
+        self.orders = []
 
     def process_ticks(self, ticks: pd.DataFrame, price_step_ratio: float):
         for i in range(len(ticks.timestamp)):
@@ -40,13 +63,17 @@ class TradeSimulator:
                 continue
 
             if self.check_point_tick.is_growth_step(tick, price_step_ratio):
+                order = TradeSimulatorOrder(tick, TradeSimulatorOrderType.SELL)
+                self.orders.append(order)
                 self.check_point_tick = tick
-                print(f"Growth checkpoint set at {tick.get_date_time()} and bid price: {tick.bid_price}")
+                print(f"New Order: {tick.get_date_time()}, SELL, {tick.bid_price}")
                 continue
 
             if self.check_point_tick.is_falling_step(tick, price_step_ratio):
+                order = TradeSimulatorOrder(tick, TradeSimulatorOrderType.BUY)
+                self.orders.append(order)
                 self.check_point_tick = tick
-                print(f"Falling checkpoint set at {tick.get_date_time()} and bid price: {tick.bid_price}")
+                print(f"New Order: {tick.get_date_time()}, BUY , {tick.ask_price}")
                 continue
 
     @staticmethod
