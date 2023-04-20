@@ -1,12 +1,5 @@
-from functools import reduce
-
 import pandas as pd
 
-# from binance.binance_k_line_loader import load_binance_k_lines
-# from binance.binance_tick_loader import load_binance_ticks
-# from chart.ttm_chart import draw_line_chart
-from binance.binance_k_line_loader import load_binance_k_lines
-from binance.binance_tick_loader import load_binance_ticks
 from trade.trade_simulator_order import TradeSimulatorOrder
 from trade.trade_simulator_order_type import TradeSimulatorOrderType
 from trade.trade_simulator_tick import TradeSimulatorTick
@@ -53,15 +46,3 @@ class TradeSimulator:
         tick_bid_price = ticks.bid_price[index]
         tick_ask_price = ticks.ask_price[index]
         return TradeSimulatorTick(tick_timestamp, tick_bid_price, tick_ask_price)
-
-
-k_lines = load_binance_k_lines(f"../../../ttm-data/ETHUSDT-1s-2023-03-01.csv")
-ticks = load_binance_ticks(k_lines, 0.01)
-
-trade_simulator: TradeSimulator = TradeSimulator()
-trade_simulator.process_ticks(ticks, 0.01)
-
-closed_orders: [TradeSimulatorOrder] = filter(lambda order: not order.is_open, trade_simulator.orders)
-profit: float = reduce(lambda profit, order: profit + order.get_profit(), closed_orders, 0)
-
-print(f"Profit: {profit}")
