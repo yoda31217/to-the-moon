@@ -70,7 +70,7 @@ class TradeSimulator:
 
     @staticmethod
     def _get_tick(ticks: pd.DataFrame, index: int):
-        tick_timestamp = ticks.timestamp[index]
-        tick_bid_price = ticks.bid_price[index]
-        tick_ask_price = ticks.ask_price[index]
+        tick_timestamp = ticks.iloc[index].timestamp + 0
+        tick_bid_price = ticks.iloc[index].bid_price + 0.0
+        tick_ask_price = ticks.iloc[index].ask_price + 0.0
         return TradeSimulatorTick(tick_timestamp, tick_bid_price, tick_ask_price)
