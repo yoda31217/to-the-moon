@@ -7,11 +7,13 @@ from trade.trade_simulator_tick import TradeSimulatorTick
 class Bot0Strategy(TradeSimulatorStrategy):
     check_point_tick: TradeSimulatorTick | None
     price_step_ratio: float
+    inverted: bool
 
-    def __init__(self, price_step_ratio: float) -> None:
-        super().__init__(f'Bot0[{price_step_ratio*100:.2f}%]')
+    def __init__(self, price_step_ratio: float, inverted: bool) -> None:
+        super().__init__(f'Bot0[{price_step_ratio * 100:.2f}%, {"inverted" if inverted else "not_inverted"}]')
         self.check_point_tick = None
         self.price_step_ratio = price_step_ratio
+        self.inverted = inverted
 
     def process_tick(self, new_tick: TradeSimulatorTick,
                      orders: [TradeSimulatorOrder], closed_orders: [TradeSimulatorOrder]):
@@ -20,11 +22,13 @@ class Bot0Strategy(TradeSimulatorStrategy):
             # print(f"Initial checkpoint set at {tick.get_date_time()} and bid price: {tick.bid_price}")
 
         elif self.is_growth_step(new_tick):
-            orders.append(TradeSimulatorOrder(new_tick, TradeSimulatorOrderType.SELL, self.price_step_ratio))
+            order_type = TradeSimulatorOrderType.BUY if self.inverted else TradeSimulatorOrderType.SELL
+            orders.append(TradeSimulatorOrder(new_tick, order_type, self.price_step_ratio))
             self.check_point_tick = new_tick
 
         elif self.is_failing_step(new_tick):
-            orders.append(TradeSimulatorOrder(new_tick, TradeSimulatorOrderType.BUY, self.price_step_ratio))
+            order_type = TradeSimulatorOrderType.SELL if self.inverted else TradeSimulatorOrderType.BUY
+            orders.append(TradeSimulatorOrder(new_tick, order_type, self.price_step_ratio))
             self.check_point_tick = new_tick
 
     def is_growth_step(self, new_tick: TradeSimulatorTick):

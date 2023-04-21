@@ -17,8 +17,8 @@ def load_and_report_ticks(csv_files_pattern: str, symbol_ask_bid_price_differenc
     return ticks
 
 
-def simulate_and_report(strategies: [TradeSimulatorStrategy], trade_simulator: TradeSimulator):
-    for strategy in strategies:
+def simulate_and_report(simulation_strategies: [TradeSimulatorStrategy], trade_simulator: TradeSimulator):
+    for strategy in simulation_strategies:
         result = trade_simulator.simulate(strategy)
         result_str = (f"orders={result.get_transactions_count() :,}"
                       f" interval_days={result.get_interval_days():.1f}"
