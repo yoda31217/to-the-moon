@@ -11,16 +11,16 @@ class TradeSimulator:
     check_point_tick: TradeSimulatorTick | None
     orders: [TradeSimulatorOrder]
     closed_orders: [TradeSimulatorOrder]
+    ticks: [TradeSimulatorTick]
 
-    def __init__(self) -> None:
+    def __init__(self, ticks_data_frame: pd.DataFrame) -> None:
         self.check_point_tick = None
         self.orders: [TradeSimulatorOrder] = []
         self.closed_orders = []
+        self.ticks = (self._to_tick(tick_row) for tick_index, tick_row in ticks_data_frame.iterrows())
 
-    def process_ticks(self, ticks: pd.DataFrame, price_step_ratio: float):
-        for tick_index, tick_row in ticks.iterrows():
-            tick = self._to_tick(tick_row)
-
+    def process_ticks(self, price_step_ratio: float):
+        for tick in self.ticks:
             self._notify_orders(tick)
 
             if self.check_point_tick is None:
