@@ -11,3 +11,5 @@ def load_and_report_ticks(csv_files_pattern: str, symbol_ask_bid_price_differenc
 
     draw_line_chart(ticks, 'timestamp', 'bid_price', 'Bid Price', 'Ticks')
     display(ticks)
+
+    return ticks
