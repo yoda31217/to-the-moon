@@ -17,7 +17,7 @@ class TradeSimulator:
         self.check_point_tick = None
         self.orders: [TradeSimulatorOrder] = []
         self.closed_orders = []
-        self.ticks = (self._to_tick(tick_row) for tick_index, tick_row in ticks_data_frame.iterrows())
+        self.ticks = list((self._to_tick(tick_row) for tick_index, tick_row in ticks_data_frame.iterrows()))
 
     def process_ticks(self, price_step_ratio: float):
         for tick in self.ticks:
@@ -35,8 +35,9 @@ class TradeSimulator:
                 self.orders.append(TradeSimulatorOrder(tick, TradeSimulatorOrderType.BUY, price_step_ratio))
                 self.check_point_tick = tick
 
-            self.closed_orders.extend(list(filter(lambda order: not order.is_open, self.orders)))
-            self.orders = list(filter(lambda order: order.is_open, self.orders))
+            self._move_orders_to_closed()
+
+        self._close_orders()
 
     def get_cumulative_profit(self) -> float:
         return reduce(lambda profit, order: profit + order.get_profit(), self.closed_orders, 0)
@@ -58,6 +59,17 @@ class TradeSimulator:
             'profit': list((closed_order.get_profit() for closed_order in self.closed_orders)),
             'cumulative_profit': cumulative_profits,
         })
+
+    def _close_orders(self):
+        order: TradeSimulatorOrder
+        for order in self.orders:
+            if order.is_open:
+                order.close(self.ticks[-1])
+        self._move_orders_to_closed()
+
+    def _move_orders_to_closed(self):
+        self.closed_orders.extend(list(filter(lambda order: not order.is_open, self.orders)))
+        self.orders = list(filter(lambda order: order.is_open, self.orders))
 
     def _notify_orders(self, tick):
         order: TradeSimulatorOrder
