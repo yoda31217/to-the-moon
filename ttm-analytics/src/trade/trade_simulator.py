@@ -7,9 +7,11 @@ from trade.trade_simulator_tick import TradeSimulatorTick
 
 class TradeSimulator:
     ticks: [TradeSimulatorTick]
+    ticks_data_frame: pd.DataFrame
 
     def __init__(self, ticks_data_frame: pd.DataFrame) -> None:
         self.ticks = list((self._to_tick(tick_row) for tick_index, tick_row in ticks_data_frame.iterrows()))
+        self.ticks_data_frame = ticks_data_frame
 
     def simulate(self, strategy: TradeSimulatorStrategy) -> pd.DataFrame:
         orders: [TradeSimulatorOrder] = []
