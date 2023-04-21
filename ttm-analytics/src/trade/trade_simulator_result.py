@@ -3,10 +3,12 @@ import pandas as pd
 
 class TradeSimulatorResult:
     transactions: pd.DataFrame
+    ticks: pd.DataFrame
 
-    def __init__(self, data_frame: pd.DataFrame) -> None:
+    def __init__(self, data_frame: pd.DataFrame, ticks: pd.DataFrame) -> None:
         super().__init__()
         self.transactions = data_frame
+        self.ticks = ticks
 
     def get_transactions_count(self):
         return len(self.transactions.index)
@@ -19,3 +21,6 @@ class TradeSimulatorResult:
 
     def get_transactions_cumulative_profit(self):
         return self.transactions.cumulative_profit.iloc[-1]
+
+    def get_average_ticks_price_change(self):
+        return self.ticks.ask_price.diff().abs().mean()

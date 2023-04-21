@@ -1,9 +1,9 @@
 import pandas as pd
 
 from trade.trade_simulator_order import TradeSimulatorOrder
+from trade.trade_simulator_result import TradeSimulatorResult
 from trade.trade_simulator_strategy import TradeSimulatorStrategy
 from trade.trade_simulator_tick import TradeSimulatorTick
-from trade.trade_simulator_transactions import TradeSimulatorResult
 
 
 class TradeSimulator:
@@ -27,8 +27,7 @@ class TradeSimulator:
 
         return self._to_transactions(closed_orders)
 
-    @staticmethod
-    def _to_transactions(closed_orders: [TradeSimulatorOrder]) -> TradeSimulatorResult:
+    def _to_transactions(self, closed_orders: [TradeSimulatorOrder]) -> TradeSimulatorResult:
         cumulative_profit: float = 0
         cumulative_profits: [float] = []
 
@@ -46,7 +45,7 @@ class TradeSimulator:
             'close_timestamp': list((closed_order.close_tick.timestamp for closed_order in closed_orders)),
             'profit': list((closed_order.get_profit() for closed_order in closed_orders)),
             'cumulative_profit': cumulative_profits,
-        }))
+        }), self.ticks_data_frame)
 
     def _close_orders(self, orders: [TradeSimulatorOrder], closed_orders: [TradeSimulatorOrder]):
         order: TradeSimulatorOrder
