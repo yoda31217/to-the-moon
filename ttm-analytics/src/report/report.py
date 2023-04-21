@@ -2,7 +2,6 @@ from IPython.core.display_functions import display
 
 from binance.binance_k_line_loader import load_binance_k_lines
 from binance.binance_tick_loader import load_binance_ticks
-from bot.bot_0_strategy import Bot0Strategy
 from chart.ttm_chart import draw_line_chart
 from trade.trade_simulator import TradeSimulator
 from trade.trade_simulator_strategy import TradeSimulatorStrategy
@@ -23,6 +22,7 @@ def simulate_and_report(strategies: [TradeSimulatorStrategy], trade_simulator: T
         transactions = trade_simulator.simulate(strategy)
         result_str = (f"orders={len(transactions.index):,}"
                       f" avg_tick_price_change={trade_simulator.ticks_data_frame.ask_price.diff().abs().mean():.2f}"
+                      f" str={strategy}"
                       f" tx_avg_price_margin={transactions.price_margin.mean():.2f}"
                       f" tx_avg_prof={transactions.profit.mean():.2f}"
                       f" tx_cum_prof={transactions.cumulative_profit.iloc[-1]:.2f}")

@@ -9,7 +9,7 @@ class Bot0Strategy(TradeSimulatorStrategy):
     price_step_ratio: float
 
     def __init__(self, price_step_ratio: float) -> None:
-        super().__init__()
+        super().__init__(f'Bot0[{price_step_ratio*100:.2f}%]')
         self.check_point_tick = None
         self.price_step_ratio = price_step_ratio
 
