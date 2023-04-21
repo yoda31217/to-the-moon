@@ -8,7 +8,7 @@ sns.set_theme()
 
 def draw_line_chart(data_frame: pd.DataFrame, timestamp_column_name: str, value_column_name: str,
     value_label: str, title: str):
-    sampling_limit = 10000
+    sampling_limit = 100000
     sampled_data_frame: pd.DataFrame = (data_frame.iloc[::round(data_frame.size / sampling_limit), :]
                                         if data_frame.size > sampling_limit else
                                         data_frame)
