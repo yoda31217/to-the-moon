@@ -8,16 +8,17 @@ from trade.trade_simulator_tick import TradeSimulatorTick
 
 
 class TradeSimulator:
-    orders: [TradeSimulatorOrder]
-    closed_orders: [TradeSimulatorOrder]
+    orders: [TradeSimulatorOrder] = None
+    closed_orders: [TradeSimulatorOrder] = None
     ticks: [TradeSimulatorTick]
 
     def __init__(self, ticks_data_frame: pd.DataFrame) -> None:
-        self.orders: [TradeSimulatorOrder] = []
-        self.closed_orders = []
         self.ticks = list((self._to_tick(tick_row) for tick_index, tick_row in ticks_data_frame.iterrows()))
 
     def simulate(self, strategy: TradeSimulatorStrategy):
+        self.orders: [TradeSimulatorOrder] = []
+        self.closed_orders = []
+
         for new_tick in self.ticks:
             self._notify_orders(new_tick)
             strategy.process_tick(new_tick, self.orders, self.closed_orders)
