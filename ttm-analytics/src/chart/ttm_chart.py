@@ -2,6 +2,7 @@ import datetime as dt
 
 import pandas as pd
 import seaborn as sns
+from matplotlib import pyplot as plt
 
 sns.set_theme()
 
@@ -19,6 +20,7 @@ def draw_line_chart(data_frame: pd.DataFrame, timestamp_column_name: str, value_
         value_label: sampled_data_frame[value_column_name],
     })
 
-    plot = sns.lineplot(data=formatted_data_frame, x='Date Time', y=value_label, linewidth=1.0)
+    fig, ax = plt.subplots(figsize=(16, 9))
+    plot = sns.lineplot(data=formatted_data_frame, x='Date Time', y=value_label, linewidth=1.0, ax=ax)
     plot.set(title=f"{title} (sampled)")
     plot.set_xticklabels(plot.get_xticklabels(), rotation=60)
