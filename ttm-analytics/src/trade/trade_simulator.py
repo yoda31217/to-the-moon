@@ -3,6 +3,7 @@ import pandas as pd
 from trade.trade_simulator_order import TradeSimulatorOrder
 from trade.trade_simulator_strategy import TradeSimulatorStrategy
 from trade.trade_simulator_tick import TradeSimulatorTick
+from trade.trade_simulator_transactions import TradeSimulatorTransactions
 
 
 class TradeSimulator:
@@ -13,7 +14,7 @@ class TradeSimulator:
         self.ticks = list((self._to_tick(tick_row) for tick_index, tick_row in ticks_data_frame.iterrows()))
         self.ticks_data_frame = ticks_data_frame
 
-    def simulate(self, strategy: TradeSimulatorStrategy) -> pd.DataFrame:
+    def simulate(self, strategy: TradeSimulatorStrategy) -> TradeSimulatorTransactions:
         orders: [TradeSimulatorOrder] = []
         closed_orders: [TradeSimulatorOrder] = []
 
@@ -27,7 +28,7 @@ class TradeSimulator:
         return self._to_transactions(closed_orders)
 
     @staticmethod
-    def _to_transactions(closed_orders: [TradeSimulatorOrder]):
+    def _to_transactions(closed_orders: [TradeSimulatorOrder]) -> TradeSimulatorTransactions:
         cumulative_profit: float = 0
         cumulative_profits: [float] = []
 
@@ -35,17 +36,17 @@ class TradeSimulator:
             cumulative_profit = cumulative_profit + closed_order.get_profit()
             cumulative_profits.append(cumulative_profit)
 
-        return pd.DataFrame({
+        return TradeSimulatorTransactions(pd.DataFrame({
             'open_timestamp': list((closed_order.open_tick.timestamp for closed_order in closed_orders)),
             'type': list((closed_order.type.name for closed_order in closed_orders)),
             'open_price': list((closed_order.get_open_price() for closed_order in closed_orders)),
             'close_price': list((closed_order.get_close_price() for closed_order in closed_orders)),
             'price_margin': list((abs(closed_order.get_close_price() - closed_order.get_open_price())
-                                               for closed_order in closed_orders)),
+                                  for closed_order in closed_orders)),
             'close_timestamp': list((closed_order.close_tick.timestamp for closed_order in closed_orders)),
             'profit': list((closed_order.get_profit() for closed_order in closed_orders)),
             'cumulative_profit': cumulative_profits,
-        })
+        }))
 
     def _close_orders(self, orders: [TradeSimulatorOrder], closed_orders: [TradeSimulatorOrder]):
         order: TradeSimulatorOrder
@@ -56,21 +57,12 @@ class TradeSimulator:
 
     @staticmethod
     def _move_orders_to_closed(orders: [TradeSimulatorOrder], closed_orders: [TradeSimulatorOrder]):
-        # new_list = [fruit for fruit in a if fruit not in b]
-        # new_closed_orders = list(filter(lambda order: not order.is_open, orders))
         new_closed_orders = [order for order in orders if not order.is_open]
         closed_orders.extend(new_closed_orders)
 
         open_orders = [order for order in orders if order.is_open]
         orders.clear()
         orders.extend(open_orders)
-
-        # orders.remove()
-        # orders = list(filter(lambda order: order.is_open, orders))
-        # return [order for order in orders if order not in new_closed_orders]
-        # for order in orders:
-        #     if not order.is_open:
-        #         orders.cl
 
     @staticmethod
     def _notify_orders(tick, orders: [TradeSimulatorOrder]):
