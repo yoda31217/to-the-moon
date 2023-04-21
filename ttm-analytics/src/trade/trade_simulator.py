@@ -26,10 +26,7 @@ class TradeSimulator:
 
         self._close_orders()
 
-    def get_cumulative_profit(self) -> float:
-        return reduce(lambda profit, order: profit + order.get_profit(), self.closed_orders, 0)
-
-    def get_profits(self) -> [float]:
+    def get_transactions(self) -> [float]:
         cumulative_profit: float = 0
         cumulative_profits: [float] = []
 
