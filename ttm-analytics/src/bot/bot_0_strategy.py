@@ -4,7 +4,7 @@ from trade.trade_simulator_strategy import TradeSimulatorStrategy
 from trade.trade_simulator_tick import TradeSimulatorTick
 
 
-class BotStrategy0(TradeSimulatorStrategy):
+class Bot0Strategy(TradeSimulatorStrategy):
     check_point_tick: TradeSimulatorTick | None
     price_step_ratio: float
 
