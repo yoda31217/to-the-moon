@@ -21,6 +21,7 @@ def simulate_and_report(strategies: [TradeSimulatorStrategy], trade_simulator: T
     for strategy in strategies:
         result = trade_simulator.simulate(strategy)
         result_str = (f"orders={result.get_transactions_count() :,}"
+                      f" interval_days={result.get_interval_days():.1f}"
                       f" avg_tick_price_change={result.get_average_ticks_price_change():.2f}"
                       f" str={strategy}"
                       f" tx_avg_price_margin={result.get_transactions_average_price_margin():.2f}"

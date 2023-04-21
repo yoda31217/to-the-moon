@@ -24,3 +24,8 @@ class TradeSimulatorResult:
 
     def get_average_ticks_price_change(self):
         return self.ticks.ask_price.diff().abs().mean()
+
+    def get_interval_days(self):
+        min_timestamp = self.ticks.timestamp.min()
+        max_timestamp = self.ticks.timestamp.max()
+        return (max_timestamp - min_timestamp) / (1.0 * 24 * 60 * 60 * 1000)
