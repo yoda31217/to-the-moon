@@ -13,9 +13,3 @@ class TradeSimulatorTick:
 
     def get_date_time(self):
         return datetime.utcfromtimestamp(self.timestamp / 1000)
-
-    def is_growth_step(self, tick: 'TradeSimulatorTick', price_step_ratio: float):
-        return tick.bid_price >= self.ask_price + self.ask_price * price_step_ratio
-
-    def is_falling_step(self, tick: 'TradeSimulatorTick', price_step_ratio: float):
-        return tick.ask_price <= self.bid_price - self.bid_price * price_step_ratio

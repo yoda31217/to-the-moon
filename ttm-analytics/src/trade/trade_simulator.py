@@ -3,38 +3,24 @@ from functools import reduce
 import pandas as pd
 
 from trade.trade_simulator_order import TradeSimulatorOrder
-from trade.trade_simulator_order_type import TradeSimulatorOrderType
+from trade.trade_simulator_strategy import TradeSimulatorStrategy
 from trade.trade_simulator_tick import TradeSimulatorTick
 
 
 class TradeSimulator:
-    check_point_tick: TradeSimulatorTick | None
     orders: [TradeSimulatorOrder]
     closed_orders: [TradeSimulatorOrder]
     ticks: [TradeSimulatorTick]
 
     def __init__(self, ticks_data_frame: pd.DataFrame) -> None:
-        self.check_point_tick = None
         self.orders: [TradeSimulatorOrder] = []
         self.closed_orders = []
         self.ticks = list((self._to_tick(tick_row) for tick_index, tick_row in ticks_data_frame.iterrows()))
 
-    def process_ticks(self, price_step_ratio: float):
-        for tick in self.ticks:
-            self._notify_orders(tick)
-
-            if self.check_point_tick is None:
-                self.check_point_tick = tick
-                # print(f"Initial checkpoint set at {tick.get_date_time()} and bid price: {tick.bid_price}")
-
-            elif self.check_point_tick.is_growth_step(tick, price_step_ratio):
-                self.orders.append(TradeSimulatorOrder(tick, TradeSimulatorOrderType.SELL, price_step_ratio))
-                self.check_point_tick = tick
-
-            elif self.check_point_tick.is_falling_step(tick, price_step_ratio):
-                self.orders.append(TradeSimulatorOrder(tick, TradeSimulatorOrderType.BUY, price_step_ratio))
-                self.check_point_tick = tick
-
+    def process_ticks(self, strategy: TradeSimulatorStrategy):
+        for new_tick in self.ticks:
+            self._notify_orders(new_tick)
+            strategy.process_tick(new_tick, self.orders, self.closed_orders)
             self._move_orders_to_closed()
 
         self._close_orders()
