@@ -17,7 +17,7 @@ class TradeSimulator:
         self.closed_orders = []
         self.ticks = list((self._to_tick(tick_row) for tick_index, tick_row in ticks_data_frame.iterrows()))
 
-    def process_ticks(self, strategy: TradeSimulatorStrategy):
+    def simulate(self, strategy: TradeSimulatorStrategy):
         for new_tick in self.ticks:
             self._notify_orders(new_tick)
             strategy.process_tick(new_tick, self.orders, self.closed_orders)
