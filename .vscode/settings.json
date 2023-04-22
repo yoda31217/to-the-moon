@@ -8,5 +8,7 @@
     "**/__pycache__": true,
     "**/.idea": true,
     "**/.ipynb_checkpoints": true
-  }
+  },
+  "python.formatting.provider": "black",
+  "python.analysis.typeCheckingMode": "basic"
 }
