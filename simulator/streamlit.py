@@ -12,7 +12,7 @@ from binance.binance_tick_loader import load_binance_ticks
 
 st.title('Simulation results')
 
-st.text('Description')
+st.text('Description1')
 
 symbol_ask_bid_price_difference = 0.01
 
