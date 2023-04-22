@@ -1,8 +1,9 @@
+import os
 import streamlit as st
 import pandas as pd
 
-from binance.binance_k_line_loader import load_binance_k_lines
-from binance.binance_tick_loader import load_binance_ticks
+# from binance.binance_k_line_loader import load_binance_k_lines
+# from binance.binance_tick_loader import load_binance_ticks
 
 # from report.report import load_and_report_ticks
 # import matplotlib.pyplot as plt
@@ -13,12 +14,14 @@ st.title('Simulation results')
 
 st.text('Description')
 
+st.text(os.getcwd())
+
 symbol_ask_bid_price_difference = 0.01
 
-k_lines = load_binance_k_lines(f"./../ttm-data/ETHUSDT-1s-2023-03-01.csv")
-ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
+# k_lines = load_binance_k_lines(f"./../ttm-data/ETHUSDT-1s-2023-03-01.csv")
+# ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
 
-st.dataframe(ticks)
+# st.dataframe(ticks)
 
     # draw_line_chart(ticks, 'timestamp', 'bid_price', 'Bid Price', 'Ticks')
     # display(ticks)
