@@ -8,4 +8,4 @@ cd "$(dirname "$0")"
 
 cd ..
 
-pip install -r requirements-dev.txt
+pip install -r requirements.txt
