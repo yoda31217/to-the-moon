@@ -16,6 +16,7 @@ class TradeSimulator:
 
     def __init__(self, ticks_data_frame: pd.DataFrame) -> None:
         # self.ticks = list((self._to_tick(tick_row) for tick_index, tick_row in ticks_data_frame.iterrows()))
+        tick_row: TickDataFrameRowTuple
         self.ticks = list((self._to_tick(tick_row) for tick_row in ticks_data_frame.itertuples()))
         self.ticks_data_frame = ticks_data_frame
 
@@ -30,27 +31,7 @@ class TradeSimulator:
 
         self._close_orders(orders, closed_orders)
 
-        return self._to_transactions(closed_orders)
-
-    def _to_transactions(self, closed_orders: [TradeSimulatorOrder]) -> TradeSimulatorResult:
-        cumulative_profit: float = 0
-        cumulative_profits: [float] = []
-
-        for closed_order in closed_orders:
-            cumulative_profit = cumulative_profit + closed_order.get_profit()
-            cumulative_profits.append(cumulative_profit)
-
-        return TradeSimulatorResult(pd.DataFrame({
-            'open_timestamp': list((closed_order.open_tick.timestamp for closed_order in closed_orders)),
-            'type': list((closed_order.type.name for closed_order in closed_orders)),
-            'open_price': list((closed_order.get_open_price() for closed_order in closed_orders)),
-            'close_price': list((closed_order.get_close_price() for closed_order in closed_orders)),
-            'price_margin': list((abs(closed_order.get_close_price() - closed_order.get_open_price())
-                                  for closed_order in closed_orders)),
-            'close_timestamp': list((closed_order.close_tick.timestamp for closed_order in closed_orders)),
-            'profit': list((closed_order.get_profit() for closed_order in closed_orders)),
-            'cumulative_profit': cumulative_profits,
-        }), self.ticks_data_frame)
+        return TradeSimulatorResult(closed_orders, self.ticks_data_frame)
 
     def _close_orders(self, orders: [TradeSimulatorOrder], closed_orders: [TradeSimulatorOrder]):
         order: TradeSimulatorOrder
