@@ -16,7 +16,7 @@ st.text('Description1')
 
 symbol_ask_bid_price_difference = 0.01
 
-k_lines = load_binance_k_lines(f"./../ttm-data/ETHUSDT-1s-2023-03-01.csv")
+k_lines = load_binance_k_lines(f"./ttm-data/ETHUSDT-1s-2023-03-01.csv")
 ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
 
 st.dataframe(ticks)
