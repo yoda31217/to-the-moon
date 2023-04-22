@@ -19,8 +19,8 @@ def draw_line_chart(data_frame: pd.DataFrame, timestamp_column_name: str, value_
         value_label: sampled_data_frame[value_column_name],
     })
 
-    fig, ax = plt.subplots(figsize=(16, 9))
-    plot = sns.lineplot(data=formatted_data_frame, x='Date Time', y=value_label, linewidth=1.0, ax=ax)
+    figure, axes = plt.subplots(figsize=(16, 9))
+    plot = sns.lineplot(data=formatted_data_frame, x='Date Time', y=value_label, linewidth=1.0, ax=axes)
 
     min_timestamp = sampled_data_frame[timestamp_column_name].min()
     max_timestamp = sampled_data_frame[timestamp_column_name].max()
@@ -41,3 +41,5 @@ def draw_line_chart(data_frame: pd.DataFrame, timestamp_column_name: str, value_
 
     plot.set(title=f"{title} (sampled)")
     plot.set_xticklabels(plot.get_xticklabels(), rotation=90)
+
+    return figure
