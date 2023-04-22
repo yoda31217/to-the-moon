@@ -8,7 +8,7 @@ class TradeSimulatorOrder:
     id: uuid.UUID
     type: TradeSimulatorOrderType
     open_tick: TradeSimulatorTick
-    close_tick: TradeSimulatorTick | None
+    close_tick: TradeSimulatorTick
     is_open: bool
     stop_loss_take_profit_ratio: float
 
