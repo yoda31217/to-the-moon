@@ -5,7 +5,7 @@ from trade.trade_simulator_tick import TradeSimulatorTick
 
 
 class Bot0Strategy(TradeSimulatorStrategy):
-    check_point_tick: TradeSimulatorTick | None
+    check_point_tick: TradeSimulatorTick
     price_step_ratio: float
     inverted: bool
 
