@@ -1,3 +1,6 @@
 /ttm-analytics/.ipynb_checkpoints/
 /.idea/
 /ttm-analytics/.venv/
+__pycache__/
+.DS_Store/
+.env
