@@ -1,19 +1,29 @@
-# import streamlit as st
+import streamlit as st
 import pandas as pd
+
+from binance.binance_k_line_loader import load_binance_k_lines
+from binance.binance_tick_loader import load_binance_ticks
+
 # from report.report import load_and_report_ticks
 # import matplotlib.pyplot as plt
 # import numpy as np
 
 
-"""
-# My first app from yoda
-Here's our first attempt at using data to create a table:
-"""
+st.title('Simulation results')
 
+st.text('Description')
 
-df = pd.DataFrame({"first column": [1, 2, 3, 4], "second column": [10, 20, 30, 40]})
+symbol_ask_bid_price_difference = 0.01
 
-df
+k_lines = load_binance_k_lines(f"./../ttm-data/ETHUSDT-1s-2023-03-01.csv")
+ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
+
+st.dataframe(ticks)
+
+    # draw_line_chart(ticks, 'timestamp', 'bid_price', 'Bid Price', 'Ticks')
+    # display(ticks)
+
+    # return ticks
 
 # @st.cache_data
 # def get_ticks_cached():
