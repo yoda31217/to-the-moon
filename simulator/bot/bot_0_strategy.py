@@ -1,3 +1,4 @@
+from typing import Optional
 from trade.trade_simulator_order import TradeSimulatorOrder
 from trade.trade_simulator_order_type import TradeSimulatorOrderType
 from trade.trade_simulator_strategy import TradeSimulatorStrategy
@@ -5,12 +6,12 @@ from trade.trade_simulator_tick import TradeSimulatorTick
 
 
 class Bot0Strategy(TradeSimulatorStrategy):
-    check_point_tick: TradeSimulatorTick
+    check_point_tick: Optional[TradeSimulatorTick]
     price_step_ratio: float
     inverted: bool
 
     def __init__(self, price_step_ratio: float, inverted: bool) -> None:
-        super().__init__(f'Bot0[{price_step_ratio * 100:.2f}%, {"inverted" if inverted else "not_inverted"}]')
+        super().__init__(f'Bot0[{price_step_ratio * 100:.2f}%, {"инвертирован" if inverted else "не инвертирован"}]')
         self.check_point_tick = None
         self.price_step_ratio = price_step_ratio
         self.inverted = inverted
