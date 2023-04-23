@@ -1,3 +1,4 @@
+import datetime
 import sys
 import streamlit as st
 import pandas as pd
@@ -5,7 +6,10 @@ from binance.binance_tick_loader import load_binance_ticks
 from bot.bot_0_strategy import Bot0Strategy
 from chart.chart import draw_line_chart
 from binance.binance_k_line_loader import _load_binance_k_lines_data_frame
+from binance.binance_k_line_loader import BINANCE_SYMBOLS
 from trade.trade_simulator import TradeSimulator
+from datetime import date
+from datetime import timedelta
 
 # Options
 
@@ -13,11 +17,15 @@ st.sidebar.header("Опции")
 
 st.sidebar.subheader("Стратегия: Bot0")
 
-symbol = "ETHUSDT"
+symbol = st.sidebar.selectbox(
+    "Символ", options=BINANCE_SYMBOLS, index=BINANCE_SYMBOLS.index("ETHUSDT")
+)
 
-iso_date_str = "2023-03-01"
+iso_date_str = st.sidebar.date_input("Дата с", date.today() - timedelta(days=2))
 
-symbol_ask_bid_price_difference = 0.01
+symbol_ask_bid_price_difference = st.sidebar.number_input(
+    "Разница цены купли-проажи", value=0.01
+)
 
 price_step_ratio = (
     st.sidebar.slider(
@@ -51,7 +59,7 @@ result = TradeSimulator(ticks).simulate(strategy)
 
 # Body
 
-st.header(f"Симуляция {sys.version}")
+st.header(f"Симуляция торговли крипто бота")
 
 
 st.text("Description1")
@@ -59,12 +67,15 @@ st.text("Description1")
 # 'orders=30,049 interval_days=48.0 avg_tick_price_change=0.06 str=Bot0[0.10%, not_inverted]
 # tx_avg_price_margin=1.99 tx_avg_prof=-0.04 tx_cum_prof=-1199.56'
 
+# 03/01 - -16.09 - 431 - 0.1%
+
 st.subheader(f"Сводка")
 st.table(
     pd.DataFrame(
         {
             "Показатель": [
                 "Символ",
+                "Данные",
                 "Название стратегии",
                 "Инвертирован",
                 "Среднее изменение цены за тик",
@@ -76,8 +87,9 @@ st.table(
             ],
             "Значение": [
                 symbol,
+                "Binance",
                 strategy,
-                'Да' if inverted else 'Нет',
+                "Да" if inverted else "Нет",
                 "{:.2f}".format(result.get_average_ticks_price_change()),
                 "{:.1f}".format(result.get_interval_days()),
                 result.get_transactions_count(),
@@ -90,8 +102,14 @@ st.table(
 )
 
 
-st.subheader(f"Динамика цены покупки")
-draw_line_chart(ticks, "timestamp", "bid_price", "Цена покупки, $")
+st.subheader(f"Цена покупки")
+draw_line_chart(
+    ticks,
+    "timestamp",
+    "ask_price",
+    "Цена покупки, $",
+    samples_count=1000,
+)
 
 st.subheader(f"Итоговая прибыль")
 if result.get_transactions_count() > 0:
