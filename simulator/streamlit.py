@@ -36,22 +36,21 @@ strategy = Bot0Strategy(price_step_ratio, inverted)
 
 # Body
 
-
 st.text("Description1")
 
 k_lines = load_binance_k_lines(f"./ttm-data/{symbol}-1s-2023-03-01.csv")
 
 ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
 
-# st.dataframe(ticks)
-
-st.subheader(f"Цена покупки, symbol={symbol}")
+st.subheader(f"Цена покупки, символ={symbol}")
 
 draw_line_chart(ticks, "timestamp", "bid_price", "Цена покупки, $")
 
 trade_simulator: TradeSimulator = TradeSimulator(ticks)
 
 st.header("Результаты симуляции")
+
+st.subheader(f"Итоговая прибыль")
 
 result = trade_simulator.simulate(strategy)
 
