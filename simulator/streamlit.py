@@ -65,7 +65,7 @@ if result.get_transactions_count() > 0:
         "open_timestamp",
         "cumulative_profit",
         "Итоговая прибыль, $",
-        samples_count=1_000_000,
+        samples_count=1000000
     )
 else:
     st.caption("No Transactions! 😕")
