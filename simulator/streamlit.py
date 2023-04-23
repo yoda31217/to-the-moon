@@ -21,7 +21,13 @@ symbol = st.sidebar.selectbox(
     "Символ", options=BINANCE_SYMBOLS, index=BINANCE_SYMBOLS.index("ETHUSDT")
 )
 
-iso_date_str = st.sidebar.date_input("Дата с", date.today() - timedelta(days=2))
+date_from_str = st.sidebar.date_input("Дата с", date.today() - timedelta(days=2))
+
+date_to_str = st.sidebar.date_input("Дата по", date.today() - timedelta(days=2))
+
+date_strs = (
+    pd.date_range(date_from_str, date_to_str, freq="d").strftime("%Y-%m-%d").to_list()
+)
 
 symbol_ask_bid_price_difference = st.sidebar.number_input(
     "Разница цены купли-проажи", value=0.01
@@ -53,7 +59,10 @@ def load_binance_k_lines_with_cache(symbol: str, iso_date_str: str) -> pd.DataFr
     )
 
 
-k_lines = load_binance_k_lines_with_cache(symbol, iso_date_str)
+k_lines = pd.concat(
+    [load_binance_k_lines_with_cache(symbol, date_str) for date_str in date_strs]
+).sort_values(by=["open_timestamp_millis"])
+
 ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
 result = TradeSimulator(ticks).simulate(strategy)
 
