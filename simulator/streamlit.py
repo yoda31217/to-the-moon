@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
-from binance.binance_k_line_loader import load_binance_k_lines
 from binance.binance_tick_loader import load_binance_ticks
 from bot.bot_0_strategy import Bot0Strategy
 from chart.chart import draw_line_chart
+from binance.binance_k_line_loader import _load_binance_k_lines_data_frame
 from trade.trade_simulator import TradeSimulator
 
 # Options
@@ -38,7 +38,15 @@ strategy = Bot0Strategy(price_step_ratio, inverted)
 
 st.text("Description1")
 
-k_lines = load_binance_k_lines(f"./ttm-data/{symbol}-1s-2023-03-01.csv")
+
+@st.cache_data
+def load_binance_k_lines_with_cache(symbol: str, iso_date_str: str) -> pd.DataFrame:
+    return _load_binance_k_lines_data_frame(
+        f"https://data.binance.vision/data/spot/daily/klines/{symbol}/1s/{symbol}-1s-{iso_date_str}.zip"
+    )
+
+
+k_lines = load_binance_k_lines_with_cache(symbol, "2023-03-01")
 
 ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
 
