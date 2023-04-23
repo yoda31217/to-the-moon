@@ -1,4 +1,3 @@
-from typing import Optional
 from trade.trade_simulator_order import TradeSimulatorOrder
 from trade.trade_simulator_order_type import TradeSimulatorOrderType
 from trade.trade_simulator_strategy import TradeSimulatorStrategy
@@ -17,7 +16,7 @@ class Bot0Strategy(TradeSimulatorStrategy):
         self.inverted = inverted
 
     def process_tick(self, new_tick: TradeSimulatorTick,
-                     orders: [TradeSimulatorOrder], closed_orders: [TradeSimulatorOrder]):
+                     orders: list[TradeSimulatorOrder], closed_orders: list[TradeSimulatorOrder]):
         if self.check_point_tick is None:
             self.check_point_tick = new_tick
             # print(f"Initial checkpoint set at {tick.get_date_time()} and bid price: {tick.bid_price}")
