@@ -5,7 +5,7 @@ import pandas as pd
 from binance.binance_k_line_loader import load_binance_k_lines
 from binance.binance_tick_loader import load_binance_ticks
 from bot.bot_0_strategy import Bot0Strategy
-from chart.ttm_chart import draw_line_chart
+from chart.chart import draw_line_chart
 from trade.trade_simulator import TradeSimulator
 
 # from report.report import load_and_report_ticks
@@ -28,9 +28,9 @@ ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
 
 # st.dataframe(ticks)
 
-st.subheader(f"Bid Price Chart")
+st.subheader(f"Цена покупки {symbol}")
 
-st.pyplot(draw_line_chart(ticks, 'timestamp', 'bid_price', 'Bid Price', 'Ticks'))
+draw_line_chart(ticks, 'timestamp', 'bid_price', 'Цена покупки ($)')
 
 trade_simulator: TradeSimulator = TradeSimulator(ticks)
 
@@ -45,7 +45,7 @@ inverted = agree = st.sidebar.checkbox('Invert strategy', value=False)
 result = trade_simulator.simulate(Bot0Strategy(price_step_ratio, inverted))
 
 if result.get_transactions_count() > 0:
-    st.pyplot(draw_line_chart(result.transactions, 'open_timestamp', 'cumulative_profit', 'Cumulative Profit', ''))
+    draw_line_chart(result.transactions, 'open_timestamp', 'cumulative_profit', 'Итоговая прибыль ($)')
 else:
     st.caption('No Transactions! 😕')
 
