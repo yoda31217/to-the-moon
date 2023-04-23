@@ -1,14 +1,6 @@
 import glob
 
 import pandas as pd
-import streamlit as st
-
-
-@st.cache_data
-def load_binance_k_lines_with_cache(symbol: str, iso_date_str: str) -> pd.DataFrame:
-    return _load_binance_k_lines_data_frame(
-        f"https://data.binance.vision/data/spot/daily/klines/{symbol}/1s/{symbol}-1s-{iso_date_str}.zip"
-    )
 
 
 def load_binance_k_lines(csv_files_pattern: str):

@@ -3,7 +3,7 @@ import pandas as pd
 from binance.binance_tick_loader import load_binance_ticks
 from bot.bot_0_strategy import Bot0Strategy
 from chart.chart import draw_line_chart
-from binance.binance_k_line_loader import load_binance_k_lines_with_cache
+from binance.binance_k_line_loader import _load_binance_k_lines_data_frame
 from trade.trade_simulator import TradeSimulator
 
 # Options
@@ -13,6 +13,8 @@ st.sidebar.header("Опции")
 st.sidebar.subheader("Стратегия: Bot0")
 
 symbol = "ETHUSDT"
+
+iso_date_str = "2023-03-01"
 
 symbol_ask_bid_price_difference = 0.01
 
@@ -38,8 +40,16 @@ strategy = Bot0Strategy(price_step_ratio, inverted)
 
 st.text("Description1")
 
+
+@st.cache_data
+def load_binance_k_lines_with_cache(symbol: str, iso_date_str: str) -> pd.DataFrame:
+    return _load_binance_k_lines_data_frame(
+        f"https://data.binance.vision/data/spot/daily/klines/{symbol}/1s/{symbol}-1s-{iso_date_str}.zip"
+    )
+
+
 st.subheader(f"Цена покупки, символ={symbol}")
-k_lines = load_binance_k_lines_with_cache(symbol, "2023-03-01")
+k_lines = load_binance_k_lines_with_cache(symbol, iso_date_str)
 ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
 draw_line_chart(ticks, "timestamp", "bid_price", "Цена покупки, $")
 
@@ -55,6 +65,7 @@ if result.get_transactions_count() > 0:
         "open_timestamp",
         "cumulative_profit",
         "Итоговая прибыль, $",
+        samples_count=1_000_000,
     )
 else:
     st.caption("No Transactions! 😕")
