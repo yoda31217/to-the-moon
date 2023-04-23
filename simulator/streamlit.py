@@ -1,3 +1,4 @@
+import sys
 import streamlit as st
 import pandas as pd
 from binance.binance_tick_loader import load_binance_ticks
@@ -50,7 +51,7 @@ result = TradeSimulator(ticks).simulate(strategy)
 
 # Body
 
-st.header("Симуляция")
+st.header(f"Симуляция {sys.version}")
 
 
 st.text("Description1")
