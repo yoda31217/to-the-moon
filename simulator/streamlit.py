@@ -12,6 +12,7 @@ from trade.trade_simulator import TradeSimulator
 # import matplotlib.pyplot as plt
 # import numpy as np
 
+st.sidebar.subheader('Options')
 
 st.title('Simulation results')
 
@@ -38,11 +39,15 @@ st.subheader(f"Profit")
 #     # 'orders=30,049 interval_days=48.0 avg_tick_price_change=0.06 str=Bot0[0.10%, not_inverted]
 #     # tx_avg_price_margin=1.99 tx_avg_prof=-0.04 tx_cum_prof=-1199.56'
 
-price_step_ratio = 0.001
-inverted = False
+price_step_ratio = age = st.sidebar.slider('Price step (%)', min_value=0.1, max_value=10.0, value=1.0, step=0.1) / 100.0
+inverted = agree = st.sidebar.checkbox('Invert strategy', value=False)
 
 result = trade_simulator.simulate(Bot0Strategy(price_step_ratio, inverted))
-st.pyplot(draw_line_chart(result.transactions, 'open_timestamp', 'cumulative_profit', 'Cumulative Profit', ''))
+
+if result.get_transactions_count() > 0:
+    st.pyplot(draw_line_chart(result.transactions, 'open_timestamp', 'cumulative_profit', 'Cumulative Profit', ''))
+else:
+    st.caption('No Transactions! 😕')
 
         # result_str = (f"orders={result.get_transactions_count() :,}"
         #               f" interval_days={result.get_interval_days():.1f}"
