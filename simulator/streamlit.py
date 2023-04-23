@@ -36,10 +36,6 @@ inverted = st.sidebar.checkbox(
 
 strategy = Bot0Strategy(price_step_ratio, inverted)
 
-# Body
-
-st.text("Description1")
-
 
 @st.cache_data
 def load_binance_k_lines_with_cache(symbol: str, iso_date_str: str) -> pd.DataFrame:
@@ -48,28 +44,16 @@ def load_binance_k_lines_with_cache(symbol: str, iso_date_str: str) -> pd.DataFr
     )
 
 
-st.subheader(f"Цена покупки, символ={symbol}")
 k_lines = load_binance_k_lines_with_cache(symbol, iso_date_str)
 ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
-draw_line_chart(ticks, "timestamp", "bid_price", "Цена покупки, $")
+result = TradeSimulator(ticks).simulate(strategy)
 
-trade_simulator: TradeSimulator = TradeSimulator(ticks)
-result = trade_simulator.simulate(strategy)
+# Body
 
-st.header("Результаты")
+st.header("Симуляция")
 
-st.subheader(f"Итоговая прибыль")
-if result.get_transactions_count() > 0:
-    draw_line_chart(
-        result.transactions,
-        "open_timestamp",
-        "cumulative_profit",
-        "Итоговая прибыль, $",
-        samples_count=1000000
-    )
-else:
-    st.caption("No Transactions! 😕")
 
+st.text("Description1")
 
 # 'orders=30,049 interval_days=48.0 avg_tick_price_change=0.06 str=Bot0[0.10%, not_inverted]
 # tx_avg_price_margin=1.99 tx_avg_prof=-0.04 tx_cum_prof=-1199.56'
@@ -80,20 +64,22 @@ st.table(
         {
             "Показатель": [
                 "Символ",
-                "Количество транзакций",
-                "Интервал симуляции, день",
-                "Среднее изменение цены за тик",
                 "Название стратегии",
+                "Инвертирован",
+                "Среднее изменение цены за тик",
+                "Интервал симуляции, дней",
+                "Количество транзакций",
                 "Средняя ценовая маржа транзакции",
                 "Средняя прибыль транзакции",
                 "Итоговая прибыль",
             ],
             "Значение": [
                 symbol,
-                result.get_transactions_count(),
-                "{:.1f}".format(result.get_interval_days()),
-                "{:.2f}".format(result.get_average_ticks_price_change()),
                 strategy,
+                'Да' if inverted else 'Нет',
+                "{:.2f}".format(result.get_average_ticks_price_change()),
+                "{:.1f}".format(result.get_interval_days()),
+                result.get_transactions_count(),
                 "{:.2f}".format(result.get_transactions_average_price_margin()),
                 "{:.2f}".format(result.get_transactions_average_profit()),
                 "{:.2f}".format(result.get_transactions_cumulative_profit()),
@@ -101,3 +87,19 @@ st.table(
         }
     )
 )
+
+
+st.subheader(f"Динамика цены покупки")
+draw_line_chart(ticks, "timestamp", "bid_price", "Цена покупки, $")
+
+st.subheader(f"Итоговая прибыль")
+if result.get_transactions_count() > 0:
+    draw_line_chart(
+        result.transactions,
+        "open_timestamp",
+        "cumulative_profit",
+        "Итоговая прибыль, $",
+        samples_count=1000000,
+    )
+else:
+    st.text("Нет транзакций! 😕")
