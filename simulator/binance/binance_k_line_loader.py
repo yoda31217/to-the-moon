@@ -1,7 +1,6 @@
 import os
 from urllib.request import urlretrieve
 import pandas as pd
-import streamlit as st
 
 
 def load_binance_k_lines(
@@ -63,7 +62,6 @@ def _load_binance_k_lines_to_file_if_needed(symbol, date_iso_str) -> str:
     return file_path
 
 
-@st.cache_resource
 def _load_binance_k_lines_to_file(symbol, date_iso_str, file_path):
     try:
         urlretrieve(
