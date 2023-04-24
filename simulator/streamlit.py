@@ -7,9 +7,15 @@ from bot.bot_0_strategy import Bot0Strategy
 from chart.chart import draw_line_chart
 from binance.binance_k_line_loader import _load_binance_k_lines_data_frame
 from binance.binance_k_line_loader import BINANCE_SYMBOLS
+from binance.binance_k_line_loader import load_binance_k_lines
 from trade.trade_simulator import TradeSimulator
 from datetime import date
 from datetime import timedelta
+
+st.header(f"Симуляция торговли крипто бота")
+
+
+st.text("Description1")
 
 # Options
 
@@ -17,17 +23,13 @@ st.sidebar.header("Опции")
 
 st.sidebar.subheader("Стратегия: Bot0")
 
-symbol = st.sidebar.selectbox(
+symbol: str = st.sidebar.selectbox(
     "Символ", options=BINANCE_SYMBOLS, index=BINANCE_SYMBOLS.index("ETHUSDT")
 )
 
-date_from_str = st.sidebar.date_input("Дата с", date.today() - timedelta(days=2))
+date_from_str: str = st.sidebar.date_input("Дата с", date.today() - timedelta(days=2))
 
-date_to_str = st.sidebar.date_input("Дата по", date.today() - timedelta(days=2))
-
-date_strs = (
-    pd.date_range(date_from_str, date_to_str, freq="d").strftime("%Y-%m-%d").to_list()
-)
+date_to_str: str = st.sidebar.date_input("Дата по", date.today() - timedelta(days=2))
 
 symbol_ask_bid_price_difference = st.sidebar.number_input(
     "Разница цены купли-проажи", value=0.01
@@ -51,27 +53,11 @@ inverted = st.sidebar.checkbox(
 
 strategy = Bot0Strategy(price_step_ratio, inverted)
 
-
-@st.cache_data
-def load_binance_k_lines_with_cache(symbol: str, iso_date_str: str) -> pd.DataFrame:
-    return _load_binance_k_lines_data_frame(
-        f"https://data.binance.vision/data/spot/daily/klines/{symbol}/1s/{symbol}-1s-{iso_date_str}.zip"
-    )
-
-
-k_lines = pd.concat(
-    [load_binance_k_lines_with_cache(symbol, date_str) for date_str in date_strs]
-).sort_values(by=["open_timestamp_millis"])
-
+k_lines = load_binance_k_lines(symbol, date_from_str, date_to_str)
 ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
 result = TradeSimulator(ticks).simulate(strategy)
 
 # Body
-
-st.header(f"Симуляция торговли крипто бота")
-
-
-st.text("Description1")
 
 # 'orders=30,049 interval_days=48.0 avg_tick_price_change=0.06 str=Bot0[0.10%, not_inverted]
 # tx_avg_price_margin=1.99 tx_avg_prof=-0.04 tx_cum_prof=-1199.56'
@@ -102,11 +88,11 @@ st.table(
                 "Да" if inverted else "Нет",
                 "{:.2f}".format(result.get_average_ticks_price_change()),
                 "c {} по {} ({:.1f} дней)".format(date_from_str, date_to_str, result.get_interval_days()),
-                result.get_transactions_count(),
-                "{:.2f}".format(result.get_transactions_count() / result.get_interval_days()),
-                "{:.2f}".format(result.get_transactions_average_price_margin()),
-                "{:.2f}".format(result.get_transactions_average_profit()),
-                "{:.2f}".format(result.get_transactions_cumulative_profit()),
+                "{:,}".format(result.get_transactions_count()),
+                "{:,.2f}".format(result.get_transactions_count() / result.get_interval_days()),
+                "{:,.2f} (по модулю)".format(result.get_transactions_average_price_margin()),
+                "{:,.2f}".format(result.get_transactions_average_profit()),
+                "{:,.2f}".format(result.get_transactions_cumulative_profit()),
             ],
         }
     )
