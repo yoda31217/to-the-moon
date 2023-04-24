@@ -9,9 +9,32 @@ from trade.trade_simulator import TradeSimulator
 from datetime import date
 from datetime import timedelta
 
-st.header(f"Симуляция торговли крипто бота")
+st.set_page_config(
+    page_title=f"Симулятор торговли бота на крипто бирже",
+    initial_sidebar_state="expanded",
+)
 
-st.text("Description1")
+st.header(f"Симулятор торговли крипто бота")
+
+with st.expander("Описание", expanded=False):
+    st.write(
+        """
+            Привет!
+
+            Это открытый проект симулятора торговли Бота на крипто бирже. 
+
+            Мы используем реальный данные с биржи и соболюдаем все условия торговли. 
+            Все сделано для максимально легкого и оперативного тестирования гипотез.
+
+            Настраивай симуляцию в панели слева и ожидай результат.
+
+            Вот
+            [исходники](https://github.com/yoda31217/to-the-moon)
+            проекта и пример 
+            [стратегии](https://github.com/yoda31217/to-the-moon/blob/main/simulator/bot/bot_0_strategy.py)
+            Бота.
+        """
+    )
 
 st.sidebar.title("Опции")
 
