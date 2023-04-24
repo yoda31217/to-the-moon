@@ -1,9 +1,9 @@
 {
   "terminal.integrated.env.osx": {
-    "PYTHONPATH": "${workspaceFolder}/ttm-analytics/src"
+    "PYTHONPATH": "${workspaceFolder}/simulator"
   },
   "jupyter.notebookFileRoot": "${workspaceFolder}",
-  "python.defaultInterpreterPath": "${workspaceFolder}/ttm-analytics/.venv/bin/python3",
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python3",
   "files.exclude": {
     "**/__pycache__": true,
     "**/.idea": true,
