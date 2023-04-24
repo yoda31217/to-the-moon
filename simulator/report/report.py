@@ -1,3 +1,4 @@
+from datetime import date
 import pandas as pd
 import streamlit as st
 from chart.chart import draw_line_chart
@@ -8,8 +9,8 @@ from trade.trade_simulator_strategy import TradeSimulatorStrategy
 
 def report_summary(
     symbol: str,
-    date_from_str: str,
-    date_to_str: str,
+    date_from: date,
+    date_to: date,
     strategy: TradeSimulatorStrategy,
     result: TradeSimulatorResult,
 ):
@@ -40,7 +41,7 @@ def report_summary(
                     "Binance",
                     symbol,
                     "c {} по {} ({:.1f} дней)".format(
-                        date_from_str, date_to_str, result.get_interval_days()
+                        date_from, date_to, result.get_interval_days()
                     ),
                     strategy,
                     "{:.2f}".format(result.get_average_ticks_price_change()),

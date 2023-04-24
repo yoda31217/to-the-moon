@@ -1,14 +1,16 @@
+from datetime import date
 import os
 from urllib.request import urlretrieve
 import pandas as pd
 
 
-def load_binance_k_lines(
-    symbol: str, date_from_iso_str: str, date_to_iso_str: str
-) -> pd.DataFrame:
-    k_lines_data_frames = _load_binance_k_lines_data_frames(
-        symbol, date_from_iso_str, date_to_iso_str
-    )
+def load_binance_k_lines(symbol: str, date_from: date, date_to: date) -> pd.DataFrame:
+    if date_to < date_from:
+        raise Exception(
+            f"'Дата с' {date_from} не может быть больше 'Дата по' {date_to}."
+        )
+
+    k_lines_data_frames = _load_binance_k_lines_data_frames(symbol, date_from, date_to)
     k_lines_data_frame = _join_binance_k_lines_data_frames(k_lines_data_frames)
     return k_lines_data_frame
 
@@ -18,13 +20,15 @@ def _join_binance_k_lines_data_frames(k_lines_data_frames) -> pd.DataFrame:
 
 
 def _load_binance_k_lines_data_frames(
-    symbol: str, date_from_iso_str: str, date_to_iso_str: str
+    symbol: str, date_from: date, date_to: date
 ) -> list[pd.DataFrame]:
     date_iso_strs = (
-        pd.date_range(date_from_iso_str, date_to_iso_str, freq="d")
-        .strftime("%Y-%m-%d")
-        .to_list()
+        pd.date_range(date_from, date_to, freq="d").strftime("%Y-%m-%d").to_list()
     )
+
+    if len(date_iso_strs) > 31:
+        raise Exception(f"Интервал симуляции не может превышать 31 день.")
+
     return [
         _load_binance_k_lines_data_frame(symbol, date_iso_str)
         for date_iso_str in date_iso_strs

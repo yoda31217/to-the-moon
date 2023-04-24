@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+from typing import cast
 import streamlit as st
 from binance.binance_k_line_loader import BINANCE_SYMBOLS, load_binance_k_lines
 from binance.binance_tick_loader import load_binance_ticks
@@ -46,12 +47,12 @@ symbol: str = str(
     )
 )
 
-date_from_str: str = str(
-    st.sidebar.date_input("Дата 'с'", date.today() - timedelta(days=2))
+date_from: date = cast(
+    date, st.sidebar.date_input("Дата с", date.today() - timedelta(days=2))
 )
 
-date_to_str: str = str(
-    st.sidebar.date_input("Дата 'по'", date.today() - timedelta(days=2))
+date_to: date = cast(
+    date, st.sidebar.date_input("Дата по", date.today() - timedelta(days=2))
 )
 
 symbol_ask_bid_price_difference = st.sidebar.number_input(
@@ -80,11 +81,11 @@ inverted = st.sidebar.checkbox(
 
 try:
     strategy = Bot0Strategy(price_step_ratio, inverted)
-    k_lines = load_binance_k_lines(symbol, date_from_str, date_to_str)
+    k_lines = load_binance_k_lines(symbol, date_from, date_to)
     ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
     result = TradeSimulator(ticks).simulate(strategy)
 
-    report_summary(symbol, date_from_str, date_to_str, strategy, result)
+    report_summary(symbol, date_from, date_to, strategy, result)
     report_ticks_chart(ticks)
     report_profit_chart(result)
 
