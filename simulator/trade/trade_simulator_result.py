@@ -8,15 +8,15 @@ class TradeSimulatorResult:
     ticks: pd.DataFrame
 
     def __init__(
-        self, closed_orders: [TradeSimulatorOrder], ticks: pd.DataFrame
+        self, closed_orders: list[TradeSimulatorOrder], ticks: pd.DataFrame
     ) -> None:
         super().__init__()
         self.ticks = ticks
         self.transactions = self._to_transactions(closed_orders)
 
-    def _to_transactions(self, closed_orders: [TradeSimulatorOrder]) -> pd.DataFrame:
+    def _to_transactions(self, closed_orders: list[TradeSimulatorOrder]) -> pd.DataFrame:
         cumulative_profit: float = 0
-        cumulative_profits: [float] = []
+        cumulative_profits: list[float] = []
 
         for closed_order in closed_orders:
             cumulative_profit = cumulative_profit + closed_order.get_profit()
@@ -66,6 +66,12 @@ class TradeSimulatorResult:
 
     def get_transactions_average_profit(self):
         return self.transactions.profit.mean()
+
+    def get_transactions_average_return(self):
+        return self.transactions.open_price.mean()
+
+    def get_transactions_cumulative_return(self):
+        return self.transactions.open_price.sum()
 
     def get_transactions_cumulative_profit(self):
         return (
