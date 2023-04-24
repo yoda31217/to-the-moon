@@ -139,7 +139,7 @@ draw_line_chart(
     "timestamp",
     "ask_price",
     "Цена покупки, $",
-    samples_count=1000,
+    samples_count=1_000,
 )
 
 st.subheader(f"Итоговая прибыль")
@@ -149,7 +149,7 @@ if result.get_transactions_count() > 0:
         "open_timestamp",
         "cumulative_profit",
         "Итоговая прибыль, $",
-        samples_count=1000000,
+        samples_count=10_000,
     )
 else:
     st.text("Нет транзакций! 😕")
