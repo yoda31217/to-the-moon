@@ -32,7 +32,6 @@ def draw_line_chart(
                 scale=alt.Scale(zero=False),  # type: ignore
             ),
         )
-        .transform_sample(samples_count)
-        .interactive(),
+        .transform_sample(samples_count),
         use_container_width=True,
     )

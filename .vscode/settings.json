@@ -9,6 +9,10 @@
     "**/.idea": true,
     "**/.ipynb_checkpoints": true
   },
+  "python.autoComplete.extraPaths": ["${workspaceFolder}/simulator"],
   "python.formatting.provider": "black",
-  "python.analysis.typeCheckingMode": "basic"
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.extraPaths": ["${workspaceFolder}/simulator"],
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.completeFunctionParens": true, 
 }
