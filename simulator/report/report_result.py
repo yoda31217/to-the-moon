@@ -12,7 +12,7 @@ def summary(
     symbol: str,
     date_from: date,
     date_to: date,
-    strategy: Bot,
+    bot: Bot,
     result: TradeSimulatorResult,
 ):
     # values to check (like a test)
@@ -27,7 +27,7 @@ def summary(
                     "Биржа",
                     "Символ",
                     "Интервал симуляции",
-                    "Bot",
+                    "Бот",
                     "Среднее изменение цены за тик",
                     "Количество транзакций",
                     "Количество транзакций в день",
@@ -44,7 +44,7 @@ def summary(
                     "c {} по {} ({:.1f} дней)".format(
                         date_from, date_to, result.get_interval_days()
                     ),
-                    strategy,
+                    bot,
                     "{:.2f}".format(result.get_average_ticks_price_change()),
                     "{:,}".format(result.get_transactions_count()),
                     "{:,.2f}".format(

@@ -23,8 +23,8 @@ def build_report():
                 
                 Проект открытый. Вот
                 исходники проекта на [GitHub](https://github.com/yoda31217/to-the-moon)
-                и пример 
-                [Бота](https://github.com/yoda31217/to-the-moon/blob/main/simulator/bot/bot_0_strategy.py).
+                и примеры 
+                [Бота](https://github.com/yoda31217/to-the-moon/blob/main/simulator/bot).
             """
         )
 
@@ -42,11 +42,11 @@ def build_report():
     price_step_ratio = report_input.price_step_ratio()
     inverted = report_input.inverted()
 
-    strategy = BotOneStepOrder(price_step_ratio, inverted)
+    bot = BotOneStepOrder(price_step_ratio, inverted)
     k_lines = load_binance_k_lines(symbol, date_from, date_to)
     ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
-    result = TradeSimulator(ticks).simulate(strategy)
+    result = TradeSimulator(ticks).simulate(bot)
 
-    report_result.summary(symbol, date_from, date_to, strategy, result)
+    report_result.summary(symbol, date_from, date_to, bot, result)
     report_result.ticks_chart(ticks)
     report_result.profit_chart(result)

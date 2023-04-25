@@ -24,13 +24,13 @@ class TradeSimulator:
         )
         self.ticks_data_frame = ticks_data_frame
 
-    def simulate(self, strategy: Bot) -> TradeSimulatorResult:
+    def simulate(self, bot: Bot) -> TradeSimulatorResult:
         orders: list[Order] = []
         closed_orders: list[Order] = []
 
         for new_tick in self.ticks:
             self._notify_orders(new_tick, orders)
-            strategy.process_tick(new_tick, orders, closed_orders)
+            bot.process_tick(new_tick, orders, closed_orders)
             self._move_orders_to_closed(orders, closed_orders)
 
         self._close_orders(orders, closed_orders)
