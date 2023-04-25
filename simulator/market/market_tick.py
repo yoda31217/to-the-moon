@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-class TradeSimulatorTick:
+class MarketTick:
     timestamp: int
     ask_price: float
     bid_price: float

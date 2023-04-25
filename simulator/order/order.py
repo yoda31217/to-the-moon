@@ -1,20 +1,20 @@
 import uuid
 
 from order.order_type import OrderType
-from trade.trade_simulator_tick import TradeSimulatorTick
+from market.market_tick import MarketTick
 
 
 class Order:
     id: uuid.UUID
     type: OrderType
-    open_tick: TradeSimulatorTick
-    close_tick: TradeSimulatorTick | None
+    open_tick: MarketTick
+    close_tick: MarketTick | None
     is_open: bool
     stop_loss_take_profit_ratio: float
 
     def __init__(
         self,
-        tick: TradeSimulatorTick,
+        tick: MarketTick,
         type: OrderType,
         stop_loss_take_profit_ratio: float,
     ):
@@ -29,13 +29,13 @@ class Order:
     def get_profit(self) -> float | None:
         return self._get_profit(self.close_tick)
 
-    def close(self, tick: TradeSimulatorTick):
+    def close(self, tick: MarketTick):
         self.close_tick = tick
         self.is_open = False
         # print(f"Close Order: {self.id} {self.close_tick.get_date_time()} {self.type} {self.get_close_price()}"
         #       + f" {self.get_profit()}")
 
-    def notify(self, new_tick: TradeSimulatorTick):
+    def notify(self, new_tick: MarketTick):
         if not self.is_open:
             return
 
@@ -52,7 +52,7 @@ class Order:
     def get_close_price(self) -> float | None:
         return self._get_close_price(self.close_tick)
 
-    def _get_close_price(self, possible_close_tick: TradeSimulatorTick | None):
+    def _get_close_price(self, possible_close_tick: MarketTick | None):
         if possible_close_tick == None:
             return None
 
@@ -62,7 +62,7 @@ class Order:
             else possible_close_tick.bid_price
         )
 
-    def _get_profit(self, possible_close_tick: TradeSimulatorTick | None):
+    def _get_profit(self, possible_close_tick: MarketTick | None):
         close_price = self._get_close_price(possible_close_tick)
 
         if close_price == None:
@@ -74,7 +74,7 @@ class Order:
             else self.get_open_price() - close_price
         )
 
-    def _should_auto_close(self, new_tick: TradeSimulatorTick):
+    def _should_auto_close(self, new_tick: MarketTick):
         profit = self._get_profit(new_tick)
         assert profit is not None
         profit_ratio = profit / self.get_open_price()

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from order.order import Order
-from trade.trade_simulator_tick import TradeSimulatorTick
+from market.market_tick import MarketTick
 
 
 class TradeSimulatorStrategy(ABC):
@@ -12,7 +12,7 @@ class TradeSimulatorStrategy(ABC):
         self.description = description
 
     @abstractmethod
-    def process_tick(self, new_tick: TradeSimulatorTick,
+    def process_tick(self, new_tick: MarketTick,
                      orders: list[Order], closed_orders: list[Order]):
         pass
 

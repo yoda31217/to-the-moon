@@ -2,7 +2,7 @@ from typing import cast
 import pandas as pd
 
 from order.order import Order
-from trade.trade_simulator_tick import TradeSimulatorTick
+from market.market_tick import MarketTick
 
 
 class TradeSimulatorResult:
@@ -49,7 +49,7 @@ class TradeSimulatorResult:
                 ),
                 "close_timestamp": list(
                     (
-                        cast(TradeSimulatorTick, closed_order.close_tick).timestamp
+                        cast(MarketTick, closed_order.close_tick).timestamp
                         for closed_order in closed_orders
                     )
                 ),

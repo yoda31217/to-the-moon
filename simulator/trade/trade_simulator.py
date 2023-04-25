@@ -5,7 +5,7 @@ import pandas as pd
 from order.order import Order
 from trade.trade_simulator_result import TradeSimulatorResult
 from trade.trade_simulator_strategy import TradeSimulatorStrategy
-from trade.trade_simulator_tick import TradeSimulatorTick
+from market.market_tick import MarketTick
 
 TickDataFrameRowTuple = typing.NamedTuple(
     "Employee", timestamp=int, bid_price=float, ask_price=float
@@ -13,7 +13,7 @@ TickDataFrameRowTuple = typing.NamedTuple(
 
 
 class TradeSimulator:
-    ticks: list[TradeSimulatorTick]
+    ticks: list[MarketTick]
     ticks_data_frame: pd.DataFrame
 
     def __init__(self, ticks_data_frame: pd.DataFrame) -> None:
@@ -65,6 +65,6 @@ class TradeSimulator:
 
     @staticmethod
     def _to_tick(tick_row: TickDataFrameRowTuple):
-        return TradeSimulatorTick(
+        return MarketTick(
             tick_row.timestamp, tick_row.bid_price, tick_row.ask_price
         )
