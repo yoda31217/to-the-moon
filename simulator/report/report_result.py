@@ -3,7 +3,7 @@ import pandas as pd
 
 import streamlit as st
 from chart.chart import draw_line_chart
-from trade.trade_simulator_result import TradeSimulatorResult
+from simulator.simulator_result import SimulatorResult
 
 from bot.bot import Bot
 
@@ -13,7 +13,7 @@ def summary(
     date_from: date,
     date_to: date,
     bot: Bot,
-    result: TradeSimulatorResult,
+    result: SimulatorResult,
 ):
     # values to check (like a test)
     # 'orders=30,049 interval_days=48.0 avg_tick_price_change=0.06 str=Bot0[0.10%, not_inverted]
@@ -75,7 +75,7 @@ def ticks_chart(ticks: pd.DataFrame):
     )
 
 
-def profit_chart(result: TradeSimulatorResult):
+def profit_chart(result: SimulatorResult):
     st.subheader(f"Итоговая прибыль")
     if result.get_transactions_count() > 0:
         draw_line_chart(

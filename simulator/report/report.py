@@ -6,7 +6,7 @@ from binance.binance_tick_loader import load_binance_ticks
 from bot.bot_one_step_order import BotOneStepOrder
 import report.report_input as report_input
 import report.report_result as report_result
-from trade.trade_simulator import TradeSimulator
+from simulator.simulator import Simulator
 
 
 def build_report():
@@ -24,7 +24,7 @@ def build_report():
                 Проект открытый. Вот
                 исходники проекта на [GitHub](https://github.com/yoda31217/to-the-moon)
                 и примеры 
-                [Бота](https://github.com/yoda31217/to-the-moon/blob/main/simulator/bot).
+                [Ботов](https://github.com/yoda31217/to-the-moon/blob/main/simulator/bot).
             """
         )
 
@@ -45,7 +45,7 @@ def build_report():
     bot = BotOneStepOrder(price_step_ratio, inverted)
     k_lines = load_binance_k_lines(symbol, date_from, date_to)
     ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
-    result = TradeSimulator(ticks).simulate(bot)
+    result = Simulator(ticks).simulate(bot)
 
     report_result.summary(symbol, date_from, date_to, bot, result)
     report_result.ticks_chart(ticks)

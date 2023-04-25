@@ -5,7 +5,7 @@ from order.order import Order
 from market.market_tick import MarketTick
 
 
-class TradeSimulatorResult:
+class SimulatorResult:
     transactions: pd.DataFrame
     ticks: pd.DataFrame
 

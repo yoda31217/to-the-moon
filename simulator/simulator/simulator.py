@@ -3,7 +3,7 @@ import typing
 import pandas as pd
 
 from order.order import Order
-from trade.trade_simulator_result import TradeSimulatorResult
+from simulator.simulator_result import SimulatorResult
 from bot.bot import Bot
 from market.market_tick import MarketTick
 
@@ -12,7 +12,7 @@ TickDataFrameRowTuple = typing.NamedTuple(
 )
 
 
-class TradeSimulator:
+class Simulator:
     ticks: list[MarketTick]
     ticks_data_frame: pd.DataFrame
 
@@ -24,7 +24,7 @@ class TradeSimulator:
         )
         self.ticks_data_frame = ticks_data_frame
 
-    def simulate(self, bot: Bot) -> TradeSimulatorResult:
+    def simulate(self, bot: Bot) -> SimulatorResult:
         orders: list[Order] = []
         closed_orders: list[Order] = []
 
@@ -35,7 +35,7 @@ class TradeSimulator:
 
         self._close_orders(orders, closed_orders)
 
-        return TradeSimulatorResult(closed_orders, self.ticks_data_frame)
+        return SimulatorResult(closed_orders, self.ticks_data_frame)
 
     def _close_orders(
         self,
