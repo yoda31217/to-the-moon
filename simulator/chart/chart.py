@@ -8,7 +8,7 @@ def draw_line_chart(
     timestamp_column_name: str,
     value_column_name: str,
     value_label: str,
-    samples_count: int = 10000
+    samples_count: int = 10000,
 ):
     formatted_data_frame = pd.DataFrame(
         {
