@@ -38,8 +38,10 @@ def build_report():
     symbol_ask_bid_price_difference = report_input.symbol_ask_bid_price_difference()
 
     st.sidebar.header("Bot")
-    st.sidebar.markdown("**Название: Bot0**")
+    st.sidebar.markdown("**Название: BotOneStepOrder**")
     price_step_ratio = report_input.price_step_ratio()
+    take_profit_to_price_ratio = report_input.take_profit_to_price_ratio()
+    stop_loss_to_price_ratio = report_input.stop_loss_to_price_ratio()
     inverted = report_input.inverted()
 
     bot = BotOneStepOrder(price_step_ratio, inverted)
