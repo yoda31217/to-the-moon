@@ -1,22 +1,17 @@
 from datetime import date, timedelta
 from typing import cast
+
 import streamlit as st
 from binance.binance_k_line_loader import BINANCE_SYMBOLS, load_binance_k_lines
 from binance.binance_tick_loader import load_binance_ticks
-
 from bot.bot_0_strategy import Bot0Strategy
-from report.report import (
-    input_date_from_widget,
-    input_date_to_widget,
-    input_inverted_widget,
-    input_price_step_ratio_widget,
-    input_symbol_ask_bid_price_difference_widget,
-    input_symbol_widget,
-    report_profit_chart,
-    report_summary,
-    report_ticks_chart,
-    text_description,
-)
+from report.report import (input_date_from_widget, input_date_to_widget,
+                           input_inverted_widget,
+                           input_price_step_ratio_widget,
+                           input_symbol_ask_bid_price_difference_widget,
+                           input_symbol_widget, report_profit_chart,
+                           report_summary, report_ticks_chart,
+                           text_description)
 from trade.trade_simulator import TradeSimulator
 
 st.set_page_config(
