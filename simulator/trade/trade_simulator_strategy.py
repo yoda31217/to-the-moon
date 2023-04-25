@@ -13,7 +13,7 @@ class TradeSimulatorStrategy(ABC):
 
     @abstractmethod
     def process_tick(self, new_tick: TradeSimulatorTick,
-                     orders: [TradeSimulatorOrder], closed_orders: [TradeSimulatorOrder]):
+                     orders: list[TradeSimulatorOrder], closed_orders: list[TradeSimulatorOrder]):
         pass
 
     def __str__(self) -> str:

@@ -14,5 +14,7 @@
   "python.analysis.typeCheckingMode": "basic",
   "python.analysis.extraPaths": ["${workspaceFolder}/simulator"],
   "python.analysis.autoImportCompletions": true,
-  "python.analysis.completeFunctionParens": true, 
+  "python.analysis.completeFunctionParens": true,
+  "python.analysis.diagnosticMode": "workspace",
+  
 }

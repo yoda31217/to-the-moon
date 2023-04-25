@@ -1,6 +1,8 @@
+from typing import cast
 import pandas as pd
 
 from trade.trade_simulator_order import TradeSimulatorOrder
+from trade.trade_simulator_tick import TradeSimulatorTick
 
 
 class TradeSimulatorResult:
@@ -14,12 +16,16 @@ class TradeSimulatorResult:
         self.ticks = ticks
         self.transactions = self._to_transactions(closed_orders)
 
-    def _to_transactions(self, closed_orders: list[TradeSimulatorOrder]) -> pd.DataFrame:
+    def _to_transactions(
+        self, closed_orders: list[TradeSimulatorOrder]
+    ) -> pd.DataFrame:
         cumulative_profit: float = 0
         cumulative_profits: list[float] = []
 
         for closed_order in closed_orders:
-            cumulative_profit = cumulative_profit + closed_order.get_profit()
+            closed_order_profit = closed_order.get_profit()
+            assert closed_order_profit is not None
+            cumulative_profit = cumulative_profit + closed_order_profit
             cumulative_profits.append(cumulative_profit)
 
         return pd.DataFrame(
@@ -39,7 +45,7 @@ class TradeSimulatorResult:
                 "price_margin": list(
                     (
                         abs(
-                            closed_order.get_close_price()
+                            cast(float, closed_order.get_close_price())
                             - closed_order.get_open_price()
                         )
                         for closed_order in closed_orders
@@ -47,7 +53,7 @@ class TradeSimulatorResult:
                 ),
                 "close_timestamp": list(
                     (
-                        closed_order.close_tick.timestamp
+                        cast(TradeSimulatorTick, closed_order.close_tick).timestamp
                         for closed_order in closed_orders
                     )
                 ),
