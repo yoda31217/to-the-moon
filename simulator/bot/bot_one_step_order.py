@@ -1,17 +1,18 @@
 from order.order_type import OrderType
 from order.order import Order
-from trade.trade_simulator_strategy import TradeSimulatorStrategy
+from bot.bot import Bot
 from market.market_tick import MarketTick
 
 
-class Bot0Strategy(TradeSimulatorStrategy):
+class BotOneStepOrder(Bot):
     check_point_tick: MarketTick | None
     price_step_ratio: float
     inverted: bool
 
+    # TODO generify parameters and name generation, to be able to dinamicaly create them and report.
     def __init__(self, price_step_ratio: float, inverted: bool) -> None:
         super().__init__(
-            f'Bot0[{price_step_ratio * 100:.2f}%, {"инвертирован" if inverted else "не инвертирован"}]'
+            f'BotOneStepOrder[{price_step_ratio * 100:.2f}%, {"inverted" if inverted else "not inverted"}]'
         )
         self.check_point_tick = None
         self.price_step_ratio = price_step_ratio

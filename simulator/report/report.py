@@ -3,7 +3,7 @@ from datetime import date
 import streamlit as st
 from binance.binance_k_line_loader import load_binance_k_lines
 from binance.binance_tick_loader import load_binance_ticks
-from bot.bot_0_strategy import Bot0Strategy
+from bot.bot_one_step_order import BotOneStepOrder
 import report.report_input as report_input
 import report.report_result as report_result
 from trade.trade_simulator import TradeSimulator
@@ -42,7 +42,7 @@ def build_report():
     price_step_ratio = report_input.price_step_ratio()
     inverted = report_input.inverted()
 
-    strategy = Bot0Strategy(price_step_ratio, inverted)
+    strategy = BotOneStepOrder(price_step_ratio, inverted)
     k_lines = load_binance_k_lines(symbol, date_from, date_to)
     ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
     result = TradeSimulator(ticks).simulate(strategy)

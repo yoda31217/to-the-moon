@@ -4,7 +4,7 @@ import pandas as pd
 
 from order.order import Order
 from trade.trade_simulator_result import TradeSimulatorResult
-from trade.trade_simulator_strategy import TradeSimulatorStrategy
+from bot.bot import Bot
 from market.market_tick import MarketTick
 
 TickDataFrameRowTuple = typing.NamedTuple(
@@ -24,7 +24,7 @@ class TradeSimulator:
         )
         self.ticks_data_frame = ticks_data_frame
 
-    def simulate(self, strategy: TradeSimulatorStrategy) -> TradeSimulatorResult:
+    def simulate(self, strategy: Bot) -> TradeSimulatorResult:
         orders: list[Order] = []
         closed_orders: list[Order] = []
 

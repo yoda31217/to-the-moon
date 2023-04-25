@@ -4,7 +4,7 @@ from order.order import Order
 from market.market_tick import MarketTick
 
 
-class TradeSimulatorStrategy(ABC):
+class Bot(ABC):
     description: str
 
     def __init__(self, description: str) -> None:

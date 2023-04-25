@@ -5,14 +5,14 @@ import streamlit as st
 from chart.chart import draw_line_chart
 from trade.trade_simulator_result import TradeSimulatorResult
 
-from trade.trade_simulator_strategy import TradeSimulatorStrategy
+from bot.bot import Bot
 
 
 def summary(
     symbol: str,
     date_from: date,
     date_to: date,
-    strategy: TradeSimulatorStrategy,
+    strategy: Bot,
     result: TradeSimulatorResult,
 ):
     # values to check (like a test)
