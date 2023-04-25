@@ -27,12 +27,14 @@ st.header(f"Симулятор торговли крипто бота")
 text_description()
 
 st.sidebar.title("Опции")
+
 st.sidebar.header("Рынок")
 st.sidebar.markdown("**Биржа: Binance**")
 symbol: str = input_symbol_widget()
 date_from: date = input_date_from_widget()
 date_to: date = input_date_to_widget()
 symbol_ask_bid_price_difference = input_symbol_ask_bid_price_difference_widget()
+
 st.sidebar.header("Bot")
 st.sidebar.markdown("**Название: Bot0**")
 price_step_ratio = input_price_step_ratio_widget()
