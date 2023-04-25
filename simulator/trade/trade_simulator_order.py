@@ -1,4 +1,3 @@
-from typing import cast
 import uuid
 
 from trade.trade_simulator_order_type import TradeSimulatorOrderType

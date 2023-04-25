@@ -16,5 +16,11 @@
   "python.analysis.autoImportCompletions": true,
   "python.analysis.completeFunctionParens": true,
   "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.exclude": [
+    ".venv"
+  ],
+  "python.analysis.ignore": [
+    ".venv"
+  ],
   
 }
