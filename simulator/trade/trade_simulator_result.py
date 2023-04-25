@@ -1,7 +1,7 @@
 from typing import cast
 import pandas as pd
 
-from trade.trade_simulator_order import TradeSimulatorOrder
+from order.order import Order
 from trade.trade_simulator_tick import TradeSimulatorTick
 
 
@@ -9,16 +9,12 @@ class TradeSimulatorResult:
     transactions: pd.DataFrame
     ticks: pd.DataFrame
 
-    def __init__(
-        self, closed_orders: list[TradeSimulatorOrder], ticks: pd.DataFrame
-    ) -> None:
+    def __init__(self, closed_orders: list[Order], ticks: pd.DataFrame) -> None:
         super().__init__()
         self.ticks = ticks
         self.transactions = self._to_transactions(closed_orders)
 
-    def _to_transactions(
-        self, closed_orders: list[TradeSimulatorOrder]
-    ) -> pd.DataFrame:
+    def _to_transactions(self, closed_orders: list[Order]) -> pd.DataFrame:
         cumulative_profit: float = 0
         cumulative_profits: list[float] = []
 

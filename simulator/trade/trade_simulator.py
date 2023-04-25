@@ -2,7 +2,7 @@ import typing
 
 import pandas as pd
 
-from trade.trade_simulator_order import TradeSimulatorOrder
+from order.order import Order
 from trade.trade_simulator_result import TradeSimulatorResult
 from trade.trade_simulator_strategy import TradeSimulatorStrategy
 from trade.trade_simulator_tick import TradeSimulatorTick
@@ -25,8 +25,8 @@ class TradeSimulator:
         self.ticks_data_frame = ticks_data_frame
 
     def simulate(self, strategy: TradeSimulatorStrategy) -> TradeSimulatorResult:
-        orders: list[TradeSimulatorOrder] = []
-        closed_orders: list[TradeSimulatorOrder] = []
+        orders: list[Order] = []
+        closed_orders: list[Order] = []
 
         for new_tick in self.ticks:
             self._notify_orders(new_tick, orders)
@@ -39,19 +39,17 @@ class TradeSimulator:
 
     def _close_orders(
         self,
-        orders: list[TradeSimulatorOrder],
-        closed_orders: list[TradeSimulatorOrder],
+        orders: list[Order],
+        closed_orders: list[Order],
     ):
-        order: TradeSimulatorOrder
+        order: Order
         for order in orders:
             if order.is_open:
                 order.close(self.ticks[-1])
         self._move_orders_to_closed(orders, closed_orders)
 
     @staticmethod
-    def _move_orders_to_closed(
-        orders: list[TradeSimulatorOrder], closed_orders: list[TradeSimulatorOrder]
-    ):
+    def _move_orders_to_closed(orders: list[Order], closed_orders: list[Order]):
         new_closed_orders = [order for order in orders if not order.is_open]
         closed_orders.extend(new_closed_orders)
 
@@ -60,8 +58,8 @@ class TradeSimulator:
         orders.extend(open_orders)
 
     @staticmethod
-    def _notify_orders(tick, orders: list[TradeSimulatorOrder]):
-        order: TradeSimulatorOrder
+    def _notify_orders(tick, orders: list[Order]):
+        order: Order
         for order in orders:
             order.notify(tick)
 

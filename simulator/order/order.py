@@ -1,12 +1,12 @@
 import uuid
 
-from trade.trade_simulator_order_type import TradeSimulatorOrderType
+from order.order_type import OrderType
 from trade.trade_simulator_tick import TradeSimulatorTick
 
 
-class TradeSimulatorOrder:
+class Order:
     id: uuid.UUID
-    type: TradeSimulatorOrderType
+    type: OrderType
     open_tick: TradeSimulatorTick
     close_tick: TradeSimulatorTick | None
     is_open: bool
@@ -15,7 +15,7 @@ class TradeSimulatorOrder:
     def __init__(
         self,
         tick: TradeSimulatorTick,
-        type: TradeSimulatorOrderType,
+        type: OrderType,
         stop_loss_take_profit_ratio: float,
     ):
         self.id = uuid.uuid4()
@@ -45,7 +45,7 @@ class TradeSimulatorOrder:
     def get_open_price(self) -> float:
         return (
             self.open_tick.bid_price
-            if self.type == TradeSimulatorOrderType.SELL
+            if self.type == OrderType.SELL
             else self.open_tick.ask_price
         )
 
@@ -58,7 +58,7 @@ class TradeSimulatorOrder:
 
         return (
             possible_close_tick.ask_price
-            if self.type == TradeSimulatorOrderType.SELL
+            if self.type == OrderType.SELL
             else possible_close_tick.bid_price
         )
 
@@ -70,7 +70,7 @@ class TradeSimulatorOrder:
 
         return (
             close_price - self.get_open_price()
-            if self.type == TradeSimulatorOrderType.BUY
+            if self.type == OrderType.BUY
             else self.get_open_price() - close_price
         )
 
