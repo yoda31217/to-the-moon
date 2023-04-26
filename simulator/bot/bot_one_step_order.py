@@ -20,7 +20,11 @@ class BotOneStepOrder(Bot):
         inverted: bool,
     ) -> None:
         super().__init__(
-            f'BotOneStepOrder[{price_step_ratio * 100:.2f}%, {"inverted" if inverted else "not inverted"}]'
+            f'BotOneStepOrder'
+            + f' [{price_step_ratio * 100:.2f}%'
+            + f', {take_profit_to_price_ratio * 100:.2f}%'
+            + f', {stop_loss_to_price_ratio * 100:.2f}%'
+            + f', {"inverted" if inverted else "not inverted"}]'
         )
         self.check_point_tick = None
         self.price_step_ratio = price_step_ratio
