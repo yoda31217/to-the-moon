@@ -2,7 +2,7 @@ from datetime import date
 import pandas as pd
 
 import streamlit as st
-from chart.chart import draw_line_chart
+import report.report_chart as report_chart
 from simulator.simulator_result import SimulatorResult
 
 from bot.bot import Bot
@@ -66,7 +66,7 @@ def summary(
 
 def ticks_chart(ticks: pd.DataFrame):
     st.subheader(f"Цена покупки")
-    draw_line_chart(
+    report_chart.line(
         ticks,
         "timestamp",
         "ask_price",
@@ -78,7 +78,7 @@ def ticks_chart(ticks: pd.DataFrame):
 def profit_chart(result: SimulatorResult):
     st.subheader(f"Итоговая прибыль")
     if result.get_transactions_count() > 0:
-        draw_line_chart(
+        report_chart.line(
             result.transactions,
             "open_timestamp",
             "cumulative_profit",

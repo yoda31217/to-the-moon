@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 
 
-def draw_line_chart(
+def line(
     data_frame: pd.DataFrame,
     timestamp_column_name: str,
     value_column_name: str,
