@@ -44,7 +44,7 @@ def summary(
                     "c {} по {} ({:.1f} дней)".format(
                         date_from, date_to, result.get_interval_days()
                     ),
-                    bot,
+                    str(bot),
                     "{:.2f}".format(result.get_average_ticks_price_change()),
                     "{:,}".format(result.get_transactions_count()),
                     "{:,.2f}".format(
