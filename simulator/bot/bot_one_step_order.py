@@ -7,15 +7,25 @@ from market.market_tick import MarketTick
 class BotOneStepOrder(Bot):
     check_point_tick: MarketTick | None
     price_step_ratio: float
+    take_profit_to_price_ratio: float
+    stop_loss_to_price_ratio: float
     inverted: bool
 
     # TODO generify parameters and name generation, to be able to dinamicaly create them and report.
-    def __init__(self, price_step_ratio: float, inverted: bool) -> None:
+    def __init__(
+        self,
+        price_step_ratio: float,
+        take_profit_to_price_ratio: float,
+        stop_loss_to_price_ratio: float,
+        inverted: bool,
+    ) -> None:
         super().__init__(
             f'BotOneStepOrder[{price_step_ratio * 100:.2f}%, {"inverted" if inverted else "not inverted"}]'
         )
         self.check_point_tick = None
         self.price_step_ratio = price_step_ratio
+        self.take_profit_to_price_ratio = take_profit_to_price_ratio
+        self.stop_loss_to_price_ratio = stop_loss_to_price_ratio
         self.inverted = inverted
 
     def process_tick(
@@ -30,12 +40,12 @@ class BotOneStepOrder(Bot):
 
         elif self.is_growth_step(new_tick):
             order_type = OrderType.BUY if self.inverted else OrderType.SELL
-            orders.append(Order(new_tick, order_type, self.price_step_ratio))
+            orders.append(Order(new_tick, order_type, self.take_profit_to_price_ratio, self.stop_loss_to_price_ratio))
             self.check_point_tick = new_tick
 
         elif self.is_failing_step(new_tick):
             order_type = OrderType.SELL if self.inverted else OrderType.BUY
-            orders.append(Order(new_tick, order_type, self.price_step_ratio))
+            orders.append(Order(new_tick, order_type, self.take_profit_to_price_ratio, self.stop_loss_to_price_ratio))
             self.check_point_tick = new_tick
 
     def is_growth_step(self, new_tick: MarketTick):

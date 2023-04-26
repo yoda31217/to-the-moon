@@ -44,11 +44,14 @@ def build_report():
     stop_loss_to_price_ratio = report_input.stop_loss_to_price_ratio()
     inverted = report_input.inverted()
 
-    bot = BotOneStepOrder(price_step_ratio, inverted)
+    bot = BotOneStepOrder(
+        price_step_ratio, take_profit_to_price_ratio, stop_loss_to_price_ratio, inverted
+    )
     k_lines = load_binance_k_lines(symbol, date_from, date_to)
     ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
     result = Simulator(ticks).simulate(bot)
 
     report_result.summary(symbol, date_from, date_to, bot, result)
+    # st.dataframe(result.transactions)
     report_result.ticks_chart(ticks)
     report_result.profit_chart(result)

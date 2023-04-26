@@ -10,20 +10,23 @@ class Order:
     open_tick: MarketTick
     close_tick: MarketTick | None
     is_open: bool
-    stop_loss_take_profit_ratio: float
+    take_profit_to_price_ratio: float
+    stop_loss_to_price_ratio: float
 
     def __init__(
         self,
         tick: MarketTick,
         type: OrderType,
-        stop_loss_take_profit_ratio: float,
+        take_profit_to_price_ratio: float,
+        stop_loss_to_price_ratio: float,
     ):
         self.id = uuid.uuid4()
         self.type = type
         self.open_tick = tick
         self.close_tick = None
         self.is_open = True
-        self.stop_loss_take_profit_ratio = stop_loss_take_profit_ratio
+        self.take_profit_to_price_ratio = take_profit_to_price_ratio
+        self.stop_loss_to_price_ratio = stop_loss_to_price_ratio
         # print(f"New Order: {order.id} {order.open_tick.get_date_time()} {order.type} {order.get_open_price()}")
 
     def get_profit(self) -> float | None:
@@ -78,4 +81,7 @@ class Order:
         profit = self._get_profit(new_tick)
         assert profit is not None
         profit_ratio = profit / self.get_open_price()
-        return abs(profit_ratio) >= self.stop_loss_take_profit_ratio
+        return (
+            profit_ratio >= self.take_profit_to_price_ratio
+            or profit_ratio <= self.stop_loss_to_price_ratio
+        )

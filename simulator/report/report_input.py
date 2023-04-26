@@ -63,7 +63,7 @@ def stop_loss_to_price_ratio():
             step=0.1,
             help="Сколко Stop Loss составляет процентов от цены",
         )
-        / 100.0
+        / -100.0
     )
 
 
