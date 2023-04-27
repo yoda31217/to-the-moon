@@ -3,7 +3,9 @@ import uuid
 from order.order_type import OrderType
 from market.market_tick import MarketTick
 
-
+# According to:
+# https://www.binance.com/en/futures/ETHUSDT/calculator
+# https://binance-docs.github.io/apidocs/futures/en/#new-order-trade
 class Order:
     id: uuid.UUID
     type: OrderType
