@@ -1,8 +1,7 @@
 from datetime import date
 
 import streamlit as st
-from binance.binance_k_line_loader import load_binance_k_lines
-from binance.binance_tick_loader import load_binance_ticks
+from binance import binance_ticker_repository
 from bot.bot_one_step_order import BotOneStepOrder
 import report.report_input as report_input
 import report.report_result as report_result
@@ -35,7 +34,7 @@ def build_report():
     symbol: str = report_input.symbol()
     date_from: date = report_input.date_from()
     date_to: date = report_input.date_to()
-    symbol_ask_bid_price_difference = report_input.symbol_ask_bid_price_difference()
+    bid_ask_spread = report_input.symbol_ask_bid_price_difference()
 
     st.sidebar.header("Bot")
     st.sidebar.markdown("**Название: BotOneStepOrder**")
@@ -47,8 +46,9 @@ def build_report():
     bot = BotOneStepOrder(
         price_step_ratio, take_profit_to_price_ratio, stop_loss_to_price_ratio, inverted
     )
-    k_lines = load_binance_k_lines(symbol, date_from, date_to)
-    ticks = load_binance_ticks(k_lines, symbol_ask_bid_price_difference)
+    ticks = binance_ticker_repository.load_tickers(
+        symbol, date_from, date_to, bid_ask_spread
+    )
     result = Simulator(ticks).simulate(bot)
 
     report_result.summary(symbol, date_from, date_to, bot, result)
