@@ -157,8 +157,6 @@ class TestOrder:
         assert not order.is_open
         assert order.close_tick == new_tick
 
-#########
-
     def test_do_not_close_sell_order_after_notify_with_less_than_take_profit(self):
         open_tick = MarketTick(100, 220.0, 300.0)
         order = Order(open_tick, OrderType.SELL, 0.1, -999999)
@@ -183,7 +181,7 @@ class TestOrder:
 
     def test_do_not_close_sell_order_after_notify_with_more_than_stop_loss(self):
         open_tick = MarketTick(100, 220.0, 225.0)
-        order = Order(open_tick, OrderType.SELL, 999999, -0.1,)
+        order = Order(open_tick, OrderType.SELL, 999999, -0.1)
 
         new_tick = MarketTick(200, 240.0, 220.0 + 22.0 - 0.001)
 
@@ -194,7 +192,7 @@ class TestOrder:
 
     def test_do_close_sell_order_after_notify_with_equal_to_stop_loss(self):
         open_tick = MarketTick(100, 220.0, 225.0)
-        order = Order(open_tick, OrderType.SELL, 999999, -0.1,)
+        order = Order(open_tick, OrderType.SELL, 999999, -0.1)
 
         new_tick = MarketTick(200, 240.0, 220.0 + 22.0)
 
@@ -202,3 +200,16 @@ class TestOrder:
 
         assert not order.is_open
         assert order.close_tick == new_tick
+
+    def test_do_not_auto_close_again_order_on_notify(self):
+        open_tick = MarketTick(100, 200.0, 300.0)
+        close_tick = MarketTick(200, 100.0, 200.0)
+        order = Order(open_tick, OrderType.BUY, 0.1, -999999)
+        order.close(close_tick)
+
+        new_tick = MarketTick(200, 500, 600.0)
+
+        order.notify(new_tick)
+
+        assert not order.is_open
+        assert order.close_tick == close_tick
