@@ -12,8 +12,9 @@ class Bot(ABC):
         self.description = description
 
     @abstractmethod
-    def  process_tick(self, new_tick: MarketTicker,
-                     orders: list[Order], closed_orders: list[Order]):
+    def process_tick(
+        self, new_ticker: MarketTicker, orders: list[Order], closed_orders: list[Order]
+    ):
         pass
 
     def __str__(self) -> str:
