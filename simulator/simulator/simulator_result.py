@@ -19,7 +19,7 @@ class SimulatorResult:
         cumulative_profits: list[float] = []
 
         for closed_order in closed_orders:
-            closed_order_profit = closed_order.get_profit()
+            closed_order_profit = closed_order.get_pnl()
             assert closed_order_profit is not None
             cumulative_profit = cumulative_profit + closed_order_profit
             cumulative_profits.append(cumulative_profit)
@@ -27,34 +27,34 @@ class SimulatorResult:
         return pd.DataFrame(
             {
                 "open_timestamp": list(
-                    (closed_order.open_tick.timestamp for closed_order in closed_orders)
+                    (closed_order.entry_ticker.timestamp for closed_order in closed_orders)
                 ),
                 "type": list(
-                    (closed_order.type.name for closed_order in closed_orders)
+                    (closed_order.side.name for closed_order in closed_orders)
                 ),
                 "open_price": list(
-                    (closed_order.get_open_price() for closed_order in closed_orders)
+                    (closed_order.get_entry_price() for closed_order in closed_orders)
                 ),
                 "close_price": list(
-                    (closed_order.get_close_price() for closed_order in closed_orders)
+                    (closed_order.get_exit_price() for closed_order in closed_orders)
                 ),
                 "price_margin": list(
                     (
                         abs(
-                            cast(float, closed_order.get_close_price())
-                            - closed_order.get_open_price()
+                            cast(float, closed_order.get_exit_price())
+                            - closed_order.get_entry_price()
                         )
                         for closed_order in closed_orders
                     )
                 ),
                 "close_timestamp": list(
                     (
-                        cast(MarketTicker, closed_order.close_tick).timestamp
+                        cast(MarketTicker, closed_order.exit_ticker).timestamp
                         for closed_order in closed_orders
                     )
                 ),
                 "profit": list(
-                    (closed_order.get_profit() for closed_order in closed_orders)
+                    (closed_order.get_pnl() for closed_order in closed_orders)
                 ),
                 "cumulative_profit": cumulative_profits,
             }

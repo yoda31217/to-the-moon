@@ -71,6 +71,7 @@ def _load_k_lines_to_file_if_needed(symbol, date_iso_str) -> str:
     return file_path
 
 
+# https://www.binance.com/en/landing/data
 def _load_k_lines_to_file(symbol, date_iso_str, file_path):
     url = (
         f"https://data.binance.vision"

@@ -3,96 +3,103 @@ import uuid
 from order.order_side import OrderSide
 from market.market_ticker import MarketTicker
 
+
 # According to:
 # https://www.binance.com/en/futures/ETHUSDT/calculator
 # https://binance-docs.github.io/apidocs/futures/en/#new-order-trade
+# https://www.binance.com/en/support/faq/how-to-calculate-profit-and-loss-for-futures-contracts-3a55a23768cb416fb404f06ffedde4b2
 class Order:
     id: uuid.UUID
-    type: OrderSide
-    open_tick: MarketTicker
-    close_tick: MarketTicker | None
-    take_profit_to_price_ratio: float
-    stop_loss_to_price_ratio: float
+    side: OrderSide
+    entry_ticker: MarketTicker
+    exit_ticker: MarketTicker | None
+    # TODO: migrate to TP/SL prices.
+    # Problem here, that our TP  = real_TP - entry_price
+    tp_to_entry_price_ratio: float
+    sl_to_entry_price_ratio: float
 
     def __init__(
         self,
         open_tick: MarketTicker,
-        type: OrderSide,
-        take_profit_to_price_ratio: float,
-        stop_loss_to_price_ratio: float,
+        side: OrderSide,
+        tp_to_entry_price_ratio: float,
+        sl_to_entry_price_ratio: float,
     ):
         self.id = uuid.uuid4()
-        self.type = type
-        self.open_tick = open_tick
-        self.close_tick = None
-        self.take_profit_to_price_ratio = take_profit_to_price_ratio
-        self.stop_loss_to_price_ratio = stop_loss_to_price_ratio
+        self.side = side
+        self.entry_ticker = open_tick
+        self.exit_ticker = None
+        self.tp_to_entry_price_ratio = tp_to_entry_price_ratio
+        self.sl_to_entry_price_ratio = sl_to_entry_price_ratio
 
-        if self.stop_loss_to_price_ratio > 0:
+        if self.sl_to_entry_price_ratio > 0:
             raise ValueError(
-                f"Order stop loss value should be <= 0,"
-                + f" but was: ${self.stop_loss_to_price_ratio}."
+                f"Order ST to entry price ratio should be <= 0,"
+                + f" but was: ${self.sl_to_entry_price_ratio}."
             )
 
-        if self.take_profit_to_price_ratio < 0:
+        if self.tp_to_entry_price_ratio < 0:
             raise ValueError(
-                f"Order take profit value should be >= 0,"
-                + f" but was: ${self.take_profit_to_price_ratio}."
+                f"Order TP to entry price ratio should be >= 0,"
+                + f" but was: ${self.tp_to_entry_price_ratio}."
             )
 
     def is_open(self) -> bool:
-        return self.close_tick == None
+        return self.exit_ticker == None
 
-    def get_profit(self) -> float | None:
-        return self._get_profit(self.close_tick)
+    def get_pnl(self) -> float | None:
+        return self._get_pnl(self.exit_ticker)
 
-    def close(self, tick: MarketTicker):
-        self.close_tick = tick
+    def close(self, ticker: MarketTicker):
+        self.exit_ticker = ticker
 
-    def notify(self, new_tick: MarketTicker):
+    def notify(self, new_ticker: MarketTicker):
         if not self.is_open():
             return
 
-        if self._should_auto_close(new_tick):
-            self.close(new_tick)
+        if self._should_auto_close(new_ticker):
+            self.close(new_ticker)
 
-    def get_open_price(self) -> float:
+    def get_entry_price(self) -> float:
         return (
-            self.open_tick.bid_price
-            if self.type == OrderSide.SELL
-            else self.open_tick.ask_price
+            self.entry_ticker.bid_price
+            if self.side == OrderSide.SELL
+            else self.entry_ticker.ask_price
         )
 
-    def get_close_price(self) -> float | None:
-        return self._get_close_price(self.close_tick)
+    def get_exit_price(self) -> float | None:
+        return self._get_exit_price(self.exit_ticker)
 
-    def _get_close_price(self, possible_close_tick: MarketTicker | None):
-        if possible_close_tick == None:
+    def _get_exit_price(self, possible_exit_ticker: MarketTicker | None):
+        if possible_exit_ticker == None:
             return None
 
         return (
-            possible_close_tick.ask_price
-            if self.type == OrderSide.SELL
-            else possible_close_tick.bid_price
+            possible_exit_ticker.ask_price
+            if self.side == OrderSide.SELL
+            else possible_exit_ticker.bid_price
         )
 
-    def _get_profit(self, possible_close_tick: MarketTicker | None):
-        close_price = self._get_close_price(possible_close_tick)
+    def _get_pnl(self, possible_exit_ticker: MarketTicker | None):
+        exit_price = self._get_exit_price(possible_exit_ticker)
 
-        if close_price == None:
+        if exit_price == None:
             return None
 
+        entry_price = self.get_entry_price()
         return (
-            close_price - self.get_open_price()
-            if self.type == OrderSide.BUY
-            else self.get_open_price() - close_price
+            exit_price - entry_price
+            if self.side == OrderSide.BUY
+            else entry_price - exit_price
         )
 
-    def _should_auto_close(self, new_tick: MarketTicker):
-        profit = self._get_profit(new_tick)
-        assert profit is not None
-        profit_ratio = profit / self.get_open_price()
+    def _should_auto_close(self, possible_exit_ticker: MarketTicker):
+        pnl = self._get_pnl(possible_exit_ticker)
+        assert pnl is not None
+
+        pnl_to_entry_price_ratio = pnl / self.get_entry_price()
+
         return (
-            profit_ratio >= self.take_profit_to_price_ratio
-            or profit_ratio <= self.stop_loss_to_price_ratio
+            pnl_to_entry_price_ratio >= self.tp_to_entry_price_ratio
+            or pnl_to_entry_price_ratio <= self.sl_to_entry_price_ratio
         )
