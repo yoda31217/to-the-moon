@@ -1,4 +1,4 @@
-from order.order_type import OrderType
+from order.order_side import OrderSide
 from order.order import Order
 from bot.bot import Bot
 from market.market_tick import MarketTick
@@ -43,12 +43,12 @@ class BotOneStepOrder(Bot):
             # print(f"Initial checkpoint set at {tick.get_date_time()} and bid price: {tick.bid_price}")
 
         elif self.is_growth_step(new_tick):
-            order_type = OrderType.BUY if self.inverted else OrderType.SELL
+            order_type = OrderSide.BUY if self.inverted else OrderSide.SELL
             orders.append(Order(new_tick, order_type, self.take_profit_to_price_ratio, self.stop_loss_to_price_ratio))
             self.check_point_tick = new_tick
 
         elif self.is_failing_step(new_tick):
-            order_type = OrderType.SELL if self.inverted else OrderType.BUY
+            order_type = OrderSide.SELL if self.inverted else OrderSide.BUY
             orders.append(Order(new_tick, order_type, self.take_profit_to_price_ratio, self.stop_loss_to_price_ratio))
             self.check_point_tick = new_tick
 

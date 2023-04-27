@@ -1,6 +1,6 @@
 from enum import Enum
 
 
-class OrderType(Enum):
+class OrderSide(Enum):
     BUY = "BUY"
     SELL = "SELL"

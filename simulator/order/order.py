@@ -1,6 +1,6 @@
 import uuid
 
-from order.order_type import OrderType
+from order.order_side import OrderSide
 from market.market_tick import MarketTick
 
 # According to:
@@ -8,7 +8,7 @@ from market.market_tick import MarketTick
 # https://binance-docs.github.io/apidocs/futures/en/#new-order-trade
 class Order:
     id: uuid.UUID
-    type: OrderType
+    type: OrderSide
     open_tick: MarketTick
     close_tick: MarketTick | None
     take_profit_to_price_ratio: float
@@ -17,7 +17,7 @@ class Order:
     def __init__(
         self,
         open_tick: MarketTick,
-        type: OrderType,
+        type: OrderSide,
         take_profit_to_price_ratio: float,
         stop_loss_to_price_ratio: float,
     ):
@@ -59,7 +59,7 @@ class Order:
     def get_open_price(self) -> float:
         return (
             self.open_tick.bid_price
-            if self.type == OrderType.SELL
+            if self.type == OrderSide.SELL
             else self.open_tick.ask_price
         )
 
@@ -72,7 +72,7 @@ class Order:
 
         return (
             possible_close_tick.ask_price
-            if self.type == OrderType.SELL
+            if self.type == OrderSide.SELL
             else possible_close_tick.bid_price
         )
 
@@ -84,7 +84,7 @@ class Order:
 
         return (
             close_price - self.get_open_price()
-            if self.type == OrderType.BUY
+            if self.type == OrderSide.BUY
             else self.get_open_price() - close_price
         )
 
