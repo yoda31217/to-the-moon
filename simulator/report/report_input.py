@@ -1,15 +1,12 @@
 from datetime import date, timedelta
 from typing import cast
 import streamlit as st
-from binance.binance_k_line_loader import BINANCE_SYMBOLS
 
 
 def symbol():
     return cast(
         str,
-        st.sidebar.selectbox(
-            "Символ", options=BINANCE_SYMBOLS, index=BINANCE_SYMBOLS.index("ETHUSDT")
-        ),
+        st.sidebar.selectbox("Символ", options=["ETHUSDT", "BTCUSDT"], index=0),
     )
 
 
