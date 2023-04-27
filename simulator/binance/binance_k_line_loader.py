@@ -15,7 +15,9 @@ def load_binance_k_lines(symbol: str, date_from: date, date_to: date) -> pd.Data
     return k_lines_data_frame
 
 
-def _join_binance_k_lines_data_frames(k_lines_data_frames) -> pd.DataFrame:
+def _join_binance_k_lines_data_frames(
+    k_lines_data_frames: list[pd.DataFrame],
+) -> pd.DataFrame:
     return pd.concat(k_lines_data_frames).sort_values(by=["open_timestamp_millis"])
 
 
