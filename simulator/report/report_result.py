@@ -3,7 +3,7 @@ import pandas as pd
 
 import streamlit as st
 import report.report_chart as report_chart
-from simulator.simulator_result import SimulatorResult
+from backtester.simulator_result import SimulatorResult
 
 from bot.bot import Bot
 

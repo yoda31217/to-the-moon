@@ -1,11 +1,11 @@
 from datetime import date
 
 import streamlit as st
+from backtester.backtester import BackTester
 from binance import binance_ticker_repository
 from bot.bot_one_step_order import BotOneStepOrder
 import report.report_input as report_input
 import report.report_result as report_result
-from simulator.simulator import Simulator
 
 
 def build_report():
@@ -49,7 +49,7 @@ def build_report():
     ticks = binance_ticker_repository.load_tickers(
         symbol, date_from, date_to, bid_ask_spread
     )
-    result = Simulator(ticks).simulate(bot)
+    result = BackTester(ticks).simulate(bot)
 
     report_result.summary(symbol, date_from, date_to, bot, result)
     # st.dataframe(result.transactions)

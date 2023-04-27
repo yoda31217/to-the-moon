@@ -33,7 +33,7 @@ class BotOneStepOrder(Bot):
         self.sl_to_entry_price_ratio = sl_to_entry_price_ratio
         self.inverted = inverted
 
-    def process_tick(
+    def process_ticker(
         self,
         new_ticker: MarketTicker,
         orders: list[Order],
