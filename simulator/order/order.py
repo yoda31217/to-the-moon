@@ -9,8 +9,6 @@ class Order:
     type: OrderType
     open_tick: MarketTick
     close_tick: MarketTick | None
-    # TODO remove this field
-    is_open: bool
     take_profit_to_price_ratio: float
     stop_loss_to_price_ratio: float
 
@@ -25,7 +23,6 @@ class Order:
         self.type = type
         self.open_tick = open_tick
         self.close_tick = None
-        self.is_open = True
         self.take_profit_to_price_ratio = take_profit_to_price_ratio
         self.stop_loss_to_price_ratio = stop_loss_to_price_ratio
 
@@ -41,17 +38,17 @@ class Order:
                 + f" but was: ${self.take_profit_to_price_ratio}."
             )
 
+    def is_open(self) -> bool:
+        return self.close_tick == None
+
     def get_profit(self) -> float | None:
         return self._get_profit(self.close_tick)
 
     def close(self, tick: MarketTick):
         self.close_tick = tick
-        self.is_open = False
-        # print(f"Close Order: {self.id} {self.close_tick.get_date_time()} {self.type} {self.get_close_price()}"
-        #       + f" {self.get_profit()}")
 
     def notify(self, new_tick: MarketTick):
-        if not self.is_open:
+        if not self.is_open():
             return
 
         if self._should_auto_close(new_tick):
