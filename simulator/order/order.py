@@ -29,6 +29,18 @@ class Order:
         self.take_profit_to_price_ratio = take_profit_to_price_ratio
         self.stop_loss_to_price_ratio = stop_loss_to_price_ratio
 
+        if self.stop_loss_to_price_ratio > 0:
+            raise ValueError(
+                f"Order stop loss value should be <= 0,"
+                + f" but was: ${self.stop_loss_to_price_ratio}."
+            )
+
+        if self.take_profit_to_price_ratio < 0:
+            raise ValueError(
+                f"Order take profit value should be >= 0,"
+                + f" but was: ${self.take_profit_to_price_ratio}."
+            )
+
     def get_profit(self) -> float | None:
         return self._get_profit(self.close_tick)
 
