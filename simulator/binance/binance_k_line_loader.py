@@ -42,7 +42,7 @@ def _load_binance_k_lines_data_frame(symbol: str, date_iso_str: str):
     return pd.read_csv(
         k_lines_file_path,
         sep=",",
-        header=None,
+        header=0,
         names=[
             "open_timestamp_millis",
             "open_price",
@@ -62,6 +62,9 @@ def _load_binance_k_lines_data_frame(symbol: str, date_iso_str: str):
 
 def _load_binance_k_lines_to_file_if_needed(symbol, date_iso_str) -> str:
     file_path = f"./data/{symbol}-1s-{date_iso_str}.zip"
+    file_path = (
+        f"./data/futures/um/daily/klines/{symbol}/1m/{symbol}-1m-{date_iso_str}.zip"
+    )
     if os.path.isfile(file_path):
         return file_path
     _load_binance_k_lines_to_file(symbol, date_iso_str, file_path)
@@ -71,13 +74,13 @@ def _load_binance_k_lines_to_file_if_needed(symbol, date_iso_str) -> str:
 def _load_binance_k_lines_to_file(symbol, date_iso_str, file_path):
     try:
         urlretrieve(
-            f"https://data.binance.vision/data/spot/daily/klines/{symbol}/1s/{symbol}-1s-{date_iso_str}.zip",
+            f"https://data.binance.vision/data/futures/um/daily/klines/{symbol}/1m/{symbol}-1m-{date_iso_str}.zip",
             file_path,
         )
-    except:
+    except Exception as e:
         raise Exception(
             f"Нет архивных данных по ценам для символа {symbol} на дату {date_iso_str}."
-        )
+        ) from e
 
 
 BINANCE_SYMBOLS = ["ETHUSDT", "BTCUSDT"]
