@@ -16,15 +16,9 @@
   "python.analysis.autoImportCompletions": true,
   "python.analysis.completeFunctionParens": true,
   "python.analysis.diagnosticMode": "workspace",
-  "python.analysis.exclude": [
-    ".venv"
-  ],
-  "python.analysis.ignore": [
-    ".venv"
-  ],
-  "python.testing.pytestArgs": [
-    "tests"
-  ],
+  "python.analysis.exclude": [".venv"],
+  "python.analysis.ignore": [".venv"],
+  "python.testing.pytestArgs": ["tests"],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
   "testExplorer.addToEditorContextMenu": true,
@@ -41,5 +35,5 @@
   "testExplorer.useNativeTesting": false,
   "python.testing.autoTestDiscoverOnSaveEnabled": true,
   "testing.automaticallyOpenPeekView": "never",
-  
+  "editor.rulers": [80, 88]
 }

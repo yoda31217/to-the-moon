@@ -10,3 +10,7 @@ class MarketTick:
         self.timestamp = timestamp
         self.ask_price = ask_price
         self.bid_price = bid_price
+        if ask_price <= bid_price:
+            raise ValueError(
+                f"Ask price (${ask_price}) should be > than bid (${bid_price}) price."
+            )
