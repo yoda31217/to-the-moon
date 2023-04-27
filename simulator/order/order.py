@@ -9,25 +9,25 @@ class Order:
     type: OrderType
     open_tick: MarketTick
     close_tick: MarketTick | None
+    # TODO remove this field
     is_open: bool
     take_profit_to_price_ratio: float
     stop_loss_to_price_ratio: float
 
     def __init__(
         self,
-        tick: MarketTick,
+        open_tick: MarketTick,
         type: OrderType,
         take_profit_to_price_ratio: float,
         stop_loss_to_price_ratio: float,
     ):
         self.id = uuid.uuid4()
         self.type = type
-        self.open_tick = tick
+        self.open_tick = open_tick
         self.close_tick = None
         self.is_open = True
         self.take_profit_to_price_ratio = take_profit_to_price_ratio
         self.stop_loss_to_price_ratio = stop_loss_to_price_ratio
-        # print(f"New Order: {order.id} {order.open_tick.get_date_time()} {order.type} {order.get_open_price()}")
 
     def get_profit(self) -> float | None:
         return self._get_profit(self.close_tick)

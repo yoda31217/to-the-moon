@@ -35,5 +35,6 @@
   "testExplorer.useNativeTesting": false,
   "python.testing.autoTestDiscoverOnSaveEnabled": true,
   "testing.automaticallyOpenPeekView": "never",
-  "editor.rulers": [80, 88]
+  "editor.rulers": [80, 88],
+  "files.autoSave": "afterDelay"
 }
