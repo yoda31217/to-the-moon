@@ -44,16 +44,16 @@ class Simulator:
     ):
         order: Order
         for order in orders:
-            if order.is_open:
+            if order.is_open():
                 order.close(self.ticks[-1])
         self._move_orders_to_closed(orders, closed_orders)
 
     @staticmethod
     def _move_orders_to_closed(orders: list[Order], closed_orders: list[Order]):
-        new_closed_orders = [order for order in orders if not order.is_open]
+        new_closed_orders = [order for order in orders if not order.is_open()]
         closed_orders.extend(new_closed_orders)
 
-        open_orders = [order for order in orders if order.is_open]
+        open_orders = [order for order in orders if order.is_open()]
         orders.clear()
         orders.extend(open_orders)
 
