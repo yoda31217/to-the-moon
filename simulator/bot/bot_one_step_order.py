@@ -1,11 +1,11 @@
 from order.order_side import OrderSide
 from order.order import Order
 from bot.bot import Bot
-from market.market_tick import MarketTick
+from market.market_ticker import MarketTicker
 
 
 class BotOneStepOrder(Bot):
-    check_point_tick: MarketTick | None
+    check_point_tick: MarketTicker | None
     price_step_ratio: float
     take_profit_to_price_ratio: float
     stop_loss_to_price_ratio: float
@@ -34,7 +34,7 @@ class BotOneStepOrder(Bot):
 
     def process_tick(
         self,
-        new_tick: MarketTick,
+        new_tick: MarketTicker,
         orders: list[Order],
         closed_orders: list[Order],
     ):
@@ -52,7 +52,7 @@ class BotOneStepOrder(Bot):
             orders.append(Order(new_tick, order_type, self.take_profit_to_price_ratio, self.stop_loss_to_price_ratio))
             self.check_point_tick = new_tick
 
-    def is_growth_step(self, new_tick: MarketTick):
+    def is_growth_step(self, new_tick: MarketTicker):
         return (
             self.check_point_tick is not None
             and new_tick.bid_price
@@ -60,7 +60,7 @@ class BotOneStepOrder(Bot):
             + self.check_point_tick.ask_price * self.price_step_ratio
         )
 
-    def is_failing_step(self, new_tick: MarketTick):
+    def is_failing_step(self, new_tick: MarketTicker):
         return (
             self.check_point_tick is not None
             and new_tick.ask_price

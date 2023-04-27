@@ -5,7 +5,7 @@ import pandas as pd
 from order.order import Order
 from simulator.simulator_result import SimulatorResult
 from bot.bot import Bot
-from market.market_tick import MarketTick
+from market.market_ticker import MarketTicker
 
 TickDataFrameRowTuple = typing.NamedTuple(
     "Employee", timestamp=int, bid_price=float, ask_price=float
@@ -13,7 +13,7 @@ TickDataFrameRowTuple = typing.NamedTuple(
 
 
 class Simulator:
-    ticks: list[MarketTick]
+    ticks: list[MarketTicker]
     ticks_data_frame: pd.DataFrame
 
     def __init__(self, ticks_data_frame: pd.DataFrame) -> None:
@@ -65,6 +65,6 @@ class Simulator:
 
     @staticmethod
     def _to_tick(tick_row: TickDataFrameRowTuple):
-        return MarketTick(
+        return MarketTicker(
             tick_row.timestamp, tick_row.bid_price, tick_row.ask_price
         )

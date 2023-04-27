@@ -1,7 +1,4 @@
-from datetime import datetime
-
-
-class MarketTick:
+class MarketTicker:
     timestamp: int
     ask_price: float
     bid_price: float
@@ -12,5 +9,5 @@ class MarketTick:
         self.bid_price = bid_price
         if ask_price <= bid_price:
             raise ValueError(
-                f"Ask price (${ask_price}) should be > than bid (${bid_price}) price."
+                f"Ask price (${ask_price}) should be > than bid price (${bid_price})."
             )

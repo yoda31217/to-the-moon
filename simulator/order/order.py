@@ -1,7 +1,7 @@
 import uuid
 
 from order.order_side import OrderSide
-from market.market_tick import MarketTick
+from market.market_ticker import MarketTicker
 
 # According to:
 # https://www.binance.com/en/futures/ETHUSDT/calculator
@@ -9,14 +9,14 @@ from market.market_tick import MarketTick
 class Order:
     id: uuid.UUID
     type: OrderSide
-    open_tick: MarketTick
-    close_tick: MarketTick | None
+    open_tick: MarketTicker
+    close_tick: MarketTicker | None
     take_profit_to_price_ratio: float
     stop_loss_to_price_ratio: float
 
     def __init__(
         self,
-        open_tick: MarketTick,
+        open_tick: MarketTicker,
         type: OrderSide,
         take_profit_to_price_ratio: float,
         stop_loss_to_price_ratio: float,
@@ -46,10 +46,10 @@ class Order:
     def get_profit(self) -> float | None:
         return self._get_profit(self.close_tick)
 
-    def close(self, tick: MarketTick):
+    def close(self, tick: MarketTicker):
         self.close_tick = tick
 
-    def notify(self, new_tick: MarketTick):
+    def notify(self, new_tick: MarketTicker):
         if not self.is_open():
             return
 
@@ -66,7 +66,7 @@ class Order:
     def get_close_price(self) -> float | None:
         return self._get_close_price(self.close_tick)
 
-    def _get_close_price(self, possible_close_tick: MarketTick | None):
+    def _get_close_price(self, possible_close_tick: MarketTicker | None):
         if possible_close_tick == None:
             return None
 
@@ -76,7 +76,7 @@ class Order:
             else possible_close_tick.bid_price
         )
 
-    def _get_profit(self, possible_close_tick: MarketTick | None):
+    def _get_profit(self, possible_close_tick: MarketTicker | None):
         close_price = self._get_close_price(possible_close_tick)
 
         if close_price == None:
@@ -88,7 +88,7 @@ class Order:
             else self.get_open_price() - close_price
         )
 
-    def _should_auto_close(self, new_tick: MarketTick):
+    def _should_auto_close(self, new_tick: MarketTicker):
         profit = self._get_profit(new_tick)
         assert profit is not None
         profit_ratio = profit / self.get_open_price()

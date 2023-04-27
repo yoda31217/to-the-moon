@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from order.order import Order
-from market.market_tick import MarketTick
+from market.market_ticker import MarketTicker
 
 
 class Bot(ABC):
@@ -12,7 +12,7 @@ class Bot(ABC):
         self.description = description
 
     @abstractmethod
-    def  process_tick(self, new_tick: MarketTick,
+    def  process_tick(self, new_tick: MarketTicker,
                      orders: list[Order], closed_orders: list[Order]):
         pass
 
