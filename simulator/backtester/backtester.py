@@ -1,9 +1,9 @@
 import typing
 
 import pandas as pd
+from backtester.backtester_result import BacktesterResult
 
 from order.order import Order
-from backtester_result import BacktesterResult
 from bot.bot import Bot
 from market.market_ticker import MarketTicker
 
@@ -12,7 +12,7 @@ TickersDataFrameRowTuple = typing.NamedTuple(
 )
 
 
-class BackTester:
+class Backtester:
     tickers: list[MarketTicker]
     tickers_data_frame: pd.DataFrame
 

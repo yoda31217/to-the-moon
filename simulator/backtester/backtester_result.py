@@ -69,15 +69,15 @@ class BacktesterResult:
         return self.positions.price_margin.mean()
 
     def get_positions_average_pnl(self):
-        return self.positions.profit.mean()
+        return self.positions.pnl.mean()
 
     # TODO
     def get_transactions_average_return(self):
-        return self.positions.open_price.mean()
+        return self.positions.entry_price.mean()
 
     # TODO
     def get_transactions_cumulative_return(self):
-        return self.positions.open_price.sum()
+        return self.positions.entry_price.sum()
 
     def get_positions_balance(self):
         return (

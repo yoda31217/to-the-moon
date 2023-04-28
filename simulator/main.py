@@ -7,4 +7,4 @@ try:
 
 except Exception as e:
     logger.error("Unknown error occured.", e)
-    st.error(f"Ошибка: {str(e)}", icon="🚨")
+    st.error(f"Error: {str(e)}.", icon="🚨")

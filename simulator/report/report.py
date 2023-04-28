@@ -1,7 +1,7 @@
 from datetime import date
 
 import streamlit as st
-from backtester.backtester import BackTester
+from backtester.backtester import Backtester
 from binance import binance_ticker_repository
 from bot.bot_one_step_order import BotOneStepOrder
 import report.report_input as report_input
@@ -10,48 +10,38 @@ import report.report_result as report_result
 
 def build_report():
     st.set_page_config(
-        page_title=f"Симулятор торговли бота на крипто бирже",
+        page_title=f"To the Moon: Crypto Currence Bot Backtester",
         initial_sidebar_state="expanded",
     )
 
-    st.header(f"Симулятор торговли крипто бота")
-    with st.expander("Описание", expanded=False):
-        st.write(
-            """
-                Привет!
-                
-                Проект открытый. Вот
-                исходники проекта на [GitHub](https://github.com/yoda31217/to-the-moon)
-                и примеры 
-                [Ботов](https://github.com/yoda31217/to-the-moon/blob/main/simulator/bot).
-            """
-        )
+    st.header(f"To the Moon")
+    st.title(f"Crypto Currence Bot Backtester")
 
-    st.sidebar.title("Опции")
+    st.sidebar.title("Options")
 
-    st.sidebar.header("Рынок")
-    st.sidebar.markdown("**Биржа: Binance**")
+    st.sidebar.header("Market")
+    st.sidebar.markdown("**Exchange: Binance**")
     symbol: str = report_input.symbol()
     date_from: date = report_input.date_from()
     date_to: date = report_input.date_to()
     bid_ask_spread = report_input.bid_ask_spread()
 
     st.sidebar.header("Bot")
-    st.sidebar.markdown("**Название: BotOneStepOrder**")
-    price_step_ratio = report_input.step_to_price_ratio()
-    take_profit_to_price_ratio = report_input.tp_to_entry_price_ratio()
-    stop_loss_to_price_ratio = report_input.sl_to_entry_price_ratio()
+    st.sidebar.markdown("**Name: BotOneStepOrder**")
+    step_to_price_ratio = report_input.step_to_price_ratio()
+    tp_to_entry_price_ratio = report_input.tp_to_entry_price_ratio()
+    sl_to_entry_price_ratio = report_input.sl_to_entry_price_ratio()
     inverted = report_input.inverted()
 
     bot = BotOneStepOrder(
-        price_step_ratio, take_profit_to_price_ratio, stop_loss_to_price_ratio, inverted
+        step_to_price_ratio, tp_to_entry_price_ratio, sl_to_entry_price_ratio, inverted
     )
-    ticks = binance_ticker_repository.load_tickers(
+    tickers = binance_ticker_repository.load_tickers(
         symbol, date_from, date_to, bid_ask_spread
     )
-    result = BackTester(ticks).test(bot)
+    result = Backtester(tickers).test(bot)
 
     report_result.summary(symbol, date_from, date_to, bot, result)
     # st.dataframe(result.transactions)
-    report_result.ticks_chart(ticks)
+    report_result.ticks_chart(tickers)
     report_result.profit_chart(result)
