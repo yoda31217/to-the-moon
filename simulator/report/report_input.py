@@ -6,59 +6,57 @@ import streamlit as st
 def symbol():
     return cast(
         str,
-        st.sidebar.selectbox("Символ", options=["ETHUSDT", "BTCUSDT"], index=0),
+        st.sidebar.selectbox("Symbol", options=["ETHUSDT", "BTCUSDT"], index=0),
     )
 
 
 def date_from():
     return cast(
-        date, st.sidebar.date_input("Дата с", date.today() - timedelta(days=2 + 6))
+        date, st.sidebar.date_input("Date from", date.today() - timedelta(days=2 + 6))
     )
 
 
 def date_to():
     return cast(
-        date, st.sidebar.date_input("Дата по", date.today() - timedelta(days=2))
+        date, st.sidebar.date_input("Date to", date.today() - timedelta(days=2))
     )
 
 
-def price_step_ratio():
+def step_to_price_ratio():
     return (
         st.sidebar.slider(
-            "Шаг цены, %",
+            "Step to price ratio, %",
             min_value=0.1,
             max_value=10.0,
             value=1.0,
             step=0.1,
-            help="На сколько должна измениться цена, что бы бот сделал действие",
+            help="How much price should change in %, to make an action",
         )
         / 100.0
     )
 
 
-def take_profit_to_price_ratio():
+def tp_to_entry_price_ratio():
     return (
         st.sidebar.slider(
-            "Take Profit, %",
+            "Take Profit to entry price ratio, %",
             min_value=0.1,
             max_value=10.0,
             value=1.0,
             step=0.1,
-            help="Сколко Take Profit составляет процентов от цены",
         )
         / 100.0
     )
 
 
-def stop_loss_to_price_ratio():
+def sl_to_entry_price_ratio():
     return (
         st.sidebar.slider(
-            "Stop Loss, %",
+            "Stop Loss to entry price ratio, %",
             min_value=0.1,
             max_value=10.0,
             value=1.0,
             step=0.1,
-            help="Сколко Stop Loss составляет процентов от цены",
         )
         / -100.0
     )
@@ -66,11 +64,11 @@ def stop_loss_to_price_ratio():
 
 def inverted():
     return st.sidebar.checkbox(
-        "Инвертировать",
+        "Inverted",
         value=False,
-        help="Поменять местами покупку и продажу в алгоритме",
+        help="Change BUY and SELL sides in algorythm",
     )
 
 
-def symbol_ask_bid_price_difference():
-    return st.sidebar.number_input("Разница цены купли-проажи", value=0.01)
+def bid_ask_spread():
+    return st.sidebar.number_input("Bid-Ask spread", value=0.01)

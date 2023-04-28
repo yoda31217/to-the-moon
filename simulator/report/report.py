@@ -34,13 +34,13 @@ def build_report():
     symbol: str = report_input.symbol()
     date_from: date = report_input.date_from()
     date_to: date = report_input.date_to()
-    bid_ask_spread = report_input.symbol_ask_bid_price_difference()
+    bid_ask_spread = report_input.bid_ask_spread()
 
     st.sidebar.header("Bot")
     st.sidebar.markdown("**Название: BotOneStepOrder**")
-    price_step_ratio = report_input.price_step_ratio()
-    take_profit_to_price_ratio = report_input.take_profit_to_price_ratio()
-    stop_loss_to_price_ratio = report_input.stop_loss_to_price_ratio()
+    price_step_ratio = report_input.step_to_price_ratio()
+    take_profit_to_price_ratio = report_input.tp_to_entry_price_ratio()
+    stop_loss_to_price_ratio = report_input.sl_to_entry_price_ratio()
     inverted = report_input.inverted()
 
     bot = BotOneStepOrder(
