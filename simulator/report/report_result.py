@@ -1,4 +1,5 @@
 from datetime import date
+from datetime import timedelta
 import pandas as pd
 
 import streamlit as st
@@ -27,6 +28,7 @@ def summary(
                     "Average ticker price change",
                     "Positions count",
                     "Positions count / day",
+                    "Positions average duration",
                     "Positions average price margin",
                     "Positions average quantity",
                     "Positions average initial margin",
@@ -46,6 +48,11 @@ def summary(
                     "{:,}".format(result.get_positions_count()),
                     "{:,.2f}".format(
                         result.get_positions_count() / result.get_interval_days()
+                    ),
+                    str(
+                        timedelta(
+                            milliseconds=result.get_positions_average_duration_millis()
+                        )
                     ),
                     "{:,.2f}$ (abosolute)".format(
                         result.get_positions_average_price_margin()

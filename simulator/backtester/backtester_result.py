@@ -39,6 +39,13 @@ class BacktesterResult:
                         for closed_order in closed_orders
                     )
                 ),
+                "durarion_millis": list(
+                    (
+                        cast(MarketTicker, closed_order.exit_ticker).timestamp
+                        - closed_order.entry_ticker.timestamp
+                        for closed_order in closed_orders
+                    )
+                ),
                 "side": list(
                     (closed_order.side.name for closed_order in closed_orders)
                 ),
@@ -77,6 +84,9 @@ class BacktesterResult:
 
     def get_positions_average_pnl(self):
         return self.positions.pnl.mean()
+
+    def get_positions_average_duration_millis(self):
+        return self.positions.durarion_millis.mean()
 
     def get_positions_average_initial_margin(self):
         return self.positions.initial_margin.mean()
