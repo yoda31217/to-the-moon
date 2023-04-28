@@ -25,7 +25,8 @@ def summary(
                     "Symbol",
                     "Test interval",
                     "Bot",
-                    "Average ticker price change",
+                    "Tickers average price change",
+                    "Tickers average interval",
                     "Positions count",
                     "Positions count / day",
                     "Positions average duration",
@@ -35,7 +36,7 @@ def summary(
                     "Positions average PNL",
                     "Positions average ROE",
                     "Positions initial margin sum",
-                    "Balance",
+                    "Positions PNL sum",
                 ],
                 "Value": [
                     "Binance",
@@ -45,6 +46,7 @@ def summary(
                     ),
                     str(bot),
                     "{:.2f} $".format(result.get_average_tickers_price_change()),
+                    "1 minute",
                     "{:,}".format(result.get_positions_count()),
                     "{:,.2f}".format(
                         result.get_positions_count() / result.get_interval_days()
@@ -62,7 +64,7 @@ def summary(
                     "{:,.2f} $".format(result.get_positions_average_pnl()),
                     "{:,.2f} %".format(result.get_positions_average_roe() * 100.0),
                     "{:,.2f} $".format(result.get_positions_initial_margin_sum()),
-                    "{:,.2f} $".format(result.get_positions_balance()),
+                    "{:,.2f} $".format(result.get_positions_pnl_sum()),
                 ],
             }
         )
