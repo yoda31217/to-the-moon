@@ -10,12 +10,13 @@ import report.report_result as report_result
 
 def build_report():
     st.set_page_config(
-        page_title=f"To the Moon: Crypto Currence Bot Backtester",
+        page_title=f"To the Moon: crypto trading bot Backtester",
+        page_icon="🌕",
         initial_sidebar_state="expanded",
     )
 
     st.title(f"🌕 To the Moon")
-    st.caption(f"Crypto Currence Bot Backtester")
+    st.caption(f"Crypto trading bot Backtester")
 
     st.sidebar.title("Options")
 
