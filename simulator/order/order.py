@@ -44,6 +44,9 @@ class Order:
                 + f" but was: ${self.tp_to_entry_price_ratio}."
             )
 
+    def get_initial_margin(self):
+        return self.get_entry_price()
+
     def is_open(self) -> bool:
         return self.exit_ticker == None
 

@@ -48,6 +48,12 @@ class BacktesterResult:
                 "exit_price": list(
                     (closed_order.get_exit_price() for closed_order in closed_orders)
                 ),
+                "initial_margin": list(
+                    (
+                        closed_order.get_initial_margin()
+                        for closed_order in closed_orders
+                    )
+                ),
                 "price_margin": list(
                     (
                         abs(
@@ -71,20 +77,14 @@ class BacktesterResult:
     def get_positions_average_pnl(self):
         return self.positions.pnl.mean()
 
-    # TODO
     def get_positions_average_initial_margin(self):
-        return self.positions.entry_price.mean()
+        return self.positions.initial_margin.mean()
 
-    # TODO
     def get_positions_initial_margin_sum(self):
-        return self.positions.entry_price.sum()
+        return self.positions.initial_margin.sum()
 
     def get_positions_balance(self):
-        return (
-            self.positions.balance.iloc[-1]
-            if self.get_positions_count() > 0
-            else 0
-        )
+        return self.positions.balance.iloc[-1] if self.get_positions_count() > 0 else 0
 
     def get_average_tickers_price_change(self):
         return self.tickers.ask_price.diff().abs().mean()
