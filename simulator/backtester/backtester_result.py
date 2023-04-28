@@ -48,12 +48,6 @@ class BacktesterResult:
                 "exit_price": list(
                     (closed_order.get_exit_price() for closed_order in closed_orders)
                 ),
-                "initial_margin": list(
-                    (
-                        closed_order.get_initial_margin()
-                        for closed_order in closed_orders
-                    )
-                ),
                 "price_margin": list(
                     (
                         abs(
@@ -63,7 +57,14 @@ class BacktesterResult:
                         for closed_order in closed_orders
                     )
                 ),
+                "initial_margin": list(
+                    (
+                        closed_order.get_initial_margin()
+                        for closed_order in closed_orders
+                    )
+                ),
                 "pnl": list((closed_order.get_pnl() for closed_order in closed_orders)),
+                "roe": list((closed_order.get_roe() for closed_order in closed_orders)),
                 "balance": ticker_balances,
             }
         )
@@ -82,6 +83,9 @@ class BacktesterResult:
 
     def get_positions_initial_margin_sum(self):
         return self.positions.initial_margin.sum()
+
+    def get_positions_average_roe(self):
+        return self.positions.roe.mean()
 
     def get_positions_balance(self):
         return self.positions.balance.iloc[-1] if self.get_positions_count() > 0 else 0

@@ -29,8 +29,9 @@ def summary(
                     "Positions count / day",
                     "Positions average price margin",
                     "Positions average quantity",
-                    "Positions average PNL",
                     "Positions average initial margin",
+                    "Positions average PNL",
+                    "Positions average ROE",
                     "Positions initial margin sum",
                     "Balance",
                 ],
@@ -41,19 +42,20 @@ def summary(
                         date_from, date_to, result.get_interval_days()
                     ),
                     str(bot),
-                    "{:.2f}".format(result.get_average_tickers_price_change()),
+                    "{:.2f} $".format(result.get_average_tickers_price_change()),
                     "{:,}".format(result.get_positions_count()),
                     "{:,.2f}".format(
                         result.get_positions_count() / result.get_interval_days()
                     ),
-                    "{:,.2f} (по модулю)".format(
+                    "{:,.2f}$ (abosolute)".format(
                         result.get_positions_average_price_margin()
                     ),
                     "1",
-                    "{:,.2f}".format(result.get_positions_average_pnl()),
-                    "{:,.2f}".format(result.get_positions_average_initial_margin()),
-                    "{:,.2f}".format(result.get_positions_initial_margin_sum()),
-                    "{:,.2f}".format(result.get_positions_balance()),
+                    "{:,.2f} $".format(result.get_positions_average_initial_margin()),
+                    "{:,.2f} $".format(result.get_positions_average_pnl()),
+                    "{:,.2f} %".format(result.get_positions_average_roe() * 100.0),
+                    "{:,.2f} $".format(result.get_positions_initial_margin_sum()),
+                    "{:,.2f} $".format(result.get_positions_balance()),
                 ],
             }
         )
