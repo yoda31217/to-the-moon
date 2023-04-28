@@ -49,7 +49,7 @@ def build_report():
     ticks = binance_ticker_repository.load_tickers(
         symbol, date_from, date_to, bid_ask_spread
     )
-    result = BackTester(ticks).simulate(bot)
+    result = BackTester(ticks).test(bot)
 
     report_result.summary(symbol, date_from, date_to, bot, result)
     # st.dataframe(result.transactions)

@@ -3,7 +3,7 @@ import pandas as pd
 
 import streamlit as st
 import report.report_chart as report_chart
-from backtester.simulator_result import SimulatorResult
+from backtester.backtester_result import BacktesterResult
 
 from bot.bot import Bot
 
@@ -13,7 +13,7 @@ def summary(
     date_from: date,
     date_to: date,
     bot: Bot,
-    result: SimulatorResult,
+    result: BacktesterResult,
 ):
     # values to check (like a test)
     # 'orders=30,049 interval_days=48.0 avg_tick_price_change=0.06 str=Bot0[0.10%, not_inverted]
@@ -45,18 +45,18 @@ def summary(
                         date_from, date_to, result.get_interval_days()
                     ),
                     str(bot),
-                    "{:.2f}".format(result.get_average_ticks_price_change()),
-                    "{:,}".format(result.get_transactions_count()),
+                    "{:.2f}".format(result.get_average_tickers_price_change()),
+                    "{:,}".format(result.get_positions_count()),
                     "{:,.2f}".format(
-                        result.get_transactions_count() / result.get_interval_days()
+                        result.get_positions_count() / result.get_interval_days()
                     ),
                     "{:,.2f} (по модулю)".format(
-                        result.get_transactions_average_price_margin()
+                        result.get_positions_average_price_margin()
                     ),
                     "1",
-                    "{:,.2f}".format(result.get_transactions_average_profit()),
+                    "{:,.2f}".format(result.get_positions_average_pnl()),
                     "{:,.2f}".format(result.get_transactions_average_return()),
-                    "{:,.2f}".format(result.get_transactions_cumulative_profit()),
+                    "{:,.2f}".format(result.get_positions_balance()),
                     "{:,.2f}".format(result.get_transactions_cumulative_return()),
                 ],
             }
@@ -75,11 +75,11 @@ def ticks_chart(ticks: pd.DataFrame):
     )
 
 
-def profit_chart(result: SimulatorResult):
+def profit_chart(result: BacktesterResult):
     st.subheader(f"Итоговая прибыль")
-    if result.get_transactions_count() > 0:
+    if result.get_positions_count() > 0:
         report_chart.line(
-            result.transactions,
+            result.positions,
             "open_timestamp",
             "cumulative_profit",
             "Итоговая прибыль, $",

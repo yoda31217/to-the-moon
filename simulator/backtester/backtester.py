@@ -3,7 +3,7 @@ import typing
 import pandas as pd
 
 from order.order import Order
-from simulator_result import SimulatorResult
+from backtester_result import BacktesterResult
 from bot.bot import Bot
 from market.market_ticker import MarketTicker
 
@@ -25,7 +25,7 @@ class BackTester:
         )
         self.tickers_data_frame = tickers_data_frame
 
-    def simulate(self, bot: Bot) -> SimulatorResult:
+    def test(self, bot: Bot) -> BacktesterResult:
         orders: list[Order] = []
         closed_orders: list[Order] = []
 
@@ -37,7 +37,7 @@ class BackTester:
         self._close_orders(orders)
         self._move_orders_to_closed(orders, closed_orders)
 
-        return SimulatorResult(closed_orders, self.tickers_data_frame)
+        return BacktesterResult(closed_orders, self.tickers_data_frame)
 
     def _close_orders(self, orders: list[Order]):
         order: Order
