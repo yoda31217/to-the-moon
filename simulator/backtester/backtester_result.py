@@ -15,45 +15,39 @@ class BacktesterResult:
         self.positions = self._to_positions(closed_orders)
 
     def _to_positions(self, closed_orders: list[Order]) -> pd.DataFrame:
-        ticker_balance: float = 0
-        ticker_balances: list[float] = []
-
-        # TODO how to calculate balance via Pandas
-        for closed_order in closed_orders:
-            closed_order_pnl = closed_order.get_pnl()
-            assert closed_order_pnl is not None
-            ticker_balance = ticker_balance + closed_order_pnl
-            ticker_balances.append(ticker_balance)
+        sorted_closed_orders = sorted(
+            closed_orders, key=lambda order: order.entry_ticker.timestamp
+        )
 
         return pd.DataFrame(
             {
                 "entry_timestamp": list(
                     (
                         closed_order.entry_ticker.timestamp
-                        for closed_order in closed_orders
+                        for closed_order in sorted_closed_orders
                     )
                 ),
                 "exit_timestamp": list(
                     (
                         cast(MarketTicker, closed_order.exit_ticker).timestamp
-                        for closed_order in closed_orders
+                        for closed_order in sorted_closed_orders
                     )
                 ),
                 "durarion_millis": list(
                     (
                         cast(MarketTicker, closed_order.exit_ticker).timestamp
                         - closed_order.entry_ticker.timestamp
-                        for closed_order in closed_orders
+                        for closed_order in sorted_closed_orders
                     )
                 ),
                 "side": list(
-                    (closed_order.side.name for closed_order in closed_orders)
+                    (closed_order.side.name for closed_order in sorted_closed_orders)
                 ),
                 "entry_price": list(
-                    (closed_order.get_entry_price() for closed_order in closed_orders)
+                    (closed_order.get_entry_price() for closed_order in sorted_closed_orders)
                 ),
                 "exit_price": list(
-                    (closed_order.get_exit_price() for closed_order in closed_orders)
+                    (closed_order.get_exit_price() for closed_order in sorted_closed_orders)
                 ),
                 "price_margin": list(
                     (
@@ -61,18 +55,17 @@ class BacktesterResult:
                             cast(float, closed_order.get_exit_price())
                             - closed_order.get_entry_price()
                         )
-                        for closed_order in closed_orders
+                        for closed_order in sorted_closed_orders
                     )
                 ),
                 "initial_margin": list(
                     (
                         closed_order.get_initial_margin()
-                        for closed_order in closed_orders
+                        for closed_order in sorted_closed_orders
                     )
                 ),
-                "pnl": list((closed_order.get_pnl() for closed_order in closed_orders)),
-                "roe": list((closed_order.get_roe() for closed_order in closed_orders)),
-                "balance": ticker_balances,
+                "pnl": list((closed_order.get_pnl() for closed_order in sorted_closed_orders)),
+                "roe": list((closed_order.get_roe() for closed_order in sorted_closed_orders)),
             }
         )
 
@@ -98,7 +91,7 @@ class BacktesterResult:
         return self.positions.roe.mean()
 
     def get_positions_balance(self):
-        return self.positions.balance.iloc[-1] if self.get_positions_count() > 0 else 0
+        return self.positions.pnl.sum() if self.get_positions_count() > 0 else 0
 
     def get_average_tickers_price_change(self):
         return self.tickers.ask_price.diff().abs().mean()

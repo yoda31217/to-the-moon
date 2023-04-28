@@ -10,11 +10,14 @@ def line(
     value_column_name: str,
     value_label: str,
     samples_count: int = 10000,
+    is_cumulative: bool = False
 ):
     formatted_data_frame = pd.DataFrame(
         {
             "Date Time": data_frame[timestamp_column_name],
-            value_label: data_frame[value_column_name],
+            value_label: (data_frame[value_column_name].cumsum()
+                          if is_cumulative else
+                          data_frame[value_column_name]),
         }
     )
 

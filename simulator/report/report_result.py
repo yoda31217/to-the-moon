@@ -86,9 +86,10 @@ def balance_chart(result: BacktesterResult):
         report_chart.line(
             result.positions,
             "entry_timestamp",
-            "balance",
+            "pnl",
             "Balance, $",
             samples_count=10_000,
+            is_cumulative=True
         )
     else:
         st.text("There were NO positions! 😕")
