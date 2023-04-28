@@ -14,8 +14,8 @@ def build_report():
         initial_sidebar_state="expanded",
     )
 
-    st.header(f"To the Moon")
-    st.title(f"Crypto Currence Bot Backtester")
+    st.title(f"🌕 To the Moon")
+    st.caption(f"Crypto Currence Bot Backtester")
 
     st.sidebar.title("Options")
 
@@ -42,6 +42,5 @@ def build_report():
     result = Backtester(tickers).test(bot)
 
     report_result.summary(symbol, date_from, date_to, bot, result)
-    # st.dataframe(result.transactions)
-    report_result.ticks_chart(tickers)
-    report_result.profit_chart(result)
+    report_result.tickers_chart(tickers)
+    report_result.balance_chart(result)

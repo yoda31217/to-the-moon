@@ -24,7 +24,7 @@ def line(
         .encode(
             x=alt.X(
                 shorthand="Date Time" + ":T",  # type: ignore
-                title="Время",  # type: ignore
+                title="Date Time",  # type: ignore
                 axis=alt.Axis(format="%y-%m-%d %H:%M"),  # type: ignore
             ),
             y=alt.Y(

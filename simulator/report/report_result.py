@@ -15,33 +15,29 @@ def summary(
     bot: Bot,
     result: BacktesterResult,
 ):
-    # values to check (like a test)
-    # 'orders=30,049 interval_days=48.0 avg_tick_price_change=0.06 str=Bot0[0.10%, not_inverted]
-    # tx_avg_price_margin=1.99 tx_avg_prof=-0.04 tx_cum_prof=-1199.56'
-
-    st.subheader(f"Сводка")
+    st.subheader(f"Summary")
     st.table(
         pd.DataFrame(
             {
-                "Показатель": [
-                    "Биржа",
-                    "Символ",
-                    "Интервал симуляции",
-                    "Бот",
-                    "Среднее изменение цены за тик",
-                    "Количество транзакций",
-                    "Количество транзакций в день",
-                    "Средняя ценовая маржа транзакции",
-                    "Сколько монет в транзакции",
-                    "Средняя прибыль транзакции",
-                    "Средний оборот транзакции",
-                    "Итоговая прибыль",
-                    "Итоговый оборот",
+                "Property": [
+                    "Exchange",
+                    "Symbol",
+                    "Test interval",
+                    "Bot",
+                    "Average ticker price change",
+                    "Positions count",
+                    "Positions count / day",
+                    "Positions average price margin",
+                    "Positions average quantity",
+                    "Positions average PNL",
+                    "Positions average initial margin",
+                    "Positions initial margin sum",
+                    "Balance",
                 ],
-                "Значение": [
+                "Value": [
                     "Binance",
                     symbol,
-                    "c {} по {} ({:.1f} дней)".format(
+                    "{} - {} ({:.1f} days)".format(
                         date_from, date_to, result.get_interval_days()
                     ),
                     str(bot),
@@ -55,35 +51,35 @@ def summary(
                     ),
                     "1",
                     "{:,.2f}".format(result.get_positions_average_pnl()),
-                    "{:,.2f}".format(result.get_transactions_average_return()),
+                    "{:,.2f}".format(result.get_positions_average_initial_margin()),
+                    "{:,.2f}".format(result.get_positions_initial_margin_sum()),
                     "{:,.2f}".format(result.get_positions_balance()),
-                    "{:,.2f}".format(result.get_transactions_cumulative_return()),
                 ],
             }
         )
     )
 
 
-def ticks_chart(ticks: pd.DataFrame):
-    st.subheader(f"Цена покупки")
+def tickers_chart(tickers: pd.DataFrame):
+    st.subheader(f"Ask Price")
     report_chart.line(
-        ticks,
+        tickers,
         "timestamp",
         "ask_price",
-        "Цена покупки, $",
+        "Ask Price, $",
         samples_count=1_000,
     )
 
 
-def profit_chart(result: BacktesterResult):
-    st.subheader(f"Итоговая прибыль")
+def balance_chart(result: BacktesterResult):
+    st.subheader(f"Balance")
     if result.get_positions_count() > 0:
         report_chart.line(
             result.positions,
-            "open_timestamp",
-            "cumulative_profit",
-            "Итоговая прибыль, $",
+            "entry_timestamp",
+            "balance",
+            "Balance, $",
             samples_count=10_000,
         )
     else:
-        st.text("Нет транзакций! 😕")
+        st.text("There were NO positions! 😕")

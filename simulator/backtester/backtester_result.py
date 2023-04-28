@@ -72,11 +72,11 @@ class BacktesterResult:
         return self.positions.pnl.mean()
 
     # TODO
-    def get_transactions_average_return(self):
+    def get_positions_average_initial_margin(self):
         return self.positions.entry_price.mean()
 
     # TODO
-    def get_transactions_cumulative_return(self):
+    def get_positions_initial_margin_sum(self):
         return self.positions.entry_price.sum()
 
     def get_positions_balance(self):
