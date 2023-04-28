@@ -1,3 +1,4 @@
+from typing import cast
 import uuid
 
 from order.order_side import OrderSide
@@ -72,6 +73,12 @@ class Order:
 
     def get_exit_price(self) -> float | None:
         return self._get_exit_price(self.exit_ticker)
+
+    def get_roe(self) -> float | None:
+        if self.get_pnl() == None:
+            return None
+
+        return cast(float, self.get_pnl()) / self.get_initial_margin()
 
     def _get_exit_price(self, possible_exit_ticker: MarketTicker | None):
         if possible_exit_ticker == None:
