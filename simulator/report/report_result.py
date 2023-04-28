@@ -92,3 +92,8 @@ def balance_chart(result: BacktesterResult):
         )
     else:
         st.text("There were NO positions! 😕")
+
+
+def positions_table(positions: pd.DataFrame):
+    st.subheader(f"Positions")
+    st.dataframe(positions)

@@ -45,3 +45,4 @@ def build_report():
     report_result.summary(symbol, date_from, date_to, bot, result)
     report_result.tickers_chart(tickers)
     report_result.balance_chart(result)
+    report_result.positions_table(result.positions)
