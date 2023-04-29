@@ -76,5 +76,8 @@ def bid_ask_spread():
 
 def pnl_chart_type():
     return st.radio(
-        "PNL chart type", ("PNL sum (cumulative, agregated)", "PNL"), horizontal=True
+        "PNL chart type",
+        ("PNL sum (cumulative, agregated)", "PNL"),
+        horizontal=True,
+        label_visibility="collapsed",
     )
