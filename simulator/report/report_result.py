@@ -84,14 +84,14 @@ def tickers_chart(tickers: pd.DataFrame):
     )
 
 
-def balance_chart(result: BacktesterResult):
-    st.subheader(f"Balance")
+def pnl_chart(result: BacktesterResult):
+    st.subheader(f"PNL")
     if result.get_positions_count() > 0:
         report_chart.line(
             result.positions,
             "entry_timestamp",
             "pnl",
-            "Balance, $",
+            "PNL sum (cumulative, aggregated), $",
             samples_count=10_000,
             is_cumulative=True,
         )
