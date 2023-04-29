@@ -1,7 +1,6 @@
 import altair as alt
 import pandas as pd
 import streamlit as st
-from vega_datasets import data
 
 
 # TODO fix types
@@ -37,6 +36,45 @@ def line(
                 shorthand=value_column_name + ":Q",  # type: ignore
                 title=value_label,  # type: ignore
                 scale=alt.Scale(zero=False),  # type: ignore
+            ),
+            color=alt.value("#4dabf5"),
+        )
+        .transform_sample(samples_count),
+        use_container_width=True,
+    )
+
+
+def bars(
+    data_frame: pd.DataFrame,
+    timestamp_column_name: str,
+    value_column_name: str,
+    value_label: str,
+    samples_count: int = 10000,
+):
+    formatted_data_frame = pd.DataFrame(
+        {
+            "Date Time": data_frame[timestamp_column_name],
+            value_column_name: data_frame[value_column_name],
+        }
+    )
+
+    st.altair_chart(
+        alt.Chart(formatted_data_frame)  # type: ignore
+        .mark_bar()  # type: ignore
+        .encode(
+            x=alt.X(
+                shorthand="Date Time" + ":T",  # type: ignore
+                title="Date Time",  # type: ignore
+                axis=alt.Axis(format="%y-%m-%d %H:%M"),  # type: ignore
+            ),
+            y=alt.Y(
+                shorthand=value_column_name + ":Q",  # type: ignore
+                title=value_label,  # type: ignore
+            ),
+            color=alt.condition(
+                alt.datum[value_column_name] > 0,
+                alt.value("#4dabf5"),
+                alt.value("#ff784e"),
             ),
         )
         .transform_sample(samples_count),
