@@ -22,6 +22,7 @@ def build_report():
 
     st.sidebar.header("Market")
     st.sidebar.markdown("**Exchange: Binance**")
+    st.sidebar.markdown("**Market: USDⓈ-M Futures**")
     symbol: str = report_input.symbol()
     date_from: date = report_input.date_from()
     date_to: date = report_input.date_to()

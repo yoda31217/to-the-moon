@@ -22,6 +22,7 @@ def summary(
             {
                 "Property": [
                     "Exchange",
+                    "Market",
                     "Symbol",
                     "Test interval",
                     "Bot",
@@ -40,6 +41,7 @@ def summary(
                 ],
                 "Value": [
                     "Binance",
+                    "USDⓈ-M Futures",
                     symbol,
                     "{} - {} ({:.1f} days)".format(
                         date_from, date_to, result.get_interval_days()
@@ -91,7 +93,7 @@ def balance_chart(result: BacktesterResult):
             "pnl",
             "Balance, $",
             samples_count=10_000,
-            is_cumulative=True
+            is_cumulative=True,
         )
     else:
         st.text("There were NO positions! 😕")
