@@ -31,8 +31,9 @@ class Backtester:
 
         for new_ticker in self.tickers:
             self._notify_orders(new_ticker, orders)
-            bot.process_ticker(new_ticker, orders, closed_orders)
             self._move_orders_to_closed(orders, closed_orders)
+
+            bot.process_ticker(new_ticker, orders, closed_orders)
 
         self._close_orders(orders)
         self._move_orders_to_closed(orders, closed_orders)
