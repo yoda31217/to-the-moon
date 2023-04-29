@@ -17,7 +17,7 @@ def summary(
     bot: Bot,
     result: BacktesterResult,
 ):
-    st.subheader(f"Summary")
+    st.header(f"Summary")
     st.table(
         pd.DataFrame(
             {
@@ -75,7 +75,7 @@ def summary(
 
 
 def tickers_chart(tickers: pd.DataFrame):
-    st.subheader(f"Ask Price")
+    st.header(f"Ask Price")
     report_chart.line(
         tickers,
         "timestamp",
@@ -85,26 +85,26 @@ def tickers_chart(tickers: pd.DataFrame):
     )
 
 
-def pnl_chart(result: BacktesterResult):
+def pnl_chart(result: BacktesterResult, timestamp_column):
     st.subheader(f"PNL")
     if result.get_positions_count() > 0:
         pnl_chart_type = report_input.pnl_chart_type()
 
         match pnl_chart_type:
-            case "PNL":
+            case "PNL sum":
                 report_chart.bars(
                     result.positions,
-                    "entry_timestamp",
+                    timestamp_column,
                     "pnl",
-                    "PNL, $",
+                    "PNL sum, $",
                     samples_count=100_000,
                 )
             case _:
                 report_chart.line(
                     result.positions,
-                    "entry_timestamp",
+                    timestamp_column,
                     "pnl",
-                    "PNL sum (cumulative, aggregated), $",
+                    "cumulative PNL sum, $",
                     samples_count=100_000,
                     is_cumulative=True,
                 )

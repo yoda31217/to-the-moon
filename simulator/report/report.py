@@ -35,15 +35,18 @@ def build_report():
     sl_to_entry_price_ratio = report_input.sl_to_entry_price_ratio()
     inverted = report_input.inverted()
 
+    positions_sort_timestamp_column = report_input.positions_sort_timestamp_column()
+
     bot = BotOneStepOrder(
         step_to_price_ratio, tp_to_entry_price_ratio, sl_to_entry_price_ratio, inverted
     )
     tickers = binance_ticker_repository.load_tickers(
         symbol, date_from, date_to, bid_ask_spread
     )
-    result = Backtester(tickers).test(bot)
+    result = Backtester(tickers).test(bot, positions_sort_timestamp_column)
 
     report_result.summary(symbol, date_from, date_to, bot, result)
     report_result.tickers_chart(tickers)
-    report_result.pnl_chart(result)
+    st.header(f"Positions")
+    report_result.pnl_chart(result, positions_sort_timestamp_column)
     report_result.positions_table(result.positions)

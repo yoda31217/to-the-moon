@@ -77,7 +77,18 @@ def bid_ask_spread():
 def pnl_chart_type():
     return st.radio(
         "PNL chart type",
-        ("PNL sum (cumulative, agregated)", "PNL"),
+        ("cumulative PNL sum", "PNL sum"),
         horizontal=True,
         label_visibility="collapsed",
+    )
+
+
+def positions_sort_timestamp_column():
+    return cast(
+        str,
+        st.radio(
+            "Positions sorted by:",
+            ("entry_timestamp", "exit_timestamp"),
+            horizontal=True,
+        ),
     )

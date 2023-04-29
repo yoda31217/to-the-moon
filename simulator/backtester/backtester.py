@@ -25,7 +25,7 @@ class Backtester:
         )
         self.tickers_data_frame = tickers_data_frame
 
-    def test(self, bot: Bot) -> BacktesterResult:
+    def test(self, bot: Bot, positions_sort_timestamp_column: str) -> BacktesterResult:
         orders: list[Order] = []
         closed_orders: list[Order] = []
 
@@ -38,7 +38,9 @@ class Backtester:
         self._close_orders(orders)
         self._move_orders_to_closed(orders, closed_orders)
 
-        return BacktesterResult(closed_orders, self.tickers_data_frame)
+        return BacktesterResult(
+            closed_orders, self.tickers_data_frame, positions_sort_timestamp_column
+        )
 
     def _close_orders(self, orders: list[Order]):
         order: Order

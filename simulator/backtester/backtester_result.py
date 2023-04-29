@@ -9,45 +9,56 @@ class BacktesterResult:
     positions: pd.DataFrame
     tickers: pd.DataFrame
 
-    def __init__(self, closed_orders: list[Order], tickers: pd.DataFrame) -> None:
+    def __init__(
+        self,
+        closed_orders: list[Order],
+        tickers: pd.DataFrame,
+        positions_sort_timestamp_column: str,
+    ) -> None:
         super().__init__()
         self.tickers = tickers
-        self.positions = self._to_positions(closed_orders)
-
-    def _to_positions(self, closed_orders: list[Order]) -> pd.DataFrame:
-        sorted_closed_orders = sorted(
-            closed_orders, key=lambda order: order.entry_ticker.timestamp
+        self.positions = self._to_positions(
+            closed_orders, positions_sort_timestamp_column
         )
 
+    def _to_positions(
+        self, closed_orders: list[Order], positions_sort_timestamp_column: str
+    ) -> pd.DataFrame:
         return pd.DataFrame(
             {
                 "entry_timestamp": list(
                     (
                         closed_order.entry_ticker.timestamp
-                        for closed_order in sorted_closed_orders
+                        for closed_order in closed_orders
                     )
                 ),
                 "exit_timestamp": list(
                     (
                         cast(MarketTicker, closed_order.exit_ticker).timestamp
-                        for closed_order in sorted_closed_orders
+                        for closed_order in closed_orders
                     )
                 ),
                 "durarion_millis": list(
                     (
                         cast(MarketTicker, closed_order.exit_ticker).timestamp
                         - closed_order.entry_ticker.timestamp
-                        for closed_order in sorted_closed_orders
+                        for closed_order in closed_orders
                     )
                 ),
                 "side": list(
-                    (closed_order.side.name for closed_order in sorted_closed_orders)
+                    (closed_order.side.name for closed_order in closed_orders)
                 ),
                 "entry_price": list(
-                    (closed_order.get_entry_price() for closed_order in sorted_closed_orders)
+                    (
+                        closed_order.get_entry_price()
+                        for closed_order in closed_orders
+                    )
                 ),
                 "exit_price": list(
-                    (closed_order.get_exit_price() for closed_order in sorted_closed_orders)
+                    (
+                        closed_order.get_exit_price()
+                        for closed_order in closed_orders
+                    )
                 ),
                 "price_margin": list(
                     (
@@ -55,19 +66,23 @@ class BacktesterResult:
                             cast(float, closed_order.get_exit_price())
                             - closed_order.get_entry_price()
                         )
-                        for closed_order in sorted_closed_orders
+                        for closed_order in closed_orders
                     )
                 ),
                 "initial_margin": list(
                     (
                         closed_order.get_initial_margin()
-                        for closed_order in sorted_closed_orders
+                        for closed_order in closed_orders
                     )
                 ),
-                "pnl": list((closed_order.get_pnl() for closed_order in sorted_closed_orders)),
-                "roe": list((closed_order.get_roe() for closed_order in sorted_closed_orders)),
+                "pnl": list(
+                    (closed_order.get_pnl() for closed_order in closed_orders)
+                ),
+                "roe": list(
+                    (closed_order.get_roe() for closed_order in closed_orders)
+                ),
             }
-        )
+        ).sort_values(by=[positions_sort_timestamp_column])
 
     def get_positions_count(self):
         return len(self.positions.index)
