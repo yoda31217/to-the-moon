@@ -9,7 +9,7 @@ def line(
     timestamp_column_name: str,
     value_column_name: str,
     value_label: str,
-    samples_count: int = 10000,
+    samples_count: int = 10_000,
     is_cumulative: bool = False,
 ):
     formatted_data_frame = pd.DataFrame(
@@ -49,7 +49,7 @@ def bars(
     timestamp_column_name: str,
     value_column_name: str,
     value_label: str,
-    samples_count: int = 10000,
+    samples_count: int = 10_000,
 ):
     formatted_data_frame = pd.DataFrame(
         {

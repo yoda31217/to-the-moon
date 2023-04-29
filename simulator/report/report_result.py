@@ -3,6 +3,7 @@ from datetime import timedelta
 import pandas as pd
 
 import streamlit as st
+from report import report_input
 import report.report_chart as report_chart
 from backtester.backtester_result import BacktesterResult
 
@@ -80,21 +81,34 @@ def tickers_chart(tickers: pd.DataFrame):
         "timestamp",
         "ask_price",
         "Ask Price, $",
-        samples_count=1_000,
+        samples_count=100_000,
     )
 
 
 def pnl_chart(result: BacktesterResult):
     st.subheader(f"PNL")
     if result.get_positions_count() > 0:
-        report_chart.line(
-            result.positions,
-            "entry_timestamp",
-            "pnl",
-            "PNL sum (cumulative, aggregated), $",
-            samples_count=10_000,
-            is_cumulative=True,
-        )
+        pnl_chart_type = report_input.pnl_chart_type()
+
+        match pnl_chart_type:
+            case "PNL":
+                report_chart.bars(
+                    result.positions,
+                    "entry_timestamp",
+                    "pnl",
+                    "PNL, $",
+                    samples_count=100_000,
+                )
+            case _:
+                report_chart.line(
+                    result.positions,
+                    "entry_timestamp",
+                    "pnl",
+                    "PNL sum (cumulative, aggregated), $",
+                    samples_count=100_000,
+                    is_cumulative=True,
+                )
+
     else:
         st.text("There were NO positions! 😕")
 

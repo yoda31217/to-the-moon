@@ -72,3 +72,9 @@ def inverted():
 
 def bid_ask_spread():
     return st.sidebar.number_input("Bid-Ask spread", value=0.01)
+
+
+def pnl_chart_type():
+    return st.radio(
+        "PNL chart type", ("PNL sum (cumulative, agregated)", "PNL"), horizontal=True
+    )
