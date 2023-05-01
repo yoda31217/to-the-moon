@@ -8,6 +8,7 @@ from market.market_ticker import MarketTicker
 class BacktesterResult:
     positions: pd.DataFrame
     tickers: pd.DataFrame
+    positions_sort_timestamp_column: str
 
     def __init__(
         self,
@@ -20,6 +21,7 @@ class BacktesterResult:
         self.positions = self._to_positions(
             closed_orders, positions_sort_timestamp_column
         )
+        self.positions_sort_timestamp_column = positions_sort_timestamp_column
 
     def _to_positions(
         self, closed_orders: list[Order], positions_sort_timestamp_column: str
@@ -49,16 +51,10 @@ class BacktesterResult:
                     (closed_order.side.name for closed_order in closed_orders)
                 ),
                 "entry_price": list(
-                    (
-                        closed_order.get_entry_price()
-                        for closed_order in closed_orders
-                    )
+                    (closed_order.get_entry_price() for closed_order in closed_orders)
                 ),
                 "exit_price": list(
-                    (
-                        closed_order.get_exit_price()
-                        for closed_order in closed_orders
-                    )
+                    (closed_order.get_exit_price() for closed_order in closed_orders)
                 ),
                 "price_margin": list(
                     (
@@ -75,12 +71,8 @@ class BacktesterResult:
                         for closed_order in closed_orders
                     )
                 ),
-                "pnl": list(
-                    (closed_order.get_pnl() for closed_order in closed_orders)
-                ),
-                "roe": list(
-                    (closed_order.get_roe() for closed_order in closed_orders)
-                ),
+                "pnl": list((closed_order.get_pnl() for closed_order in closed_orders)),
+                "roe": list((closed_order.get_roe() for closed_order in closed_orders)),
             }
         ).sort_values(by=[positions_sort_timestamp_column])
 

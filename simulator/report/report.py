@@ -48,5 +48,5 @@ def build_report():
     report_result.summary(symbol, date_from, date_to, bot, result)
     report_result.tickers_chart(tickers)
     st.header(f"Positions")
-    report_result.pnl_chart(result, positions_sort_timestamp_column)
+    report_result.pnl_chart(result)
     report_result.positions_table(result.positions)

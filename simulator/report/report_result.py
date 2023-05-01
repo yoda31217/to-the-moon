@@ -85,7 +85,7 @@ def tickers_chart(tickers: pd.DataFrame):
     )
 
 
-def pnl_chart(result: BacktesterResult, timestamp_column):
+def pnl_chart(result: BacktesterResult):
     st.subheader(f"PNL")
     if result.get_positions_count() > 0:
         pnl_chart_type = report_input.pnl_chart_type()
@@ -94,7 +94,7 @@ def pnl_chart(result: BacktesterResult, timestamp_column):
             case "PNL sum":
                 report_chart.bars(
                     result.positions,
-                    timestamp_column,
+                    result.positions_sort_timestamp_column,
                     "pnl",
                     "PNL sum, $",
                     samples_count=100_000,
@@ -102,7 +102,7 @@ def pnl_chart(result: BacktesterResult, timestamp_column):
             case _:
                 report_chart.line(
                     result.positions,
-                    timestamp_column,
+                    result.positions_sort_timestamp_column,
                     "pnl",
                     "cumulative PNL sum, $",
                     samples_count=100_000,
