@@ -53,7 +53,7 @@ class Backtester:
                 closed_orders_margin_balance = closed_orders_margin_balance_cache
             else:
                 closed_orders_margin_balance = sum(
-                    cast(float, order.get_pnl()) for order in closed_orders
+                    cast(float, order.pnl) for order in closed_orders
                 )
                 closed_orders_margin_balance_cache = closed_orders_margin_balance
                 closed_orders_count_cache = len(closed_orders)

@@ -65,11 +65,9 @@ class Order:
         self.is_open = True
         self.roe = None
 
-    def get_pnl(self, new_ticker: MarketTicker | None = None) -> float | None:
+    def get_pnl(self, new_ticker: MarketTicker) -> float:
         if self.pnl != None:
             return self.pnl
-        elif new_ticker == None:
-            return None
         else:
             exit_price = (
                 new_ticker.ask_price
