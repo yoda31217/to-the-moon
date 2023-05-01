@@ -52,8 +52,20 @@ class Order:
         return self.exit_ticker == None
 
     def get_pnl(self, new_ticker: MarketTicker | None = None) -> float | None:
-        return self._get_pnl(
-            self.exit_ticker if self.exit_ticker != None else new_ticker
+        exit_price = (
+            self._get_exit_price(self.exit_ticker)
+            if self.exit_ticker != None
+            else self._get_exit_price(new_ticker)
+        )
+
+        if exit_price == None:
+            return None
+
+        entry_price = self.get_entry_price()
+        return (
+            exit_price - entry_price
+            if self.side == OrderSide.BUY
+            else entry_price - exit_price
         )
 
     def close(self, ticker: MarketTicker):
@@ -92,21 +104,8 @@ class Order:
             else possible_exit_ticker.bid_price
         )
 
-    def _get_pnl(self, possible_exit_ticker: MarketTicker | None):
-        exit_price = self._get_exit_price(possible_exit_ticker)
-
-        if exit_price == None:
-            return None
-
-        entry_price = self.get_entry_price()
-        return (
-            exit_price - entry_price
-            if self.side == OrderSide.BUY
-            else entry_price - exit_price
-        )
-
     def _should_auto_close(self, possible_exit_ticker: MarketTicker):
-        pnl = self._get_pnl(possible_exit_ticker)
+        pnl = self.get_pnl(possible_exit_ticker)
         assert pnl is not None
 
         pnl_to_entry_price_ratio = pnl / self.get_entry_price()
