@@ -35,7 +35,7 @@ class Order:
 
         if self.sl_to_entry_price_ratio > 0:
             raise ValueError(
-                f"Order ST to entry price ratio should be <= 0,"
+                f"Order SL to entry price ratio should be <= 0,"
                 + f" but was: ${self.sl_to_entry_price_ratio}."
             )
 
