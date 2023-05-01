@@ -25,17 +25,17 @@ class TestOrder:
         with pytest.raises(ValueError):
             Order(MarketTicker(100, 200.0, 300.0), OrderSide.BUY, -0.5, -1.5)
 
-    def test_get_initial_margin_on_buy_order_return_correct_value(self):
+    def test_initial_margin_on_buy_order_return_correct_value(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
 
-        assert order.get_initial_margin() == 300.0
+        assert order.initial_margin == 300.0
 
-    def test_get_initial_margin_on_sell_order_return_correct_value(self):
+    def test_initial_margin_on_sell_order_return_correct_value(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
 
-        assert order.get_initial_margin() == 200.0
+        assert order.initial_margin == 200.0
 
     def test_get_pnl_on_not_closed_buy_order_return_none(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)

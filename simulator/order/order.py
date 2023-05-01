@@ -61,9 +61,6 @@ class Order:
         self.tp = tp_to_entry_price_ratio * self.entry_price
         self.sl = sl_to_entry_price_ratio * self.entry_price
 
-    def get_initial_margin(self):
-        return self.initial_margin
-
     def is_open(self) -> bool:
         return self.exit_ticker == None
 
@@ -107,7 +104,7 @@ class Order:
         if self.get_pnl() == None:
             return None
 
-        return cast(float, self.get_pnl()) / self.get_initial_margin()
+        return cast(float, self.get_pnl()) / self.initial_margin
 
     def _should_auto_close(self, possible_exit_ticker: MarketTicker):
         possible_exit_price = (

@@ -65,7 +65,7 @@ class Backtester:
             margin_balance = orders_margin_balance + closed_orders_margin_balance
 
             available_balance = margin_balance - sum(
-                order.get_initial_margin() for order in orders if order.is_open()
+                order.initial_margin for order in orders if order.is_open()
             )
 
             balances[new_ticker_index] = [
