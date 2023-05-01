@@ -5,6 +5,7 @@ from backtester.backtester_result import BacktesterResult
 from order.order import Order
 from bot.bot import Bot
 from market.market_ticker import MarketTicker
+from utils.data_frames import data_frame_add_row
 
 TickersDataFrameRowTuple = NamedTuple(
     "Employee", timestamp=int, bid_price=float, ask_price=float
@@ -41,14 +42,7 @@ class Backtester:
 
             bot.process_ticker(new_ticker, orders, closed_orders)
 
-            margin_balance = sum(
-                cast(float, order.get_pnl(new_ticker)) for order in orders
-            ) + sum(cast(float, order.get_pnl(new_ticker)) for order in closed_orders)
-
-            balances.loc[len(balances.index)] = [
-                new_ticker.timestamp,
-                margin_balance,
-            ]
+            self._calculate_and_add_balance(orders, closed_orders, balances, new_ticker)
 
         self._close_orders(orders)
         self._move_orders_to_closed(orders, closed_orders)
@@ -59,6 +53,24 @@ class Backtester:
             positions_sort_timestamp_column,
             balances,
         )
+
+    def _calculate_and_add_balance(self, orders, closed_orders, balances, new_ticker):
+        data_frame_add_row(
+            balances,
+            [
+                new_ticker.timestamp,
+                self._calculate_margin_balance(orders, closed_orders, new_ticker),
+            ],
+        )
+
+    def _calculate_margin_balance(self, orders, closed_orders, new_ticker):
+        orders_margin_balance = sum(
+            cast(float, order.get_pnl(new_ticker)) for order in orders
+        )
+        closed_orders_margin_balance = sum(
+            cast(float, order.get_pnl(new_ticker)) for order in closed_orders
+        )
+        return orders_margin_balance + closed_orders_margin_balance
 
     def _close_orders(self, orders: list[Order]):
         order: Order
