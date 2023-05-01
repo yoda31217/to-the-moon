@@ -59,7 +59,8 @@ class Backtester:
                 closed_orders_count_cache = len(closed_orders)
 
             orders_margin_balance = sum(
-                cast(float, order.get_pnl(new_ticker)) for order in orders
+                cast(float, order.calculate_possible_pnl(new_ticker))
+                for order in orders
             )
 
             margin_balance = orders_margin_balance + closed_orders_margin_balance

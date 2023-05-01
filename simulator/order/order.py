@@ -65,19 +65,19 @@ class Order:
         self.is_open = True
         self.roe = None
 
-    def get_pnl(self, new_ticker: MarketTicker) -> float:
+    def calculate_possible_pnl(self, possible_exit_ticker: MarketTicker) -> float:
         if self.pnl != None:
             return self.pnl
         else:
-            exit_price = (
-                new_ticker.ask_price
+            possible_exit_price = (
+                possible_exit_ticker.ask_price
                 if self.side == OrderSide.SELL
-                else new_ticker.bid_price
+                else possible_exit_ticker.bid_price
             )
             return (
-                exit_price - self.entry_price
+                possible_exit_price - self.entry_price
                 if self.side == OrderSide.BUY
-                else self.entry_price - exit_price
+                else self.entry_price - possible_exit_price
             )
 
     def close(self, ticker: MarketTicker):
