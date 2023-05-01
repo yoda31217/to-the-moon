@@ -57,4 +57,4 @@ def build_report():
     report_result.pnl_chart(result, positions_pnl_tab)
     report_result.positions_table(result.positions, positions_tab)
     report_result.balances_chart(result, balance_tab)
-    report_result.tickers_chart(tickers, tickers_tab)
+    report_result.tickers_chart(result.tickers, tickers_tab)
