@@ -32,6 +32,9 @@ class Backtester:
 
         balances = [[0, 0, 0]] * (len(self.tickers))
 
+        closed_orders_count_cache = 0.0
+        closed_orders_margin_balance_cache = 0.0
+
         for new_ticker_index, new_ticker in enumerate(self.tickers):
             self._notify_orders(new_ticker, orders)
 
@@ -41,9 +44,36 @@ class Backtester:
                 self._close_orders(orders)
 
             self._move_orders_to_closed(orders, closed_orders)
-            self._calculate_and_add_balance(
-                orders, closed_orders, balances, new_ticker, new_ticker_index
+
+            # calculate_and_add_balance.START (performance optimisation; inlined)
+
+            closed_orders_margin_balance: float
+
+            if len(closed_orders) == closed_orders_count_cache:
+                closed_orders_margin_balance = closed_orders_margin_balance_cache
+            else:
+                closed_orders_margin_balance = sum(
+                    cast(float, order.get_pnl()) for order in closed_orders
+                )
+                closed_orders_margin_balance_cache = closed_orders_margin_balance
+                closed_orders_count_cache = len(closed_orders)
+
+            orders_margin_balance = sum(
+                cast(float, order.get_pnl(new_ticker)) for order in orders
             )
+
+            margin_balance = orders_margin_balance + closed_orders_margin_balance
+
+            available_balance = margin_balance - sum(
+                order.get_initial_margin() for order in orders if order.is_open()
+            )
+
+            balances[new_ticker_index] = [
+                new_ticker.timestamp,
+                margin_balance,
+                available_balance,
+            ]
+            # calculate_and_add_balance.FINISH
 
         return BacktesterResult(
             closed_orders,
@@ -53,31 +83,6 @@ class Backtester:
                 balances, columns=["timestamp", "margin_balance", "available_balance"]
             ),
         )
-
-    def _calculate_and_add_balance(
-        self, orders, closed_orders: list[Order], balances, new_ticker, new_ticker_index
-    ):
-        margin_balance = self._calculate_margin_balance(
-            orders, closed_orders, new_ticker
-        )
-        available_balance = margin_balance - sum(
-            order.get_initial_margin() for order in orders if order.is_open()
-        )
-
-        balances[new_ticker_index] = [
-            new_ticker.timestamp,
-            margin_balance,
-            available_balance,
-        ]
-
-    def _calculate_margin_balance(self, orders, closed_orders, new_ticker):
-        orders_margin_balance = sum(
-            cast(float, order.get_pnl(new_ticker)) for order in orders
-        )
-        closed_orders_margin_balance = sum(
-            cast(float, order.get_pnl(new_ticker)) for order in closed_orders
-        )
-        return orders_margin_balance + closed_orders_margin_balance
 
     def _close_orders(self, orders: list[Order]):
         order: Order
