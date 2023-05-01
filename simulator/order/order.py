@@ -103,15 +103,10 @@ class Order:
             self.close(new_ticker)
 
     def _should_auto_close(self, possible_exit_ticker: MarketTicker):
-        possible_exit_price = (
-            possible_exit_ticker.ask_price
-            if self.side == OrderSide.SELL
-            else possible_exit_ticker.bid_price
-        )
         possible_pnl = (
-            possible_exit_price - self.entry_price
+            possible_exit_ticker.bid_price - self.entry_price
             if self.side == OrderSide.BUY
-            else self.entry_price - possible_exit_price
+            else self.entry_price - possible_exit_ticker.ask_price
         )
 
         return possible_pnl >= self.tp or possible_pnl <= self.sl
