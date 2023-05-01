@@ -51,8 +51,10 @@ class Order:
     def is_open(self) -> bool:
         return self.exit_ticker == None
 
-    def get_pnl(self) -> float | None:
-        return self._get_pnl(self.exit_ticker)
+    def get_pnl(self, new_ticker: MarketTicker | None = None) -> float | None:
+        return self._get_pnl(
+            self.exit_ticker if self.exit_ticker != None else new_ticker
+        )
 
     def close(self, ticker: MarketTicker):
         self.exit_ticker = ticker

@@ -37,13 +37,35 @@ class TestOrder:
 
         assert order.get_initial_margin() == 200.0
 
-    def test_get_pnl_on_not_closed_return_none(self):
+    def test_get_pnl_on_not_closed_buy_order_return_none(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
 
         assert order.get_pnl() == None
 
-    def test_get_pnl_on_buy_order_return_correct_value(self):
+    def test_get_pnl_on_not_closed_sell_order_return_none(self):
+        entry_ticker = MarketTicker(100, 200.0, 300.0)
+        order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
+
+        assert order.get_pnl() == None
+
+    def test_get_pnl_with_new_ticker_on_not_closed_buy_order_return_correct(self):
+        entry_ticker = MarketTicker(100, 200.0, 300.0)
+        order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
+
+        new_ticker = MarketTicker(200, 1200.0, 1300.0)
+
+        assert order.get_pnl(new_ticker) == 1200.0 - 300.0
+
+    def test_get_pnl_with_new_ticker_on_not_closed_sell_order_return_none(self):
+        entry_ticker = MarketTicker(100, 200.0, 300.0)
+        order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
+
+        new_ticker = MarketTicker(200, 100.0, 150.0)
+
+        assert order.get_pnl(new_ticker) == 200.0 - 150.0
+
+    def test_get_pnl_on_buy_closed_order_return_correct_value(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         exit_ticker = MarketTicker(200, 1200.0, 1300.0)
         order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
@@ -51,13 +73,33 @@ class TestOrder:
 
         assert order.get_pnl() == 1200.0 - 300.0
 
-    def test_get_pnl_on_sell_order_return_correct_value(self):
+    def test_get_pnl_with_new_ticker_on_buy_closed_order_return_correct_value(self):
+        entry_ticker = MarketTicker(100, 200.0, 300.0)
+        exit_ticker = MarketTicker(200, 1200.0, 1300.0)
+        order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
+        order.close(exit_ticker)
+
+        new_ticker = MarketTicker(300, 2500.0, 2600.0)
+
+        assert order.get_pnl(new_ticker) == 1200.0 - 300.0
+
+    def test_get_pnl_on_sell_closed_order_return_correct_value(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         exit_ticker = MarketTicker(200, 100.0, 150.0)
         order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
         order.close(exit_ticker)
 
         assert order.get_pnl() == 200.0 - 150.0
+
+    def test_get_pnl_with_new_ticker_on_sell_closed_order_return_correct_value(self):
+        entry_ticker = MarketTicker(100, 200.0, 300.0)
+        exit_ticker = MarketTicker(200, 100.0, 150.0)
+        order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
+        order.close(exit_ticker)
+
+        new_ticker = MarketTicker(300, 50.0, 60.0)
+
+        assert order.get_pnl(new_ticker) == 200.0 - 150.0
 
     def test_close_set_correct_exit_ticker(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
