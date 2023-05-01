@@ -29,6 +29,28 @@ from pstats import SortKey
 #   5311372    1.104    0.000    1.104    0.000 /Users/nikita/Documents/projects/yoda31217/to-the-moon/simulator/order/order.py:97(_get_exit_price)
 # ====
 # Final:
+# ----
+#          6490161 function calls (6490131 primitive calls) in 1.775 seconds
+#
+#    Ordered by: cumulative time
+#
+#    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+#         1    0.014    0.014    1.775    1.775 /Users/nikita/Documents/projects/yoda31217/to-the-moon/simulator/backtester/backtester.py:29(test)
+#     14636    0.106    0.000    1.009    0.000 {built-in method builtins.sum}
+#   1023785    0.335    0.000    0.753    0.000 /Users/nikita/Documents/projects/yoda31217/to-the-moon/simulator/backtester/backtester.py:61(<genexpr>)
+#      7200    0.145    0.000    0.617    0.000 /Users/nikita/Documents/projects/yoda31217/to-the-moon/simulator/backtester/backtester.py:103(_notify_orders)
+#   1016585    0.189    0.000    0.472    0.000 /Users/nikita/Documents/projects/yoda31217/to-the-moon/simulator/order/order.py:98(notify)
+#   1016585    0.358    0.000    0.358    0.000 /Users/nikita/Documents/projects/yoda31217/to-the-moon/simulator/order/order.py:68(calculate_possible_pnl)
+#   1016585    0.282    0.000    0.282    0.000 /Users/nikita/Documents/projects/yoda31217/to-the-moon/simulator/order/order.py:105(_should_auto_close)
+#   1023785    0.119    0.000    0.119    0.000 /Users/nikita/Documents/projects/yoda31217/to-the-moon/simulator/backtester/backtester.py:68(<genexpr>)
+#      7200    0.007    0.000    0.110    0.000 /Users/nikita/Documents/projects/yoda31217/to-the-moon/simulator/backtester/backtester.py:94(_move_orders_to_closed)
+#   1139923    0.065    0.000    0.065    0.000 /opt/homebrew/Cellar/python@3.11/3.11.3/Frameworks/Python.framework/Versions/3.11/lib/python3.11/typing.py:2233(cast)
+#      7200    0.061    0.000    0.061    0.000 /Users/nikita/Documents/projects/yoda31217/to-the-moon/simulator/backtester/backtester.py:99(<listcomp>)
+#      7200    0.040    0.000    0.040    0.000 /Users/nikita/Documents/projects/yoda31217/to-the-moon/simulator/backtester/backtester.py:96(<listcomp>)
+#    119520    0.026    0.000    0.031    0.000 /Users/nikita/Documents/projects/yoda31217/to-the-moon/simulator/backtester/backtester.py:55(<genexpr>)
+#      7200    0.004    0.000    0.016    0.000 /Users/nikita/Documents/projects/yoda31217/to-the-moon/simulator/bot/bot_one_step_order.py:36(process_ticker)
+#      1337    0.002    0.000    0.008    0.000 /Users/nikita/Documents/projects/yoda31217/to-the-moon/simulator/order/order.py:31(__init__)
+# ====
 
 symbol = "ETHUSDT"
 date_from = date.fromisoformat("2023-04-23")
