@@ -65,7 +65,7 @@ class Backtester:
             margin_balance = orders_margin_balance + closed_orders_margin_balance
 
             available_balance = margin_balance - sum(
-                order.initial_margin for order in orders if order.is_open()
+                order.initial_margin for order in orders if order.is_open
             )
 
             balances[new_ticker_index] = [
@@ -87,15 +87,15 @@ class Backtester:
     def _close_orders(self, orders: list[Order]):
         order: Order
         for order in orders:
-            if order.is_open():
+            if order.is_open:
                 order.close(self.tickers[-1])
 
     @staticmethod
     def _move_orders_to_closed(orders: list[Order], closed_orders: list[Order]):
-        new_closed_orders = [order for order in orders if not order.is_open()]
+        new_closed_orders = [order for order in orders if not order.is_open]
         closed_orders.extend(new_closed_orders)
 
-        open_orders = [order for order in orders if order.is_open()]
+        open_orders = [order for order in orders if order.is_open]
         orders.clear()
         orders.extend(open_orders)
 

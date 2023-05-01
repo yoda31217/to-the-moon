@@ -13,7 +13,7 @@ class TestOrder:
         assert order.side == OrderSide.BUY
         assert order.entry_ticker == entry_ticker
         assert order.exit_ticker == None
-        assert order.is_open()
+        assert order.is_open
         assert order.tp_to_entry_price_ratio == 0.5
         assert order.sl_to_entry_price_ratio == -1.5
 
@@ -115,7 +115,7 @@ class TestOrder:
         order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
         order.close(exit_ticker)
 
-        assert not order.is_open()
+        assert not order.is_open
 
     def test_entry_price_on_buy_return_correct(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
@@ -159,7 +159,7 @@ class TestOrder:
 
         order.notify(new_ticker)
 
-        assert order.is_open()
+        assert order.is_open
         assert order.exit_ticker == None
 
     def test_do_close_buy_order_after_notify_with_equal_to_tp(self):
@@ -170,7 +170,7 @@ class TestOrder:
 
         order.notify(new_ticker)
 
-        assert not order.is_open()
+        assert not order.is_open
         assert order.exit_ticker == new_ticker
 
     def test_do_not_close_buy_order_after_notify_with_more_than_sl(self):
@@ -181,7 +181,7 @@ class TestOrder:
 
         order.notify(new_ticker)
 
-        assert order.is_open()
+        assert order.is_open
         assert order.exit_ticker == None
 
     def test_do_close_buy_order_after_notify_with_equal_to_sl(self):
@@ -192,7 +192,7 @@ class TestOrder:
 
         order.notify(new_ticker)
 
-        assert not order.is_open()
+        assert not order.is_open
         assert order.exit_ticker == new_ticker
 
     def test_do_not_close_sell_order_after_notify_with_less_than_tp(self):
@@ -203,7 +203,7 @@ class TestOrder:
 
         order.notify(new_ticker)
 
-        assert order.is_open()
+        assert order.is_open
         assert order.exit_ticker == None
 
     def test_do_close_sell_order_after_notify_with_equal_to_tp(self):
@@ -214,7 +214,7 @@ class TestOrder:
 
         order.notify(new_ticker)
 
-        assert not order.is_open()
+        assert not order.is_open
         assert order.exit_ticker == new_ticker
 
     def test_do_not_close_sell_order_after_notify_with_more_than_sl(self):
@@ -225,7 +225,7 @@ class TestOrder:
 
         order.notify(new_ticker)
 
-        assert order.is_open()
+        assert order.is_open
         assert order.exit_ticker == None
 
     def test_do_close_sell_order_after_notify_with_equal_to_sl(self):
@@ -236,7 +236,7 @@ class TestOrder:
 
         order.notify(new_ticker)
 
-        assert not order.is_open()
+        assert not order.is_open
         assert order.exit_ticker == new_ticker
 
     def test_do_not_auto_close_again_order_on_notify(self):
@@ -249,7 +249,7 @@ class TestOrder:
 
         order.notify(new_ticker)
 
-        assert not order.is_open()
+        assert not order.is_open
         assert order.exit_ticker == exit_ticker
 
     def test_get_roe_on_open_return_none(self):

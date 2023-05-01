@@ -25,6 +25,7 @@ class Order:
     pnl: float | None
     tp: float
     sl: float
+    is_open: bool
 
     def __init__(
         self,
@@ -60,9 +61,7 @@ class Order:
         self.pnl = None
         self.tp = tp_to_entry_price_ratio * self.entry_price
         self.sl = sl_to_entry_price_ratio * self.entry_price
-
-    def is_open(self) -> bool:
-        return self.exit_ticker == None
+        self.is_open = True
 
     def get_pnl(self, new_ticker: MarketTicker | None = None) -> float | None:
         if self.pnl != None:
@@ -92,9 +91,10 @@ class Order:
             if self.side == OrderSide.BUY
             else self.entry_price - exit_price
         )
+        self.is_open = False
 
     def notify(self, new_ticker: MarketTicker):
-        if not self.is_open():
+        if not self.is_open:
             return
 
         if self._should_auto_close(new_ticker):
