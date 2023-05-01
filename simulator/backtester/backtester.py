@@ -33,19 +33,23 @@ class Backtester:
             {
                 "timestamp": [],
                 "margin_balance": [],
+                "available_balance": [],
             }
         )
 
         for new_ticker in self.tickers:
             self._notify_orders(new_ticker, orders)
-            self._move_orders_to_closed(orders, closed_orders)
 
             bot.process_ticker(new_ticker, orders, closed_orders)
 
+            self._move_orders_to_closed(orders, closed_orders)
             self._calculate_and_add_balance(orders, closed_orders, balances, new_ticker)
 
         self._close_orders(orders)
         self._move_orders_to_closed(orders, closed_orders)
+        self._calculate_and_add_balance(
+            orders, closed_orders, balances, self.tickers[-1]
+        )
 
         return BacktesterResult(
             closed_orders,
@@ -54,12 +58,22 @@ class Backtester:
             balances,
         )
 
-    def _calculate_and_add_balance(self, orders, closed_orders, balances, new_ticker):
+    def _calculate_and_add_balance(
+        self, orders, closed_orders: list[Order], balances, new_ticker
+    ):
+        margin_balance = self._calculate_margin_balance(
+            orders, closed_orders, new_ticker
+        )
+        available_balance = margin_balance - sum(
+            order.get_initial_margin() for order in orders if order.is_open()
+        )
+
         data_frame_add_row(
             balances,
             [
                 new_ticker.timestamp,
-                self._calculate_margin_balance(orders, closed_orders, new_ticker),
+                margin_balance,
+                available_balance,
             ],
         )
 

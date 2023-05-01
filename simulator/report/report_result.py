@@ -122,14 +122,28 @@ def pnl_chart(
 
 
 def balances_chart(result: BacktesterResult, tab: DeltaGenerator):
-    report_chart.line(
-        tab,
-        result.balances,
-        "timestamp",
-        "margin_balance",
-        "Margin Balance, $",
-        samples_count=100_000,
-    )
+    balance_chart_type = report_input.balance_chart_type(tab)
+    
+    match balance_chart_type:
+        case "Margin Balance":
+            report_chart.line(
+                tab,
+                result.balances,
+                "timestamp",
+                "margin_balance",
+                "Margin Balance, $",
+                samples_count=100_000,
+            )
+        case _:
+            report_chart.line(
+                tab,
+                result.balances,
+                "timestamp",
+                "available_balance",
+                "Available Balance, $",
+                samples_count=100_000,
+            )
+
 
 
 def positions_table(positions: pd.DataFrame, tab: DeltaGenerator):

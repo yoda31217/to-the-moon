@@ -84,6 +84,15 @@ def pnl_chart_type(tab: DeltaGenerator):
     )
 
 
+def balance_chart_type(tab: DeltaGenerator):
+    return tab.radio(
+        "Balance chart type",
+        ("Available Balance", "Margin Balance"),
+        horizontal=True,
+        label_visibility="collapsed",
+    )
+
+
 def positions_sort_timestamp_column():
     return cast(
         str,
