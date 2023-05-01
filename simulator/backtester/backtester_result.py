@@ -54,7 +54,7 @@ class BacktesterResult:
                     (closed_order.side.name for closed_order in closed_orders)
                 ),
                 "entry_price": list(
-                    (closed_order.get_entry_price() for closed_order in closed_orders)
+                    (closed_order.entry_price for closed_order in closed_orders)
                 ),
                 "exit_price": list(
                     (closed_order.get_exit_price() for closed_order in closed_orders)
@@ -63,7 +63,7 @@ class BacktesterResult:
                     (
                         abs(
                             cast(float, closed_order.get_exit_price())
-                            - closed_order.get_entry_price()
+                            - closed_order.entry_price
                         )
                         for closed_order in closed_orders
                     )

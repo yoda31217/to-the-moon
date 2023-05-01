@@ -103,9 +103,6 @@ class Order:
         if self._should_auto_close(new_ticker):
             self.close(new_ticker)
 
-    def get_entry_price(self) -> float:
-        return self.entry_price
-
     def get_exit_price(self) -> float | None:
         return self.exit_price
 

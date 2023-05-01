@@ -117,17 +117,17 @@ class TestOrder:
 
         assert not order.is_open()
 
-    def test_get_entry_price_on_buy_return_correct(self):
+    def test_entry_price_on_buy_return_correct(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
 
-        assert order.get_entry_price() == 300.0
+        assert order.entry_price == 300.0
 
-    def test_get_entry_price_on_sell_return_correct(self):
+    def test_entry_price_on_sell_return_correct(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
 
-        assert order.get_entry_price() == 200.0
+        assert order.entry_price == 200.0
 
     def test_get_exit_price_on_open_return_none(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
