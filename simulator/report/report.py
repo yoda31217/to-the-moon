@@ -45,9 +45,16 @@ def build_report():
     )
     result = Backtester(tickers).test(bot, positions_sort_timestamp_column)
 
-    report_result.summary(symbol, date_from, date_to, bot, result)
-    report_result.tickers_chart(tickers)
-    st.header(f"Positions")
-    report_result.pnl_chart(result)
-    report_result.balances_chart(result)
-    report_result.positions_table(result.positions)
+    (
+        summary_tab,
+        positions_tab,
+        positions_pnl_tab,
+        balance_tab,
+        tickers_tab,
+    ) = st.tabs(["Summary", "Positions", "Positions PNL", "Balance", "Tickers"])
+
+    report_result.summary(symbol, date_from, date_to, bot, result, summary_tab)
+    report_result.pnl_chart(result, positions_pnl_tab)
+    report_result.positions_table(result.positions, positions_tab)
+    report_result.balances_chart(result, balance_tab)
+    report_result.tickers_chart(tickers, tickers_tab)

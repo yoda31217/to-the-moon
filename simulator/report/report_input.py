@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 from typing import cast
 import streamlit as st
+from streamlit.delta_generator import DeltaGenerator
 
 
 def symbol():
@@ -74,8 +75,8 @@ def bid_ask_spread():
     return st.sidebar.number_input("Bid-Ask spread", value=0.01)
 
 
-def pnl_chart_type():
-    return st.radio(
+def pnl_chart_type(tab: DeltaGenerator):
+    return tab.radio(
         "PNL chart type",
         ("cumulative PNL sum", "PNL sum"),
         horizontal=True,

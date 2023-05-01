@@ -8,6 +8,7 @@ import report.report_chart as report_chart
 from backtester.backtester_result import BacktesterResult
 
 from bot.bot import Bot
+from streamlit.delta_generator import DeltaGenerator
 
 
 def summary(
@@ -16,9 +17,9 @@ def summary(
     date_to: date,
     bot: Bot,
     result: BacktesterResult,
+    tab: DeltaGenerator,
 ):
-    st.header(f"Summary")
-    st.table(
+    tab.table(
         pd.DataFrame(
             {
                 "Property": [
@@ -74,9 +75,12 @@ def summary(
     )
 
 
-def tickers_chart(tickers: pd.DataFrame):
-    st.header(f"Ask Price")
+def tickers_chart(
+    tickers: pd.DataFrame,
+    tab: DeltaGenerator,
+):
     report_chart.line(
+        tab,
         tickers,
         "timestamp",
         "ask_price",
@@ -85,14 +89,17 @@ def tickers_chart(tickers: pd.DataFrame):
     )
 
 
-def pnl_chart(result: BacktesterResult):
-    st.subheader(f"PNL")
+def pnl_chart(
+    result: BacktesterResult,
+    tab: DeltaGenerator,
+):
     if result.get_positions_count() > 0:
-        pnl_chart_type = report_input.pnl_chart_type()
+        pnl_chart_type = report_input.pnl_chart_type(tab)
 
         match pnl_chart_type:
             case "PNL sum":
                 report_chart.bars(
+                    tab,
                     result.positions,
                     result.positions_sort_timestamp_column,
                     "pnl",
@@ -101,6 +108,7 @@ def pnl_chart(result: BacktesterResult):
                 )
             case _:
                 report_chart.line(
+                    tab,
                     result.positions,
                     result.positions_sort_timestamp_column,
                     "pnl",
@@ -110,13 +118,12 @@ def pnl_chart(result: BacktesterResult):
                 )
 
     else:
-        st.text("There were NO positions! 😕")
+        tab.text("There were NO positions! 😕")
 
 
-def balances_chart(result: BacktesterResult):
-    st.subheader(f"Balances")
-    st.dataframe(result.balances)
+def balances_chart(result: BacktesterResult, tab: DeltaGenerator):
     report_chart.line(
+        tab,
         result.balances,
         "timestamp",
         "margin_balance",
@@ -125,6 +132,5 @@ def balances_chart(result: BacktesterResult):
     )
 
 
-def positions_table(positions: pd.DataFrame):
-    st.subheader(f"Positions")
-    st.dataframe(positions)
+def positions_table(positions: pd.DataFrame, tab: DeltaGenerator):
+    tab.dataframe(positions)

@@ -1,10 +1,12 @@
 import altair as alt
 import pandas as pd
 import streamlit as st
+from streamlit.delta_generator import DeltaGenerator
 
 
 # TODO fix types
 def line(
+    tab: DeltaGenerator,
     data_frame: pd.DataFrame,
     timestamp_column_name: str,
     value_column_name: str,
@@ -23,7 +25,7 @@ def line(
         }
     )
 
-    st.altair_chart(
+    tab.altair_chart(
         alt.Chart(formatted_data_frame)  # type: ignore
         .mark_line(interpolate="step-after")  # type: ignore
         .encode(
@@ -45,6 +47,7 @@ def line(
 
 
 def bars(
+    tab: DeltaGenerator,
     data_frame: pd.DataFrame,
     timestamp_column_name: str,
     value_column_name: str,
@@ -58,7 +61,7 @@ def bars(
         }
     )
 
-    st.altair_chart(
+    tab.altair_chart(
         alt.Chart(formatted_data_frame)  # type: ignore
         .mark_bar()  # type: ignore
         .encode(
