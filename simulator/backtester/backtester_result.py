@@ -72,7 +72,7 @@ class BacktesterResult:
                     (closed_order.initial_margin for closed_order in closed_orders)
                 ),
                 "pnl": list((closed_order.get_pnl() for closed_order in closed_orders)),
-                "roe": list((closed_order.get_roe() for closed_order in closed_orders)),
+                "roe": list((closed_order.roe for closed_order in closed_orders)),
             }
         ).sort_values(by=[positions_sort_timestamp_column])
 

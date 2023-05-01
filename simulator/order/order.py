@@ -26,6 +26,7 @@ class Order:
     tp: float
     sl: float
     is_open: bool
+    roe: float | None
 
     def __init__(
         self,
@@ -62,6 +63,7 @@ class Order:
         self.tp = tp_to_entry_price_ratio * self.entry_price
         self.sl = sl_to_entry_price_ratio * self.entry_price
         self.is_open = True
+        self.roe = None
 
     def get_pnl(self, new_ticker: MarketTicker | None = None) -> float | None:
         if self.pnl != None:
@@ -86,11 +88,13 @@ class Order:
             ticker.ask_price if self.side == OrderSide.SELL else ticker.bid_price
         )
         self.exit_price = exit_price
-        self.pnl = (
+        pnl = (
             exit_price - self.entry_price
             if self.side == OrderSide.BUY
             else self.entry_price - exit_price
         )
+        self.pnl = pnl
+        self.roe = pnl / self.initial_margin
         self.is_open = False
 
     def notify(self, new_ticker: MarketTicker):
@@ -99,12 +103,6 @@ class Order:
 
         if self._should_auto_close(new_ticker):
             self.close(new_ticker)
-
-    def get_roe(self) -> float | None:
-        if self.get_pnl() == None:
-            return None
-
-        return cast(float, self.get_pnl()) / self.initial_margin
 
     def _should_auto_close(self, possible_exit_ticker: MarketTicker):
         possible_exit_price = (

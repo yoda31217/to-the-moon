@@ -252,24 +252,24 @@ class TestOrder:
         assert not order.is_open
         assert order.exit_ticker == exit_ticker
 
-    def test_get_roe_on_open_return_none(self):
+    def test_roe_on_open_return_none(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         order = Order(entry_ticker, OrderSide.BUY, 999999, -999999)
 
-        assert order.get_roe() is None
+        assert order.roe is None
 
-    def test_get_roe_on_closed_buy_order_return_correct_value(self):
+    def test_roe_on_closed_buy_order_return_correct_value(self):
         entry_ticker = MarketTicker(100, 90.0, 100.0)
         exit_ticker = MarketTicker(200, 120.0, 130.0)
         order = Order(entry_ticker, OrderSide.BUY, 999999, -999999)
         order.close(exit_ticker)
 
-        assert order.get_roe() == 0.2
+        assert order.roe == 0.2
 
-    def test_get_roe_on_closed_sell_order_return_correct_value(self):
+    def test_roe_on_closed_sell_order_return_correct_value(self):
         entry_ticker = MarketTicker(200, 100.0, 110.0)
         exit_ticker = MarketTicker(100, 70.0, 80.0)
         order = Order(entry_ticker, OrderSide.SELL, 999999, -999999)
         order.close(exit_ticker)
 
-        assert order.get_roe() == 0.2
+        assert order.roe == 0.2
