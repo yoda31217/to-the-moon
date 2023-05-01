@@ -19,16 +19,20 @@ class Order:
     tp_to_entry_price_ratio: float
     sl_to_entry_price_ratio: float
 
+    entry_price: float
+    exit_price: float | None
+    initial_margin: float
+
     def __init__(
         self,
-        open_tick: MarketTicker,
+        entry_ticker: MarketTicker,
         side: OrderSide,
         tp_to_entry_price_ratio: float,
         sl_to_entry_price_ratio: float,
     ):
         self.id = uuid.uuid4()
         self.side = side
-        self.entry_ticker = open_tick
+        self.entry_ticker = entry_ticker
         self.exit_ticker = None
         self.tp_to_entry_price_ratio = tp_to_entry_price_ratio
         self.sl_to_entry_price_ratio = sl_to_entry_price_ratio
@@ -45,8 +49,14 @@ class Order:
                 + f" but was: ${self.tp_to_entry_price_ratio}."
             )
 
+        self.entry_price = (
+            entry_ticker.bid_price if side == OrderSide.SELL else entry_ticker.ask_price
+        )
+        self.exit_price = None
+        self.initial_margin = self.entry_price
+
     def get_initial_margin(self):
-        return self.get_entry_price()
+        return self.initial_margin
 
     def is_open(self) -> bool:
         return self.exit_ticker == None
@@ -70,6 +80,9 @@ class Order:
 
     def close(self, ticker: MarketTicker):
         self.exit_ticker = ticker
+        self.exit_price = (
+            ticker.ask_price if self.side == OrderSide.SELL else ticker.bid_price
+        )
 
     def notify(self, new_ticker: MarketTicker):
         if not self.is_open():
@@ -79,14 +92,10 @@ class Order:
             self.close(new_ticker)
 
     def get_entry_price(self) -> float:
-        return (
-            self.entry_ticker.bid_price
-            if self.side == OrderSide.SELL
-            else self.entry_ticker.ask_price
-        )
+        return self.entry_price
 
     def get_exit_price(self) -> float | None:
-        return self._get_exit_price(self.exit_ticker)
+        return self.exit_price
 
     def get_roe(self) -> float | None:
         if self.get_pnl() == None:
