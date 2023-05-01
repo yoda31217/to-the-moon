@@ -37,16 +37,13 @@ class Backtester:
 
             bot.process_ticker(new_ticker, orders, closed_orders)
 
+            if new_ticker_index == len(self.tickers) - 1:
+                self._close_orders(orders)
+
             self._move_orders_to_closed(orders, closed_orders)
             self._calculate_and_add_balance(
                 orders, closed_orders, balances, new_ticker, new_ticker_index
             )
-
-        self._close_orders(orders)
-        self._move_orders_to_closed(orders, closed_orders)
-        self._calculate_and_add_balance(
-            orders, closed_orders, balances, self.tickers[-1], -1
-        )
 
         return BacktesterResult(
             closed_orders,
