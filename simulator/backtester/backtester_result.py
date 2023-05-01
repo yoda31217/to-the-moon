@@ -9,12 +9,14 @@ class BacktesterResult:
     positions: pd.DataFrame
     tickers: pd.DataFrame
     positions_sort_timestamp_column: str
+    balances: pd.DataFrame
 
     def __init__(
         self,
         closed_orders: list[Order],
         tickers: pd.DataFrame,
         positions_sort_timestamp_column: str,
+        balances: pd.DataFrame,
     ) -> None:
         super().__init__()
         self.tickers = tickers
@@ -22,6 +24,7 @@ class BacktesterResult:
             closed_orders, positions_sort_timestamp_column
         )
         self.positions_sort_timestamp_column = positions_sort_timestamp_column
+        self.balances = balances
 
     def _to_positions(
         self, closed_orders: list[Order], positions_sort_timestamp_column: str

@@ -113,6 +113,18 @@ def pnl_chart(result: BacktesterResult):
         st.text("There were NO positions! 😕")
 
 
+def balances_chart(result: BacktesterResult):
+    st.subheader(f"Balances")
+    st.dataframe(result.balances)
+    report_chart.line(
+        result.balances,
+        "timestamp",
+        "margin_balance",
+        "Margin Balance, $",
+        samples_count=100_000,
+    )
+
+
 def positions_table(positions: pd.DataFrame):
     st.subheader(f"Positions")
     st.dataframe(positions)

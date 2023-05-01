@@ -29,9 +29,18 @@ class Backtester:
         orders: list[Order] = []
         closed_orders: list[Order] = []
 
+        balances = pd.DataFrame(
+            {
+                "timestamp": [],
+                "margin_balance": [],
+            }
+        )
+
         for new_ticker in self.tickers:
             self._notify_orders(new_ticker, orders)
             self._move_orders_to_closed(orders, closed_orders)
+
+            balances.loc[len(balances.index)] = [new_ticker.timestamp, new_ticker.timestamp] 
 
             bot.process_ticker(new_ticker, orders, closed_orders)
 
@@ -39,7 +48,10 @@ class Backtester:
         self._move_orders_to_closed(orders, closed_orders)
 
         return BacktesterResult(
-            closed_orders, self.tickers_data_frame, positions_sort_timestamp_column
+            closed_orders,
+            self.tickers_data_frame,
+            positions_sort_timestamp_column,
+            balances,
         )
 
     def _close_orders(self, orders: list[Order]):

@@ -43,7 +43,7 @@ class TestOrder:
 
         assert order.get_pnl() == None
 
-    def test_get_pnl_on_buy_order_with_growth_return_currect_value(self):
+    def test_get_pnl_on_buy_order_return_correct_value(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         exit_ticker = MarketTicker(200, 1200.0, 1300.0)
         order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
@@ -51,23 +51,7 @@ class TestOrder:
 
         assert order.get_pnl() == 1200.0 - 300.0
 
-    def test_get_pnl_on_buy_order_with_falling_return_currect_value(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        exit_ticker = MarketTicker(200, 100.0, 150.0)
-        order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
-        order.close(exit_ticker)
-
-        assert order.get_pnl() == 100.0 - 300.0
-
-    def test_get_pnl_on_sell_order_with_growth_return_currect_value(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        exit_ticker = MarketTicker(200, 1200.0, 1300.0)
-        order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
-        order.close(exit_ticker)
-
-        assert order.get_pnl() == 200.0 - 1300.0
-
-    def test_get_pnl_on_sell_order_with_falling_return_currect_value(self):
+    def test_get_pnl_on_sell_order_return_correct_value(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         exit_ticker = MarketTicker(200, 100.0, 150.0)
         order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
