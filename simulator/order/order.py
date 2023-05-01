@@ -22,6 +22,9 @@ class Order:
     entry_price: float
     exit_price: float | None
     initial_margin: float
+    pnl: float | None
+    tp: float
+    sl: float
 
     def __init__(
         self,
@@ -54,6 +57,9 @@ class Order:
         )
         self.exit_price = None
         self.initial_margin = self.entry_price
+        self.pnl = None
+        self.tp = tp_to_entry_price_ratio * self.entry_price
+        self.sl = sl_to_entry_price_ratio * self.entry_price
 
     def get_initial_margin(self):
         return self.initial_margin
@@ -62,26 +68,32 @@ class Order:
         return self.exit_ticker == None
 
     def get_pnl(self, new_ticker: MarketTicker | None = None) -> float | None:
-        exit_price = (
-            self._get_exit_price(self.exit_ticker)
-            if self.exit_ticker != None
-            else self._get_exit_price(new_ticker)
-        )
-
-        if exit_price == None:
+        if self.pnl != None:
+            return self.pnl
+        elif new_ticker == None:
             return None
-
-        entry_price = self.get_entry_price()
-        return (
-            exit_price - entry_price
-            if self.side == OrderSide.BUY
-            else entry_price - exit_price
-        )
+        else:
+            exit_price = (
+                new_ticker.ask_price
+                if self.side == OrderSide.SELL
+                else new_ticker.bid_price
+            )
+            return (
+                exit_price - self.entry_price
+                if self.side == OrderSide.BUY
+                else self.entry_price - exit_price
+            )
 
     def close(self, ticker: MarketTicker):
         self.exit_ticker = ticker
-        self.exit_price = (
+        exit_price = (
             ticker.ask_price if self.side == OrderSide.SELL else ticker.bid_price
+        )
+        self.exit_price = exit_price
+        self.pnl = (
+            exit_price - self.entry_price
+            if self.side == OrderSide.BUY
+            else self.entry_price - exit_price
         )
 
     def notify(self, new_ticker: MarketTicker):
@@ -103,23 +115,16 @@ class Order:
 
         return cast(float, self.get_pnl()) / self.get_initial_margin()
 
-    def _get_exit_price(self, possible_exit_ticker: MarketTicker | None):
-        if possible_exit_ticker == None:
-            return None
-
-        return (
+    def _should_auto_close(self, possible_exit_ticker: MarketTicker):
+        possible_exit_price = (
             possible_exit_ticker.ask_price
             if self.side == OrderSide.SELL
             else possible_exit_ticker.bid_price
         )
-
-    def _should_auto_close(self, possible_exit_ticker: MarketTicker):
-        pnl = self.get_pnl(possible_exit_ticker)
-        assert pnl is not None
-
-        pnl_to_entry_price_ratio = pnl / self.get_entry_price()
-
-        return (
-            pnl_to_entry_price_ratio >= self.tp_to_entry_price_ratio
-            or pnl_to_entry_price_ratio <= self.sl_to_entry_price_ratio
+        possible_pnl = (
+            possible_exit_price - self.entry_price
+            if self.side == OrderSide.BUY
+            else self.entry_price - possible_exit_price
         )
+
+        return possible_pnl >= self.tp or possible_pnl <= self.sl
