@@ -1,5 +1,4 @@
-import typing
-
+from typing import NamedTuple, cast
 import pandas as pd
 from backtester.backtester_result import BacktesterResult
 
@@ -7,7 +6,7 @@ from order.order import Order
 from bot.bot import Bot
 from market.market_ticker import MarketTicker
 
-TickersDataFrameRowTuple = typing.NamedTuple(
+TickersDataFrameRowTuple = NamedTuple(
     "Employee", timestamp=int, bid_price=float, ask_price=float
 )
 
@@ -40,9 +39,16 @@ class Backtester:
             self._notify_orders(new_ticker, orders)
             self._move_orders_to_closed(orders, closed_orders)
 
-            balances.loc[len(balances.index)] = [new_ticker.timestamp, new_ticker.timestamp] 
-
             bot.process_ticker(new_ticker, orders, closed_orders)
+
+            margin_balance = sum(
+                cast(float, order.get_pnl(new_ticker)) for order in orders
+            ) + sum(cast(float, order.get_pnl(new_ticker)) for order in closed_orders)
+
+            balances.loc[len(balances.index)] = [
+                new_ticker.timestamp,
+                margin_balance,
+            ]
 
         self._close_orders(orders)
         self._move_orders_to_closed(orders, closed_orders)

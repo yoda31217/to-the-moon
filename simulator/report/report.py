@@ -49,4 +49,5 @@ def build_report():
     report_result.tickers_chart(tickers)
     st.header(f"Positions")
     report_result.pnl_chart(result)
+    report_result.balances_chart(result)
     report_result.positions_table(result.positions)
