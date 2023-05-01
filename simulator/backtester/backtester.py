@@ -1,3 +1,4 @@
+import timeit
 from typing import NamedTuple, cast
 import pandas as pd
 from backtester.backtester_result import BacktesterResult
@@ -29,37 +30,35 @@ class Backtester:
         orders: list[Order] = []
         closed_orders: list[Order] = []
 
-        balances = pd.DataFrame(
-            {
-                "timestamp": [],
-                "margin_balance": [],
-                "available_balance": [],
-            }
-        )
+        balances = [[0, 0, 0]] * (len(self.tickers))
 
-        for new_ticker in self.tickers:
+        for new_ticker_index, new_ticker in enumerate(self.tickers):
             self._notify_orders(new_ticker, orders)
 
             bot.process_ticker(new_ticker, orders, closed_orders)
 
             self._move_orders_to_closed(orders, closed_orders)
-            self._calculate_and_add_balance(orders, closed_orders, balances, new_ticker)
+            self._calculate_and_add_balance(
+                orders, closed_orders, balances, new_ticker, new_ticker_index
+            )
 
         self._close_orders(orders)
         self._move_orders_to_closed(orders, closed_orders)
         self._calculate_and_add_balance(
-            orders, closed_orders, balances, self.tickers[-1]
+            orders, closed_orders, balances, self.tickers[-1], -1
         )
 
         return BacktesterResult(
             closed_orders,
             self.tickers_data_frame,
             positions_sort_timestamp_column,
-            balances,
+            pd.DataFrame(
+                balances, columns=["timestamp", "margin_balance", "available_balance"]
+            ),
         )
 
     def _calculate_and_add_balance(
-        self, orders, closed_orders: list[Order], balances, new_ticker
+        self, orders, closed_orders: list[Order], balances, new_ticker, new_ticker_index
     ):
         margin_balance = self._calculate_margin_balance(
             orders, closed_orders, new_ticker
@@ -68,14 +67,11 @@ class Backtester:
             order.get_initial_margin() for order in orders if order.is_open()
         )
 
-        data_frame_add_row(
-            balances,
-            [
-                new_ticker.timestamp,
-                margin_balance,
-                available_balance,
-            ],
-        )
+        balances[new_ticker_index] = [
+            new_ticker.timestamp,
+            margin_balance,
+            available_balance,
+        ]
 
     def _calculate_margin_balance(self, orders, closed_orders, new_ticker):
         orders_margin_balance = sum(
