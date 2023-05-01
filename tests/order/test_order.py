@@ -129,27 +129,27 @@ class TestOrder:
 
         assert order.entry_price == 200.0
 
-    def test_get_exit_price_on_open_return_none(self):
+    def test_exit_price_on_open_return_none(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
 
-        assert order.get_exit_price() is None
+        assert order.exit_price is None
 
-    def test_get_exit_price_on_buy_return_correct(self):
+    def test_exit_price_on_buy_return_correct(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         exit_ticker = MarketTicker(200, 100.0, 150.0)
         order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
         order.close(exit_ticker)
 
-        assert order.get_exit_price() == 100.0
+        assert order.exit_price == 100.0
 
-    def test_get_exit_price_on_sell_return_correct(self):
+    def test_exit_price_on_sell_return_correct(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         exit_ticker = MarketTicker(200, 100.0, 150.0)
         order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
         order.close(exit_ticker)
 
-        assert order.get_exit_price() == 150.0
+        assert order.exit_price == 150.0
 
     def test_do_not_close_buy_order_after_notify_with_less_than_tp(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
