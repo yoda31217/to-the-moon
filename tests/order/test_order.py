@@ -25,18 +25,6 @@ class TestOrder:
         with pytest.raises(ValueError):
             Order(MarketTicker(100, 200.0, 300.0), OrderSide.BUY, -0.5, -1.5)
 
-    def test_initial_margin_on_buy_order_return_correct_value(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
-
-        assert order.initial_margin == 300.0
-
-    def test_initial_margin_on_sell_order_return_correct_value(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
-
-        assert order.initial_margin == 200.0
-
     def test_pnl_on_not_closed_buy_order_return_none(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
@@ -69,14 +57,6 @@ class TestOrder:
 
         assert order.calculate_possible_pnl(new_ticker) == 200.0 - 150.0
 
-    def test_pnl_on_buy_closed_order_return_correct_value(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        exit_ticker = MarketTicker(200, 1200.0, 1300.0)
-        order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
-        order.close(exit_ticker)
-
-        assert order.pnl == 1200.0 - 300.0
-
     def test_calculate_possible_pnl_with_new_ticker_on_buy_closed_order_return_correct_value(
         self,
     ):
@@ -88,14 +68,6 @@ class TestOrder:
         new_ticker = MarketTicker(300, 2500.0, 2600.0)
 
         assert order.calculate_possible_pnl(new_ticker) == 1200.0 - 300.0
-
-    def test_pnl_on_sell_closed_order_return_correct_value(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        exit_ticker = MarketTicker(200, 100.0, 150.0)
-        order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
-        order.close(exit_ticker)
-
-        assert order.pnl == 200.0 - 150.0
 
     def test_calculate_possible_pnl_with_new_ticker_on_sell_closed_order_return_correct_value(
         self,
@@ -117,47 +89,11 @@ class TestOrder:
 
         assert order.exit_ticker == exit_ticker
 
-    def test_is_open_after_close_return_false(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        exit_ticker = MarketTicker(200, 100.0, 150.0)
-        order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
-        order.close(exit_ticker)
-
-        assert not order.is_open
-
-    def test_entry_price_on_buy_return_correct(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
-
-        assert order.entry_price == 300.0
-
-    def test_entry_price_on_sell_return_correct(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
-
-        assert order.entry_price == 200.0
-
     def test_exit_price_on_open_return_none(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
 
         assert order.exit_price is None
-
-    def test_exit_price_on_buy_return_correct(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        exit_ticker = MarketTicker(200, 100.0, 150.0)
-        order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
-        order.close(exit_ticker)
-
-        assert order.exit_price == 100.0
-
-    def test_exit_price_on_sell_return_correct(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        exit_ticker = MarketTicker(200, 100.0, 150.0)
-        order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
-        order.close(exit_ticker)
-
-        assert order.exit_price == 150.0
 
     def test_do_not_close_buy_order_after_notify_with_less_than_tp(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
@@ -266,18 +202,47 @@ class TestOrder:
 
         assert order.roe is None
 
-    def test_roe_on_closed_buy_order_return_correct_value(self):
-        entry_ticker = MarketTicker(100, 90.0, 100.0)
-        exit_ticker = MarketTicker(200, 120.0, 130.0)
-        order = Order(entry_ticker, OrderSide.BUY, 999999, -999999)
+    @pytest.mark.parametrize(
+        """
+        entry_ticker_bid_price,
+        entry_ticker_ask_price,
+        exit_ticker_bid_price,
+        exit_ticker_ask_price,
+        order_side,
+        expected_entry_price,
+        expected_exit_price,
+        expected_initial_margin,
+        expected_pnl,
+        expected_roe,
+        """,
+        [
+            (90, 100, 120, 130, OrderSide.BUY, 100, 120, 100, 20, 0.2),
+            (100, 110, 70, 80, OrderSide.SELL, 100, 80, 100, 20, 0.2),
+        ],
+    )
+    def test_all_fields_on_closed_order_are_correct(
+        self,
+        entry_ticker_bid_price: float,
+        entry_ticker_ask_price: float,
+        exit_ticker_bid_price: float,
+        exit_ticker_ask_price: float,
+        order_side: OrderSide,
+        expected_entry_price: float,
+        expected_exit_price: float,
+        expected_initial_margin: float,
+        expected_pnl: float,
+        expected_roe: float,
+    ):
+        entry_ticker = MarketTicker(100, entry_ticker_bid_price, entry_ticker_ask_price)
+        exit_ticker = MarketTicker(200, exit_ticker_bid_price, exit_ticker_ask_price)
+        order = Order(entry_ticker, order_side, 999999, -999999)
         order.close(exit_ticker)
 
-        assert order.roe == 0.2
-
-    def test_roe_on_closed_sell_order_return_correct_value(self):
-        entry_ticker = MarketTicker(200, 100.0, 110.0)
-        exit_ticker = MarketTicker(100, 70.0, 80.0)
-        order = Order(entry_ticker, OrderSide.SELL, 999999, -999999)
-        order.close(exit_ticker)
-
-        assert order.roe == 0.2
+        assert order.roe == expected_roe
+        assert order.initial_margin == expected_initial_margin
+        assert order.pnl == expected_pnl
+        assert not order.is_open
+        assert order.entry_price == expected_entry_price
+        assert order.exit_price == expected_exit_price
+        assert order.entry_ticker == entry_ticker
+        assert order.exit_ticker == exit_ticker
