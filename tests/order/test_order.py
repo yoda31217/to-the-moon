@@ -198,6 +198,43 @@ class TestOrder:
         """
         entry_ticker_bid_price,
         entry_ticker_ask_price,
+        order_side,
+        expected_entry_price,
+        expected_initial_margin,
+        """,
+        [
+            (90, 100, OrderSide.BUY, 100, 100),
+            (100, 110, OrderSide.SELL, 100, 100),
+        ],
+    )
+    def test_all_fields_on_open_order_are_correct(
+        self,
+        entry_ticker_bid_price: float,
+        entry_ticker_ask_price: float,
+        order_side: OrderSide,
+        expected_entry_price: float,
+        expected_initial_margin: float,
+    ):
+        entry_ticker = MarketTicker(100, entry_ticker_bid_price, entry_ticker_ask_price)
+        order = Order(entry_ticker, order_side, 999_999, -999_999)
+
+        assert order.roe == None
+        assert order.initial_margin == expected_initial_margin
+        assert order.pnl == None
+        assert order.is_open
+        assert order.entry_price == expected_entry_price
+        assert order.exit_price == None
+        assert order.entry_ticker == entry_ticker
+        assert order.exit_ticker == None
+        assert order.side == order_side
+        assert order.id != None
+        assert order.tp_to_entry_price_ratio == 999_999
+        assert order.sl_to_entry_price_ratio == -999_999
+
+    @pytest.mark.parametrize(
+        """
+        entry_ticker_bid_price,
+        entry_ticker_ask_price,
         exit_ticker_bid_price,
         exit_ticker_ask_price,
         order_side,
