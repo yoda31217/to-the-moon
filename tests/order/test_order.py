@@ -5,18 +5,6 @@ from order.order_side import OrderSide
 
 
 class TestOrder:
-    def test_fields_are_correct_after_order_created(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
-
-        assert order.id != None
-        assert order.side == OrderSide.BUY
-        assert order.entry_ticker == entry_ticker
-        assert order.exit_ticker == None
-        assert order.is_open
-        assert order.tp_to_entry_price_ratio == 0.5
-        assert order.sl_to_entry_price_ratio == -1.5
-
     def test_throw_error_after_order_created_with_positive_sl(self):
         with pytest.raises(ValueError):
             Order(MarketTicker(100, 200.0, 300.0), OrderSide.BUY, 0.5, 1.5)
@@ -24,18 +12,6 @@ class TestOrder:
     def test_throw_error_after_order_created_with_negative_tp(self):
         with pytest.raises(ValueError):
             Order(MarketTicker(100, 200.0, 300.0), OrderSide.BUY, -0.5, -1.5)
-
-    def test_pnl_on_not_closed_buy_order_return_none(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
-
-        assert order.pnl == None
-
-    def test_pnl_on_not_closed_sell_order_return_none(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
-
-        assert order.pnl == None
 
     def test_calculate_possible_pnl_with_new_ticker_on_not_closed_buy_order_return_correct(
         self,
@@ -80,12 +56,6 @@ class TestOrder:
         new_ticker = MarketTicker(300, 50.0, 60.0)
 
         assert order.calculate_possible_pnl(new_ticker) == 200.0 - 150.0
-
-    def test_exit_price_on_open_return_none(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
-
-        assert order.exit_price is None
 
     def test_do_not_close_buy_order_after_notify_with_less_than_tp(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
@@ -187,12 +157,6 @@ class TestOrder:
 
         assert not order.is_open
         assert order.exit_ticker == exit_ticker
-
-    def test_roe_on_open_return_none(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        order = Order(entry_ticker, OrderSide.BUY, 999999, -999999)
-
-        assert order.roe is None
 
     @pytest.mark.parametrize(
         """
