@@ -81,14 +81,6 @@ class TestOrder:
 
         assert order.calculate_possible_pnl(new_ticker) == 200.0 - 150.0
 
-    def test_close_set_correct_exit_ticker(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        exit_ticker = MarketTicker(200, 100.0, 150.0)
-        order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
-        order.close(exit_ticker)
-
-        assert order.exit_ticker == exit_ticker
-
     def test_exit_price_on_open_return_none(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
@@ -235,7 +227,7 @@ class TestOrder:
     ):
         entry_ticker = MarketTicker(100, entry_ticker_bid_price, entry_ticker_ask_price)
         exit_ticker = MarketTicker(200, exit_ticker_bid_price, exit_ticker_ask_price)
-        order = Order(entry_ticker, order_side, 999999, -999999)
+        order = Order(entry_ticker, order_side, 999_999, -999_999)
         order.close(exit_ticker)
 
         assert order.roe == expected_roe
@@ -246,3 +238,7 @@ class TestOrder:
         assert order.exit_price == expected_exit_price
         assert order.entry_ticker == entry_ticker
         assert order.exit_ticker == exit_ticker
+        assert order.side == order_side
+        assert order.id != None
+        assert order.tp_to_entry_price_ratio == 999_999
+        assert order.sl_to_entry_price_ratio == -999_999

@@ -23,8 +23,8 @@ class Order:
     exit_price: float | None
     initial_margin: float
     pnl: float | None
-    tp: float
-    sl: float
+    _tp: float
+    _sl: float
     is_open: bool
     roe: float | None
 
@@ -60,8 +60,8 @@ class Order:
         self.exit_price = None
         self.initial_margin = self.entry_price
         self.pnl = None
-        self.tp = tp_to_entry_price_ratio * self.entry_price
-        self.sl = sl_to_entry_price_ratio * self.entry_price
+        self._tp = tp_to_entry_price_ratio * self.entry_price
+        self._sl = sl_to_entry_price_ratio * self.entry_price
         self.is_open = True
         self.roe = None
 
@@ -109,4 +109,4 @@ class Order:
             else self.entry_price - possible_exit_ticker.ask_price
         )
 
-        return possible_pnl >= self.tp or possible_pnl <= self.sl
+        return possible_pnl >= self._tp or possible_pnl <= self._sl
