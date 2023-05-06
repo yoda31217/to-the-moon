@@ -57,94 +57,6 @@ class TestOrder:
 
         assert order.calculate_possible_pnl(new_ticker) == 200.0 - 150.0
 
-    def test_do_not_close_buy_order_after_notify_with_less_than_tp(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        order = Order(entry_ticker, OrderSide.BUY, 0.1, -999999)
-
-        new_ticker = MarketTicker(200, 300.0 + 30.0 - 0.001, 500.0)
-
-        order.notify(new_ticker)
-
-        assert order.is_open
-        assert order.exit_ticker == None
-
-    def test_do_close_buy_order_after_notify_with_equal_to_tp(self):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        order = Order(entry_ticker, OrderSide.BUY, 0.1, -999999)
-
-        new_ticker = MarketTicker(200, 300.0 + 30.0, 500.0)
-
-        order.notify(new_ticker)
-
-        assert not order.is_open
-        assert order.exit_ticker == new_ticker
-
-    def test_do_not_close_buy_order_after_notify_with_more_than_sl(self):
-        entry_ticker = MarketTicker(100, 299.0, 300.0)
-        order = Order(entry_ticker, OrderSide.BUY, 999999, -0.1)
-
-        new_ticker = MarketTicker(200, 300.0 - 30.0 + 0.001, 331.0)
-
-        order.notify(new_ticker)
-
-        assert order.is_open
-        assert order.exit_ticker == None
-
-    def test_do_close_buy_order_after_notify_with_equal_to_sl(self):
-        entry_ticker = MarketTicker(100, 299.0, 300.0)
-        order = Order(entry_ticker, OrderSide.BUY, 999999, -0.1)
-
-        new_ticker = MarketTicker(200, 300.0 - 30.0, 331.0)
-
-        order.notify(new_ticker)
-
-        assert not order.is_open
-        assert order.exit_ticker == new_ticker
-
-    def test_do_not_close_sell_order_after_notify_with_less_than_tp(self):
-        entry_ticker = MarketTicker(100, 220.0, 300.0)
-        order = Order(entry_ticker, OrderSide.SELL, 0.1, -999999)
-
-        new_ticker = MarketTicker(200, 100.0, 220.0 - 22.0 + 0.001)
-
-        order.notify(new_ticker)
-
-        assert order.is_open
-        assert order.exit_ticker == None
-
-    def test_do_close_sell_order_after_notify_with_equal_to_tp(self):
-        entry_ticker = MarketTicker(100, 220.0, 300.0)
-        order = Order(entry_ticker, OrderSide.SELL, 0.1, -999999)
-
-        new_ticker = MarketTicker(200, 100.0, 220.0 - 22.0)
-
-        order.notify(new_ticker)
-
-        assert not order.is_open
-        assert order.exit_ticker == new_ticker
-
-    def test_do_not_close_sell_order_after_notify_with_more_than_sl(self):
-        entry_ticker = MarketTicker(100, 220.0, 225.0)
-        order = Order(entry_ticker, OrderSide.SELL, 999999, -0.1)
-
-        new_ticker = MarketTicker(200, 240.0, 220.0 + 22.0 - 0.001)
-
-        order.notify(new_ticker)
-
-        assert order.is_open
-        assert order.exit_ticker == None
-
-    def test_do_close_sell_order_after_notify_with_equal_to_sl(self):
-        entry_ticker = MarketTicker(100, 220.0, 225.0)
-        order = Order(entry_ticker, OrderSide.SELL, 999999, -0.1)
-
-        new_ticker = MarketTicker(200, 240.0, 220.0 + 22.0)
-
-        order.notify(new_ticker)
-
-        assert not order.is_open
-        assert order.exit_ticker == new_ticker
-
     def test_do_not_auto_close_again_order_on_notify(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         exit_ticker = MarketTicker(200, 100.0, 200.0)
@@ -243,3 +155,45 @@ class TestOrder:
         assert order.id != None
         assert order.tp_to_entry_price_ratio == 999_999
         assert order.sl_to_entry_price_ratio == -999_999
+
+    @pytest.mark.parametrize(
+        """
+        entry_ticker_bid_price,
+        entry_ticker_ask_price,
+        new_ticker_bid_price,
+        new_ticker_ask_price,
+        order_side,
+        tp_to_entry_price_ratio,
+        sl_to_entry_price_ratio,
+        expected_is_open,
+        """,
+        [
+            (200, 300, 329, 430, OrderSide.BUY, 0.1, -999, True),
+            (200, 300, 330, 430, OrderSide.BUY, 0.1, -999, False),
+            (200, 300, 271, 370, OrderSide.BUY, 999, -0.1, True),
+            (200, 300, 270, 370, OrderSide.BUY, 999, -0.1, False),
+            (200, 300, 80, 181, OrderSide.SELL, 0.1, -999, True),
+            (200, 300, 80, 180, OrderSide.SELL, 0.1, -999, False),
+            (200, 300, 120, 219, OrderSide.SELL, 999, -0.1, True),
+            (200, 300, 120, 220, OrderSide.SELL, 999, -0.1, False),
+        ],
+    )
+    def test_(
+        self,
+        entry_ticker_bid_price: float,
+        entry_ticker_ask_price: float,
+        new_ticker_bid_price: float,
+        new_ticker_ask_price: float,
+        order_side: OrderSide,
+        tp_to_entry_price_ratio: float,
+        sl_to_entry_price_ratio: float,
+        expected_is_open: bool,
+    ):
+        entry_ticker = MarketTicker(100, entry_ticker_bid_price, entry_ticker_ask_price)
+        order = Order(
+            entry_ticker, order_side, tp_to_entry_price_ratio, sl_to_entry_price_ratio
+        )
+        new_ticker = MarketTicker(200, new_ticker_bid_price, new_ticker_ask_price)
+        order.notify(new_ticker)
+
+        assert order.is_open == expected_is_open
