@@ -13,7 +13,7 @@ class TestOrder:
         with pytest.raises(ValueError):
             Order(MarketTicker(100, 200.0, 300.0), OrderSide.BUY, -0.5, -1.5)
 
-    def test_calculate_possible_pnl_with_new_ticker_on_closed_order_return_already_calculated_value(
+    def test_calculate_possible_pnl_with_new_ticker_on_closed_return_calculated_value(
         self,
     ):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
