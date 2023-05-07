@@ -18,6 +18,8 @@ class Order:
     # Problem here, that our TP  = real_TP - entry_price
     tp_to_entry_price_ratio: float
     sl_to_entry_price_ratio: float
+    quantity: float
+    leverage: float
 
     entry_price: float
     exit_price: float | None
@@ -34,6 +36,8 @@ class Order:
         side: OrderSide,
         tp_to_entry_price_ratio: float,
         sl_to_entry_price_ratio: float,
+        quantity: float = 1.0,
+        leverage: float = 1.0,
     ):
         self.id = uuid.uuid4()
         self.side = side
@@ -58,12 +62,14 @@ class Order:
             entry_ticker.bid_price if side == OrderSide.SELL else entry_ticker.ask_price
         )
         self.exit_price = None
-        self.initial_margin = self.entry_price
+        self.initial_margin = self.entry_price * quantity / leverage
         self.pnl = None
         self._tp = tp_to_entry_price_ratio * self.entry_price
         self._sl = sl_to_entry_price_ratio * self.entry_price
         self.is_open = True
         self.roe = None
+        self.quantity = quantity
+        self.leverage = leverage
 
     def calculate_possible_pnl(self, possible_exit_ticker: MarketTicker) -> float:
         if self.pnl != None:
@@ -90,7 +96,7 @@ class Order:
             exit_price - self.entry_price
             if self.side == OrderSide.BUY
             else self.entry_price - exit_price
-        )
+        ) * self.quantity
         self.pnl = pnl
         self.roe = pnl / self.initial_margin
         self.is_open = False

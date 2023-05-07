@@ -114,6 +114,8 @@ class TestOrder:
         exit_ticker_bid_price,
         exit_ticker_ask_price,
         order_side,
+        quantity,
+        leverage,
         expected_entry_price,
         expected_exit_price,
         expected_initial_margin,
@@ -121,8 +123,14 @@ class TestOrder:
         expected_roe,
         """,
         [
-            (90, 100, 120, 130, OrderSide.BUY, 100, 120, 100, 20, 0.2),
-            (100, 110, 70, 80, OrderSide.SELL, 100, 80, 100, 20, 0.2),
+            (90, 100, 120, 130, OrderSide.BUY, 1, 1, 100, 120, 100, 20, 0.2),
+            (90, 100, 120, 130, OrderSide.BUY, 0.1, 1, 100, 120, 10, 2, 0.2),
+            (90, 100, 120, 130, OrderSide.BUY, 1, 2, 100, 120, 50, 20, 0.4),
+            (90, 100, 120, 130, OrderSide.BUY, 0.1, 2, 100, 120, 5, 2, 0.4),
+            (100, 110, 70, 80, OrderSide.SELL, 1, 1, 100, 80, 100, 20, 0.2),
+            (100, 110, 70, 80, OrderSide.SELL, 0.1, 1, 100, 80, 10, 2, 0.2),
+            (100, 110, 70, 80, OrderSide.SELL, 1, 2, 100, 80, 50, 20, 0.4),
+            (100, 110, 70, 80, OrderSide.SELL, 0.1, 2, 100, 80, 5, 2, 0.4),
         ],
     )
     def test_all_fields_on_closed_order_are_correct(
@@ -132,6 +140,8 @@ class TestOrder:
         exit_ticker_bid_price: float,
         exit_ticker_ask_price: float,
         order_side: OrderSide,
+        quantity: float,
+        leverage: float,
         expected_entry_price: float,
         expected_exit_price: float,
         expected_initial_margin: float,
@@ -140,7 +150,7 @@ class TestOrder:
     ):
         entry_ticker = MarketTicker(100, entry_ticker_bid_price, entry_ticker_ask_price)
         exit_ticker = MarketTicker(200, exit_ticker_bid_price, exit_ticker_ask_price)
-        order = Order(entry_ticker, order_side, 999_999, -999_999)
+        order = Order(entry_ticker, order_side, 999_999, -999_999, quantity, leverage)
         order.close(exit_ticker)
 
         assert order.roe == expected_roe
@@ -155,6 +165,8 @@ class TestOrder:
         assert order.id != None
         assert order.tp_to_entry_price_ratio == 999_999
         assert order.sl_to_entry_price_ratio == -999_999
+        assert order.quantity == quantity
+        assert order.leverage == leverage
 
     @pytest.mark.parametrize(
         """
