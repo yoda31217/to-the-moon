@@ -33,7 +33,7 @@ class TestOrder:
 
         assert order.calculate_possible_pnl(new_ticker) == 200.0 - 150.0
 
-    def test_calculate_possible_pnl_with_new_ticker_on_buy_closed_order_return_correct_value(
+    def test_calculate_possible_pnl_with_new_ticker_on_closed_order_return_already_calculated_value(
         self,
     ):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
@@ -44,18 +44,6 @@ class TestOrder:
         new_ticker = MarketTicker(300, 2500.0, 2600.0)
 
         assert order.calculate_possible_pnl(new_ticker) == 1200.0 - 300.0
-
-    def test_calculate_possible_pnl_with_new_ticker_on_sell_closed_order_return_correct_value(
-        self,
-    ):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        exit_ticker = MarketTicker(200, 100.0, 150.0)
-        order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
-        order.close(exit_ticker)
-
-        new_ticker = MarketTicker(300, 50.0, 60.0)
-
-        assert order.calculate_possible_pnl(new_ticker) == 200.0 - 150.0
 
     def test_do_not_auto_close_again_order_on_notify(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
