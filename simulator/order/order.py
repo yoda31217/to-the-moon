@@ -75,31 +75,31 @@ class Order:
         if self.pnl != None:
             return self.pnl
         else:
-            possible_exit_price = (
-                possible_exit_ticker.ask_price
-                if self.side == OrderSide.SELL
-                else possible_exit_ticker.bid_price
-            )
-            return (
-                possible_exit_price - self.entry_price
-                if self.side == OrderSide.BUY
-                else self.entry_price - possible_exit_price
-            )
+            possible_exit_price = self._get_possible_exit_price(possible_exit_ticker)
+            return self._calculate_possible_pnl(possible_exit_price)
 
     def close(self, ticker: MarketTicker):
         self.exit_ticker = ticker
-        exit_price = (
-            ticker.ask_price if self.side == OrderSide.SELL else ticker.bid_price
-        )
+        exit_price = self._get_possible_exit_price(ticker)
         self.exit_price = exit_price
-        pnl = (
-            exit_price - self.entry_price
-            if self.side == OrderSide.BUY
-            else self.entry_price - exit_price
-        ) * self.quantity
+        pnl = self._calculate_possible_pnl(exit_price)
         self.pnl = pnl
         self.roe = pnl / self.initial_margin
         self.is_open = False
+
+    def _calculate_possible_pnl(self, possible_exit_price: float):
+        return (
+            possible_exit_price - self.entry_price
+            if self.side == OrderSide.BUY
+            else self.entry_price - possible_exit_price
+        ) * self.quantity
+
+    def _get_possible_exit_price(self, possible_exit_ticker: MarketTicker):
+        return (
+            possible_exit_ticker.ask_price
+            if self.side == OrderSide.SELL
+            else possible_exit_ticker.bid_price
+        )
 
     def notify(self, new_ticker: MarketTicker):
         if not self.is_open:

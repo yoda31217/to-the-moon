@@ -13,26 +13,6 @@ class TestOrder:
         with pytest.raises(ValueError):
             Order(MarketTicker(100, 200.0, 300.0), OrderSide.BUY, -0.5, -1.5)
 
-    def test_calculate_possible_pnl_with_new_ticker_on_not_closed_buy_order_return_correct(
-        self,
-    ):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        order = Order(entry_ticker, OrderSide.BUY, 0.5, -1.5)
-
-        new_ticker = MarketTicker(200, 1200.0, 1300.0)
-
-        assert order.calculate_possible_pnl(new_ticker) == 1200.0 - 300.0
-
-    def test_calculate_possible_pnl_with_new_ticker_on_not_closed_sell_order_return_none(
-        self,
-    ):
-        entry_ticker = MarketTicker(100, 200.0, 300.0)
-        order = Order(entry_ticker, OrderSide.SELL, 0.5, -1.5)
-
-        new_ticker = MarketTicker(200, 100.0, 150.0)
-
-        assert order.calculate_possible_pnl(new_ticker) == 200.0 - 150.0
-
     def test_calculate_possible_pnl_with_new_ticker_on_closed_order_return_already_calculated_value(
         self,
     ):
@@ -197,3 +177,43 @@ class TestOrder:
         order.notify(new_ticker)
 
         assert order.is_open == expected_is_open
+
+    @pytest.mark.parametrize(
+        """
+        entry_ticker_bid_price,
+        entry_ticker_ask_price,
+        new_ticker_bid_price,
+        new_ticker_ask_price,
+        order_side,
+        quantity,
+        leverage,
+        expected_possible_pnl,
+        """,
+        [
+            (90, 100, 120, 130, OrderSide.BUY, 1, 1, 20),
+            (90, 100, 120, 130, OrderSide.BUY, 0.1, 1, 2),
+            (90, 100, 120, 130, OrderSide.BUY, 1, 2, 20),
+            (90, 100, 120, 130, OrderSide.BUY, 0.1, 2, 2),
+            (100, 110, 70, 80, OrderSide.SELL, 1, 1, 20),
+            (100, 110, 70, 80, OrderSide.SELL, 0.1, 1, 2),
+            (100, 110, 70, 80, OrderSide.SELL, 1, 2, 20),
+            (100, 110, 70, 80, OrderSide.SELL, 0.1, 2, 2),
+        ],
+    )
+    def test_calculate_possible_pnl_return_correct_value(
+        self,
+        entry_ticker_bid_price: float,
+        entry_ticker_ask_price: float,
+        new_ticker_bid_price: float,
+        new_ticker_ask_price: float,
+        order_side: OrderSide,
+        quantity: float,
+        leverage: float,
+        expected_possible_pnl: float,
+    ):
+        entry_ticker = MarketTicker(100, entry_ticker_bid_price, entry_ticker_ask_price)
+        order = Order(entry_ticker, order_side, 999_999, -999_999, quantity, leverage)
+
+        new_ticker = MarketTicker(200, new_ticker_bid_price, new_ticker_ask_price)
+
+        assert order.calculate_possible_pnl(new_ticker) == expected_possible_pnl
