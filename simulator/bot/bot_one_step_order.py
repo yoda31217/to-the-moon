@@ -27,12 +27,12 @@ class BotOneStepOrder(Bot):
     ) -> None:
         super().__init__(
             f"BotOneStepOrder ["
-            + f" {step_to_price_ratio * 100:.2f}%"
-            + f", {tp_to_entry_price_ratio * 100:.2f}%"
-            + f", {sl_to_entry_price_ratio * 100:.2f}%"
-            + f", {'inverted' if inverted else 'not inverted'}"
-            + f", {order_quantity:.2f}"
-            + f", {order_leverage:.2f}"
+            + f" Step to price ratio: {step_to_price_ratio * 100:.2f}%"
+            + f", Take Profit to entry price ratio: {tp_to_entry_price_ratio * 100:.2f}%"
+            + f", Stop Loss to entry price ratio: {sl_to_entry_price_ratio * 100:.2f}%"
+            + f", Inverted: {inverted}"
+            + f", Order Quantity: {order_quantity:.2f}"
+            + f", Order Leverage: {order_leverage:.2f}"
             + " ]"
         )
         self.check_point_ticker = None
