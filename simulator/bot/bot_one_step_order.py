@@ -2,6 +2,7 @@ from order.order_side import OrderSide
 from order.order import Order
 from bot.bot import Bot
 from market.market_ticker import MarketTicker
+from report.report_input import order_leverage
 
 
 class BotOneStepOrder(Bot):
@@ -10,6 +11,8 @@ class BotOneStepOrder(Bot):
     tp_to_entry_price_ratio: float
     sl_to_entry_price_ratio: float
     inverted: bool
+    order_quantity: float
+    order_leverage: float
 
     # TODO generify parameters and name generation,
     # to be able to dinamicaly create them and report.
@@ -19,19 +22,26 @@ class BotOneStepOrder(Bot):
         tp_to_entry_price_ratio: float,
         sl_to_entry_price_ratio: float,
         inverted: bool,
+        order_quantity: float,
+        order_leverage: float,
     ) -> None:
         super().__init__(
-            f"BotOneStepOrder"
-            + f" [{step_to_price_ratio * 100:.2f}%"
+            f"BotOneStepOrder ["
+            + f" {step_to_price_ratio * 100:.2f}%"
             + f", {tp_to_entry_price_ratio * 100:.2f}%"
             + f", {sl_to_entry_price_ratio * 100:.2f}%"
-            + f', {"inverted" if inverted else "not inverted"}]'
+            + f", {'inverted' if inverted else 'not inverted'}"
+            + f", {order_quantity:.2f}"
+            + f", {order_leverage:.2f}"
+            + " ]"
         )
         self.check_point_ticker = None
         self.step_to_price_ratio = step_to_price_ratio
         self.tp_to_entry_price_ratio = tp_to_entry_price_ratio
         self.sl_to_entry_price_ratio = sl_to_entry_price_ratio
         self.inverted = inverted
+        self.order_quantity = order_quantity
+        self.order_leverage = order_leverage
 
     def process_ticker(
         self,
@@ -50,6 +60,8 @@ class BotOneStepOrder(Bot):
                     order_side,
                     self.tp_to_entry_price_ratio,
                     self.sl_to_entry_price_ratio,
+                    self.order_quantity,
+                    self.order_leverage,
                 )
             )
             self.check_point_ticker = new_ticker
@@ -62,6 +74,8 @@ class BotOneStepOrder(Bot):
                     order_side,
                     self.tp_to_entry_price_ratio,
                     self.sl_to_entry_price_ratio,
+                    self.order_quantity,
+                    self.order_leverage,
                 )
             )
             self.check_point_ticker = new_ticker

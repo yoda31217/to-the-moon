@@ -37,6 +37,26 @@ def step_to_price_ratio():
     )
 
 
+def order_leverage():
+    return st.sidebar.slider(
+        "Order Leverage",
+        min_value=1.0,
+        max_value=100.0,
+        value=2.0,
+        step=1.0,
+    )
+
+
+def order_quantity():
+    return st.sidebar.number_input(
+        "Order Quantity",
+        min_value=0.003,
+        max_value=1.0,
+        value=0.01,
+        step=0.001,
+    )
+
+
 def tp_to_entry_price_ratio():
     return (
         st.sidebar.slider(

@@ -34,11 +34,18 @@ def build_report():
     tp_to_entry_price_ratio = report_input.tp_to_entry_price_ratio()
     sl_to_entry_price_ratio = report_input.sl_to_entry_price_ratio()
     inverted = report_input.inverted()
+    order_quantity = report_input.order_quantity()
+    order_leverage = report_input.order_leverage()
 
     positions_sort_timestamp_column = report_input.positions_sort_timestamp_column()
 
     bot = BotOneStepOrder(
-        step_to_price_ratio, tp_to_entry_price_ratio, sl_to_entry_price_ratio, inverted
+        step_to_price_ratio,
+        tp_to_entry_price_ratio,
+        sl_to_entry_price_ratio,
+        inverted,
+        order_quantity,
+        order_leverage,
     )
     tickers = binance_ticker_repository.load_tickers(
         symbol, date_from, date_to, bid_ask_spread
