@@ -63,7 +63,7 @@ def summary(
                     "{:,.2f}$ (abosolute)".format(
                         result.get_positions_average_price_margin()
                     ),
-                    "1",
+                    "{:,.2f}".format(result.get_positions_average_quantity()),
                     "{:,.2f} $".format(result.get_positions_average_initial_margin()),
                     "{:,.2f} $".format(result.get_positions_average_pnl()),
                     "{:,.2f} %".format(result.get_positions_average_roe() * 100.0),

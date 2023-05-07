@@ -68,6 +68,9 @@ class BacktesterResult:
                         for closed_order in closed_orders
                     )
                 ),
+                "quantity": list(
+                    (closed_order.quantity for closed_order in closed_orders)
+                ),
                 "initial_margin": list(
                     (closed_order.initial_margin for closed_order in closed_orders)
                 ),
@@ -90,6 +93,9 @@ class BacktesterResult:
 
     def get_positions_average_initial_margin(self):
         return self.positions.initial_margin.mean()
+
+    def get_positions_average_quantity(self):
+        return self.positions.quantity.mean()
 
     def get_positions_initial_margin_sum(self):
         return self.positions.initial_margin.sum()
