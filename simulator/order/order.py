@@ -82,9 +82,8 @@ class Order:
         self.exit_ticker = ticker
         exit_price = self._get_possible_exit_price(ticker)
         self.exit_price = exit_price
-        pnl = self._calculate_possible_pnl(exit_price)
-        self.pnl = pnl
-        self.roe = pnl / self.initial_margin
+        self.pnl = self._calculate_possible_pnl(exit_price)
+        self.roe = self.pnl / self.initial_margin
         self.is_open = False
 
     def _calculate_possible_pnl(self, possible_exit_price: float):
