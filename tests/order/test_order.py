@@ -178,7 +178,7 @@ class TestOrder:
             (200, 300, 120, 220, OrderSide.SELL, 999, -0.1, False),
         ],
     )
-    def test_(
+    def test_order_clossing_after_notify_is_correct(
         self,
         entry_ticker_bid_price: float,
         entry_ticker_ask_price: float,
