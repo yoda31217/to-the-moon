@@ -60,10 +60,17 @@ step_to_price_ratio = 0.001
 tp_to_entry_price_ratio = 0.01
 sl_to_entry_price_ratio = -0.1
 inverted = False
+order_quantity = 1
+order_leverage = 1
 positions_sort_timestamp_column = "entry_timestamp"
 
 bot = BotOneStepOrder(
-    step_to_price_ratio, tp_to_entry_price_ratio, sl_to_entry_price_ratio, inverted
+    step_to_price_ratio,
+    tp_to_entry_price_ratio,
+    sl_to_entry_price_ratio,
+    inverted,
+    order_quantity,
+    order_leverage,
 )
 tickers = binance_ticker_repository.load_tickers(
     symbol, date_from, date_to, bid_ask_spread
