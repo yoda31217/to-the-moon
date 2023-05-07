@@ -143,19 +143,24 @@ class TestOrder:
         new_ticker_bid_price,
         new_ticker_ask_price,
         order_side,
+        quantity,
         tp_to_entry_price_ratio,
         sl_to_entry_price_ratio,
         expected_is_open,
         """,
         [
-            (200, 300, 329, 430, OrderSide.BUY, 0.1, -999, True),
-            (200, 300, 330, 430, OrderSide.BUY, 0.1, -999, False),
-            (200, 300, 271, 370, OrderSide.BUY, 999, -0.1, True),
-            (200, 300, 270, 370, OrderSide.BUY, 999, -0.1, False),
-            (200, 300, 80, 181, OrderSide.SELL, 0.1, -999, True),
-            (200, 300, 80, 180, OrderSide.SELL, 0.1, -999, False),
-            (200, 300, 120, 219, OrderSide.SELL, 999, -0.1, True),
-            (200, 300, 120, 220, OrderSide.SELL, 999, -0.1, False),
+            (200, 300, 329, 430, OrderSide.BUY, 1, 0.1, -999, True),
+            (200, 300, 330, 430, OrderSide.BUY, 1, 0.1, -999, False),
+            (200, 300, 330, 430, OrderSide.BUY, 0.1, 0.1, -999, False),
+            (200, 300, 271, 370, OrderSide.BUY, 1, 999, -0.1, True),
+            (200, 300, 270, 370, OrderSide.BUY, 1, 999, -0.1, False),
+            (200, 300, 270, 370, OrderSide.BUY, 0.1, 999, -0.1, False),
+            (200, 300, 80, 181, OrderSide.SELL, 1, 0.1, -999, True),
+            (200, 300, 80, 180, OrderSide.SELL, 1, 0.1, -999, False),
+            (200, 300, 80, 180, OrderSide.SELL, 0.1, 0.1, -999, False),
+            (200, 300, 120, 219, OrderSide.SELL, 1, 999, -0.1, True),
+            (200, 300, 120, 220, OrderSide.SELL, 1, 999, -0.1, False),
+            (200, 300, 120, 220, OrderSide.SELL, 0.1, 999, -0.1, False),
         ],
     )
     def test_order_clossing_after_notify_is_correct(
@@ -165,13 +170,18 @@ class TestOrder:
         new_ticker_bid_price: float,
         new_ticker_ask_price: float,
         order_side: OrderSide,
+        quantity: float,
         tp_to_entry_price_ratio: float,
         sl_to_entry_price_ratio: float,
         expected_is_open: bool,
     ):
         entry_ticker = MarketTicker(100, entry_ticker_bid_price, entry_ticker_ask_price)
         order = Order(
-            entry_ticker, order_side, tp_to_entry_price_ratio, sl_to_entry_price_ratio
+            entry_ticker,
+            order_side,
+            tp_to_entry_price_ratio,
+            sl_to_entry_price_ratio,
+            quantity,
         )
         new_ticker = MarketTicker(200, new_ticker_bid_price, new_ticker_ask_price)
         order.notify(new_ticker)

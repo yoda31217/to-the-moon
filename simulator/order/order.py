@@ -64,8 +64,8 @@ class Order:
         self.exit_price = None
         self.initial_margin = self.entry_price * quantity / leverage
         self.pnl = None
-        self._tp = tp_to_entry_price_ratio * self.entry_price
-        self._sl = sl_to_entry_price_ratio * self.entry_price
+        self._tp = tp_to_entry_price_ratio * self.entry_price * quantity
+        self._sl = sl_to_entry_price_ratio * self.entry_price * quantity
         self.is_open = True
         self.roe = None
         self.quantity = quantity
@@ -109,8 +109,6 @@ class Order:
             self.close(new_ticker)
 
     def _should_auto_close(self, possible_exit_ticker: MarketTicker):
-        possible_pnl = self._calculate_possible_pnl(
-            self._get_possible_exit_price(possible_exit_ticker)
-        )
-
+        possible_exit_price = self._get_possible_exit_price(possible_exit_ticker)
+        possible_pnl = self._calculate_possible_pnl(possible_exit_price)
         return possible_pnl >= self._tp or possible_pnl <= self._sl
