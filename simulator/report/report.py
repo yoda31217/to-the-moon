@@ -6,6 +6,7 @@ from binance import binance_ticker_repository
 from bot.bot_one_step_order import BotOneStepOrder
 import report.report_input as report_input
 import report.report_result as report_result
+from utils import gits
 
 
 def build_report():
@@ -16,7 +17,7 @@ def build_report():
     )
 
     st.title(f"🌕 To the Moon")
-    st.caption(f"Crypto trading bot Backtester. Version: {'1.2.3'}")
+    st.caption(f"Crypto trading bot Backtester.\n\nVersion: {gits.get_version()}")
 
     st.sidebar.title("Options")
 
