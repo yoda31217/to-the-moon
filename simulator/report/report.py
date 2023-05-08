@@ -17,7 +17,7 @@ def build_report():
     )
 
     st.title(f"🌕 To the Moon")
-    st.caption(f"Crypto trading bot Backtester.\n\nVersion: {gits.get_version()}")
+    st.caption(f"Crypto trading bot Backtester.")
 
     st.sidebar.title("Options")
 
@@ -66,3 +66,6 @@ def build_report():
     report_result.positions_table(result.positions, positions_tab)
     report_result.balances_chart(result, balance_tab)
     report_result.tickers_chart(result.tickers, tickers_tab)
+
+    st.divider()
+    st.caption(f"Version: {gits.get_version()}\n\n2023 © To the Moon")
