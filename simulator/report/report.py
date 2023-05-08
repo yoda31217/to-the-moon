@@ -16,7 +16,7 @@ def build_report():
     )
 
     st.title(f"🌕 To the Moon")
-    st.caption(f"Crypto trading bot Backtester")
+    st.caption(f"Crypto trading bot Backtester. Version: {'1.2.3'}")
 
     st.sidebar.title("Options")
 
