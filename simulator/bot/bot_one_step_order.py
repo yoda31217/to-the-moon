@@ -31,7 +31,7 @@ class BotOneStepOrder(Bot):
             + f", Take Profit to entry price ratio: {tp_to_entry_price_ratio * 100:.2f}%"
             + f", Stop Loss to entry price ratio: {sl_to_entry_price_ratio * 100:.2f}%"
             + f", Inverted: {inverted}"
-            + f", Order Quantity: {order_quantity:.2f}"
+            + f", Order Quantity: {order_quantity:.3f}"
             + f", Order Leverage: {order_leverage:.2f}"
             + " ]"
         )
