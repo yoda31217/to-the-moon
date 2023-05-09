@@ -54,6 +54,7 @@ def order_quantity():
         max_value=1000.0,
         value=0.01,
         step=0.001,
+        format="%0.3f",
     )
 
 
