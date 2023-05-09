@@ -50,8 +50,8 @@ def order_leverage():
 def order_quantity():
     return st.sidebar.number_input(
         "Order Quantity",
-        min_value=0.003,
-        max_value=1.0,
+        min_value=0.001,
+        max_value=1000.0,
         value=0.01,
         step=0.001,
     )
