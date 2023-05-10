@@ -38,7 +38,7 @@ def build_report():
     order_quantity = report_input.order_quantity()
     order_leverage = report_input.order_leverage()
 
-    positions_sort_timestamp_column = report_input.positions_sort_timestamp_column()
+    positions_sort_timestamp_column = "entry_timestamp"
 
     bot = BotOneStepOrder(
         step_to_price_ratio,
