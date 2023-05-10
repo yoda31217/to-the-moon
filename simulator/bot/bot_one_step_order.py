@@ -26,14 +26,16 @@ class BotOneStepOrder(Bot):
         order_leverage: float,
     ) -> None:
         super().__init__(
-            f"BotOneStepOrder ["
-            + f" Step to price ratio: {step_to_price_ratio * 100:.2f}%"
-            + f", Take Profit to entry price ratio: {tp_to_entry_price_ratio * 100:.2f}%"
-            + f", Stop Loss to entry price ratio: {sl_to_entry_price_ratio * 100:.2f}%"
-            + f", Inverted: {inverted}"
-            + f", Order Quantity: {order_quantity:.3f}"
-            + f", Order Leverage: {order_leverage:.2f}"
-            + " ]"
+            f"""
+                BotOneStepOrder [
+                    Step to price ratio: {step_to_price_ratio * 100:.2f}%,
+                    Take Profit to entry price ratio: {tp_to_entry_price_ratio * 100:.2f}%,
+                    Stop Loss to entry price ratio: {sl_to_entry_price_ratio * 100:.2f}%,
+                    Inverted: {inverted}",
+                    Order Quantity: {order_quantity:.3f},
+                    Order Leverage: {order_leverage:.2f},
+                ]
+            """
         )
         self.check_point_ticker = None
         self.step_to_price_ratio = step_to_price_ratio
