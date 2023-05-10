@@ -62,7 +62,6 @@ sl_to_entry_price_ratio = -0.1
 inverted = False
 order_quantity = 1
 order_leverage = 1
-positions_sort_timestamp_column = "entry_timestamp"
 
 bot = BotOneStepOrder(
     step_to_price_ratio,
@@ -81,7 +80,7 @@ backtester = Backtester(tickers)
 profiler = cProfile.Profile()
 profiler.enable()
 
-backtester.test(bot, positions_sort_timestamp_column)
+backtester.test(bot)
 
 profiler.disable()
 ps = pstats.Stats(profiler).sort_stats(SortKey.CUMULATIVE)
