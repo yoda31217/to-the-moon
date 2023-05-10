@@ -95,6 +95,9 @@ def pnl_chart(
 ):
     if result.get_positions_count() > 0:
         pnl_chart_type = report_input.pnl_chart_type(tab)
+        positions_sort_timestamp_column = report_input.positions_sort_timestamp_column(
+            tab
+        )
 
         match pnl_chart_type:
             case "PNL sum":
@@ -123,7 +126,7 @@ def pnl_chart(
 
 def balances_chart(result: BacktesterResult, tab: DeltaGenerator):
     balance_chart_type = report_input.balance_chart_type(tab)
-    
+
     match balance_chart_type:
         case "Margin Balance":
             report_chart.line(
@@ -145,6 +148,6 @@ def balances_chart(result: BacktesterResult, tab: DeltaGenerator):
             )
 
 
-
 def positions_table(positions: pd.DataFrame, tab: DeltaGenerator):
+    positions_sort_timestamp_column = report_input.positions_sort_timestamp_column(tab)
     tab.dataframe(positions)
