@@ -1,4 +1,4 @@
-from git import Repo
+from git.repo import Repo
 
 
 def get_version():
