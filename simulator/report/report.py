@@ -66,4 +66,10 @@ def build_report():
     report_result.tickers_chart(result.tickers, tickers_tab)
 
     st.divider()
-    st.caption(f"Version: {gits.get_version()}\n\n2023 © To the Moon")
+    st.caption(
+        f"""
+            Version: {gits.get_version()}
+            
+            2023 🌕 To the Moon
+        """
+    )
