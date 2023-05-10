@@ -114,10 +114,10 @@ def balance_chart_type(tab: DeltaGenerator):
     )
 
 
-def positions_sort_timestamp_column():
+def positions_sort_timestamp_column(tab: DeltaGenerator):
     return cast(
         str,
-        st.radio(
+        tab.radio(
             "Positions sorted by:",
             ("entry_timestamp", "exit_timestamp"),
             horizontal=True,
