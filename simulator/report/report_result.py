@@ -98,13 +98,16 @@ def pnl_chart(
         positions_sort_timestamp_column = report_input.positions_sort_timestamp_column(
             "pnl_chart", tab
         )
+        sorted_positions = result.positions.sort_values(
+            by=[positions_sort_timestamp_column]
+        )
 
         match pnl_chart_type:
             case "PNL sum":
                 report_chart.bars(
                     tab,
-                    result.positions,
-                    result.positions_sort_timestamp_column,
+                    sorted_positions,
+                    positions_sort_timestamp_column,
                     "pnl",
                     "PNL sum, $",
                     samples_count=100_000,
@@ -112,8 +115,8 @@ def pnl_chart(
             case _:
                 report_chart.line(
                     tab,
-                    result.positions,
-                    result.positions_sort_timestamp_column,
+                    sorted_positions,
+                    positions_sort_timestamp_column,
                     "pnl",
                     "cumulative PNL sum, $",
                     samples_count=100_000,
@@ -152,4 +155,4 @@ def positions_table(positions: pd.DataFrame, tab: DeltaGenerator):
     positions_sort_timestamp_column = report_input.positions_sort_timestamp_column(
         "positions_table", tab
     )
-    tab.dataframe(positions)
+    tab.dataframe(positions.sort_values(by=[positions_sort_timestamp_column]))
