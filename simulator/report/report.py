@@ -38,8 +38,6 @@ def build_report():
     order_quantity = report_input.order_quantity()
     order_leverage = report_input.order_leverage()
 
-    positions_sort_timestamp_column = "entry_timestamp"
-
     bot = BotOneStepOrder(
         step_to_price_ratio,
         tp_to_entry_price_ratio,
@@ -51,7 +49,7 @@ def build_report():
     tickers = binance_ticker_repository.load_tickers(
         symbol, date_from, date_to, bid_ask_spread
     )
-    result = Backtester(tickers).test(bot, positions_sort_timestamp_column)
+    result = Backtester(tickers).test(bot)
 
     (
         summary_tab,

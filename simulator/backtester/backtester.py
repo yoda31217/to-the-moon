@@ -26,7 +26,7 @@ class Backtester:
         )
         self.tickers_data_frame = tickers_data_frame
 
-    def test(self, bot: Bot, positions_sort_timestamp_column: str) -> BacktesterResult:
+    def test(self, bot: Bot) -> BacktesterResult:
         orders: list[Order] = []
         closed_orders: list[Order] = []
 
@@ -79,7 +79,6 @@ class Backtester:
         return BacktesterResult(
             closed_orders,
             self.tickers_data_frame,
-            positions_sort_timestamp_column,
             pd.DataFrame(
                 balances, columns=["timestamp", "margin_balance", "available_balance"]
             ),

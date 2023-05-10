@@ -8,27 +8,20 @@ from market.market_ticker import MarketTicker
 class BacktesterResult:
     positions: pd.DataFrame
     tickers: pd.DataFrame
-    positions_sort_timestamp_column: str
     balances: pd.DataFrame
 
     def __init__(
         self,
         closed_orders: list[Order],
         tickers: pd.DataFrame,
-        positions_sort_timestamp_column: str,
         balances: pd.DataFrame,
     ) -> None:
         super().__init__()
         self.tickers = tickers
-        self.positions = self._to_positions(
-            closed_orders, positions_sort_timestamp_column
-        )
-        self.positions_sort_timestamp_column = positions_sort_timestamp_column
+        self.positions = self._to_positions(closed_orders)
         self.balances = balances
 
-    def _to_positions(
-        self, closed_orders: list[Order], positions_sort_timestamp_column: str
-    ) -> pd.DataFrame:
+    def _to_positions(self, closed_orders: list[Order]) -> pd.DataFrame:
         return pd.DataFrame(
             {
                 "entry_timestamp": list(
@@ -77,7 +70,7 @@ class BacktesterResult:
                 "pnl": list((closed_order.pnl for closed_order in closed_orders)),
                 "roe": list((closed_order.roe for closed_order in closed_orders)),
             }
-        ).sort_values(by=[positions_sort_timestamp_column])
+        )
 
     def get_positions_count(self):
         return len(self.positions.index)
