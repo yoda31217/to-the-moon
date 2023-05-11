@@ -31,21 +31,17 @@ def build_report():
 
     st.sidebar.header("Bot")
     st.sidebar.markdown("**Name: BotOneStepOrder**")
-    step_to_price_ratio = report_input.step_to_price_ratio()
-    tp_to_entry_price_ratio = report_input.tp_to_entry_price_ratio()
-    sl_to_entry_price_ratio = report_input.sl_to_entry_price_ratio()
-    inverted = report_input.inverted()
-    order_quantity = report_input.order_quantity()
-    order_leverage = report_input.order_leverage()
 
-    bot = BotOneStepOrder(
-        step_to_price_ratio,
-        tp_to_entry_price_ratio,
-        sl_to_entry_price_ratio,
-        inverted,
-        order_quantity,
-        order_leverage,
+    bot_config = dict(
+        step_to_price_ratio=report_input.step_to_price_ratio(),
+        tp_to_entry_price_ratio=report_input.tp_to_entry_price_ratio(),
+        sl_to_entry_price_ratio=report_input.sl_to_entry_price_ratio(),
+        inverted=report_input.inverted(),
+        order_quantity=report_input.order_quantity(),
+        order_leverage=report_input.order_leverage(),
     )
+
+    bot = BotOneStepOrder(bot_config)
     tickers = binance_ticker_repository.load_tickers(
         symbol, date_from, date_to, bid_ask_spread
     )

@@ -5,11 +5,11 @@ from market.market_ticker import MarketTicker
 
 
 class Bot(ABC):
-    description: str
+    config: dict
 
-    def __init__(self, description: str) -> None:
+    def __init__(self, config: dict) -> None:
         super().__init__()
-        self.description = description
+        self.config = config
 
     @abstractmethod
     def process_ticker(
@@ -18,4 +18,4 @@ class Bot(ABC):
         pass
 
     def __str__(self) -> str:
-        return self.description
+        return f"{self.__class__.__name__} {str(self.config)}"

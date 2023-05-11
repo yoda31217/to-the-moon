@@ -16,34 +16,16 @@ class BotOneStepOrder(Bot):
 
     # TODO generify parameters and name generation,
     # to be able to dinamicaly create them and report.
-    def __init__(
-        self,
-        step_to_price_ratio: float,
-        tp_to_entry_price_ratio: float,
-        sl_to_entry_price_ratio: float,
-        inverted: bool,
-        order_quantity: float,
-        order_leverage: float,
-    ) -> None:
-        super().__init__(
-            f"""
-                BotOneStepOrder [
-                    Step to price ratio: {step_to_price_ratio * 100:.2f}%,
-                    Take Profit to entry price ratio: {tp_to_entry_price_ratio * 100:.2f}%,
-                    Stop Loss to entry price ratio: {sl_to_entry_price_ratio * 100:.2f}%,
-                    Inverted: {inverted}",
-                    Order Quantity: {order_quantity:.3f},
-                    Order Leverage: {order_leverage:.2f},
-                ]
-            """
-        )
+    def __init__(self, config: dict) -> None:
+        super().__init__(config)
+
         self.check_point_ticker = None
-        self.step_to_price_ratio = step_to_price_ratio
-        self.tp_to_entry_price_ratio = tp_to_entry_price_ratio
-        self.sl_to_entry_price_ratio = sl_to_entry_price_ratio
-        self.inverted = inverted
-        self.order_quantity = order_quantity
-        self.order_leverage = order_leverage
+        self.step_to_price_ratio = config["step_to_price_ratio"]
+        self.tp_to_entry_price_ratio = config["tp_to_entry_price_ratio"]
+        self.sl_to_entry_price_ratio = config["sl_to_entry_price_ratio"]
+        self.inverted = config["inverted"]
+        self.order_quantity = config["order_quantity"]
+        self.order_leverage = config["order_leverage"]
 
     def process_ticker(
         self,
