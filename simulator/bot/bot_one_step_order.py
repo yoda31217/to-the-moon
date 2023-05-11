@@ -2,7 +2,6 @@ from order.order_side import OrderSide
 from order.order import Order
 from bot.bot import Bot
 from market.market_ticker import MarketTicker
-from report.report_input import order_leverage
 
 
 class BotOneStepOrder(Bot):
