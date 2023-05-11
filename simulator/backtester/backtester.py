@@ -77,6 +77,7 @@ class Backtester:
             # calculate_and_add_balance.FINISH
 
         return BacktesterResult(
+            bot,
             closed_orders,
             self.tickers_data_frame,
             pd.DataFrame(

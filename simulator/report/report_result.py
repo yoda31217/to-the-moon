@@ -2,12 +2,10 @@ from datetime import date
 from datetime import timedelta
 import pandas as pd
 
-import streamlit as st
 from report import report_input
 import report.report_chart as report_chart
 from backtester.backtester_result import BacktesterResult
 
-from bot.bot import Bot
 from streamlit.delta_generator import DeltaGenerator
 
 
@@ -15,7 +13,6 @@ def summary(
     symbol: str,
     date_from: date,
     date_to: date,
-    bot: Bot,
     result: BacktesterResult,
     tab: DeltaGenerator,
 ):
@@ -48,7 +45,7 @@ def summary(
                     "{} - {} ({:.1f} days)".format(
                         date_from, date_to, result.get_interval_days()
                     ),
-                    str(bot),
+                    str(result.bot),
                     "{:.2f} $".format(result.get_average_tickers_price_change()),
                     "1 minute",
                     "{:,}".format(result.get_positions_count()),

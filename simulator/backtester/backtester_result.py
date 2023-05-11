@@ -1,22 +1,26 @@
 from typing import cast
 import pandas as pd
+from bot.bot import Bot
 
 from order.order import Order
 from market.market_ticker import MarketTicker
 
 
 class BacktesterResult:
+    bot: Bot
     positions: pd.DataFrame
     tickers: pd.DataFrame
     balances: pd.DataFrame
 
     def __init__(
         self,
+        bot: Bot,
         closed_orders: list[Order],
         tickers: pd.DataFrame,
         balances: pd.DataFrame,
     ) -> None:
         super().__init__()
+        self.bot = bot
         self.tickers = tickers
         self.positions = self._to_positions(closed_orders)
         self.balances = balances
