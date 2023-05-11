@@ -9,6 +9,8 @@ from backtester.backtester_result import BacktesterResult
 
 from streamlit.delta_generator import DeltaGenerator
 
+from utils import dicts
+
 
 def summary(
     symbol: str,
@@ -158,6 +160,4 @@ def bot_summary(bot: Bot, tab: DeltaGenerator):
     tab.subheader("Name")
     tab.text(bot.get_name())
     tab.subheader("Config")
-    config_key_value_strs = [f'"{key}": {value}' for (key, value) in bot.config.items()]
-    config_key_values_str = "\n    ".join(config_key_value_strs)
-    tab.code(f"{{\n    {config_key_values_str}\n}}")
+    tab.code(dicts.to_json(bot.config))
