@@ -25,7 +25,6 @@ def summary(
                     "Market",
                     "Symbol",
                     "Test interval",
-                    "Bot",
                     "Tickers average price change",
                     "Tickers average interval",
                     "Positions count",
@@ -46,7 +45,6 @@ def summary(
                     "{} - {} ({:.1f} days)".format(
                         date_from, date_to, result.get_interval_days()
                     ),
-                    str(result.bot),
                     "{:.2f} $".format(result.get_average_tickers_price_change()),
                     "1 minute",
                     "{:,}".format(result.get_positions_count()),
