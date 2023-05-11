@@ -17,5 +17,5 @@ class Bot(ABC):
     ):
         pass
 
-    def __str__(self) -> str:
-        return f"{self.__class__.__name__} {str(self.config)}"
+    def get_name(self) -> str:
+        return self.__class__.__name__

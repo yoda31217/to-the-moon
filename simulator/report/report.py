@@ -47,13 +47,15 @@ def build_report():
         positions_pnl_tab,
         balance_tab,
         tickers_tab,
-    ) = st.tabs(["Summary", "Positions", "Positions PNL", "Balance", "Tickers"])
+        bot_tab,
+    ) = st.tabs(["Summary", "Positions", "Positions PNL", "Balance", "Tickers", "Bot"])
 
     report_result.summary(symbol, date_from, date_to, result, summary_tab)
     report_result.pnl_chart(result, positions_pnl_tab)
     report_result.positions_table(result.positions, positions_tab)
     report_result.balances_chart(result, balance_tab)
     report_result.tickers_chart(result.tickers, tickers_tab)
+    report_result.bot_summary(result.bot, bot_tab)
 
     st.divider()
     st.caption(

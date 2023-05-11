@@ -1,6 +1,7 @@
 from datetime import date
 from datetime import timedelta
 import pandas as pd
+from bot.bot import Bot
 
 from report import report_input
 import report.report_chart as report_chart
@@ -153,3 +154,12 @@ def positions_table(positions: pd.DataFrame, tab: DeltaGenerator):
         "positions_table", tab
     )
     tab.dataframe(positions.sort_values(by=[positions_sort_timestamp_column]))
+
+
+def bot_summary(bot: Bot, tab: DeltaGenerator):
+    tab.subheader("Name")
+    tab.text(bot.get_name())
+    tab.subheader("Config")
+    config_key_value_strs = [f'"{key}": {value}' for (key, value) in bot.config.items()]
+    config_key_values_str = "\n    ".join(config_key_value_strs)
+    tab.code(f"{{\n    {config_key_values_str}\n}}")
