@@ -1,9 +1,6 @@
 from datetime import date
 
 import streamlit as st
-from backtester.backtester import Backtester
-from binance import binance_ticker_repository
-from bot.bot_one_step_order import BotOneStepOrder
 from report import report_backtester
 import report.report_input as report_input
 import bot.bot_one_step_order_input as bot_input
@@ -35,7 +32,7 @@ def build_report():
     st.sidebar.markdown("**Name: BotOneStepOrder**")
     bot_config = bot_input.config()
 
-    backtester_result = report_backtester.backtest(
+    backtester_result = report_backtester.test(
         symbol, date_from, date_to, bid_ask_spread, bot_config
     )
 

@@ -6,7 +6,7 @@ from binance import binance_ticker_repository
 from bot.bot_one_step_order import BotOneStepOrder
 
 
-def backtest(
+def test(
     symbol: str, date_from: date, date_to: date, bid_ask_spread: float, bot_config: dict
 ):
     tickers = load_tickers(symbol, date_from, date_to, bid_ask_spread)
