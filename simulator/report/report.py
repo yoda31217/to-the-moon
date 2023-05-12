@@ -34,12 +34,7 @@ def build_report():
     st.sidebar.markdown("**Name: BotOneStepOrder**")
     bot_config = bot_input.config()
 
-    tickers = binance_ticker_repository.load_tickers(
-        symbol, date_from, date_to, bid_ask_spread
-    )
-
-    bot = BotOneStepOrder(bot_config)
-    result = Backtester(tickers).test(bot)
+    backtester_result = backtest(symbol, date_from, date_to, bid_ask_spread, bot_config)
 
     (
         summary_tab,
@@ -50,12 +45,12 @@ def build_report():
         bot_tab,
     ) = st.tabs(["Summary", "Positions", "Positions PNL", "Balance", "Tickers", "Bot"])
 
-    report_result.summary(symbol, date_from, date_to, result, summary_tab)
-    report_result.pnl_chart(result, positions_pnl_tab)
-    report_result.positions_table(result.positions, positions_tab)
-    report_result.balances_chart(result, balance_tab)
-    report_result.tickers_chart(result.tickers, tickers_tab)
-    report_result.bot_summary(result.bot, bot_tab)
+    report_result.summary(symbol, date_from, date_to, backtester_result, summary_tab)
+    report_result.pnl_chart(backtester_result, positions_pnl_tab)
+    report_result.positions_table(backtester_result.positions, positions_tab)
+    report_result.balances_chart(backtester_result, balance_tab)
+    report_result.tickers_chart(backtester_result.tickers, tickers_tab)
+    report_result.bot_summary(backtester_result.bot, bot_tab)
 
     st.divider()
     st.caption(
@@ -64,4 +59,20 @@ def build_report():
             
             2023 🌕 To the Moon
         """
+    )
+
+
+def backtest(symbol, date_from, date_to, bid_ask_spread, bot_config):
+    tickers = load_tickers(symbol, date_from, date_to, bid_ask_spread)
+    return backtester_test(bot_config, tickers)
+
+
+def backtester_test(bot_config, tickers):
+    bot = BotOneStepOrder(bot_config)
+    return Backtester(tickers).test(bot)
+
+
+def load_tickers(symbol, date_from, date_to, bid_ask_spread):
+    return binance_ticker_repository.load_tickers(
+        symbol, date_from, date_to, bid_ask_spread
     )
