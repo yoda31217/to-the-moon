@@ -13,13 +13,13 @@ def symbol():
 
 def date_from():
     return cast(
-        date, st.sidebar.date_input("Date from", date.today() - timedelta(days=2 + 6))
+        date, st.sidebar.date_input("Date from", date.today() - timedelta(days=3 + 6))
     )
 
 
 def date_to():
     return cast(
-        date, st.sidebar.date_input("Date to", date.today() - timedelta(days=2))
+        date, st.sidebar.date_input("Date to", date.today() - timedelta(days=3))
     )
 
 
