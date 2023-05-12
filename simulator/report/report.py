@@ -4,6 +4,7 @@ import streamlit as st
 from backtester.backtester import Backtester
 from binance import binance_ticker_repository
 from bot.bot_one_step_order import BotOneStepOrder
+from report import report_backtester
 import report.report_input as report_input
 import bot.bot_one_step_order_input as bot_input
 import report.report_result as report_result
@@ -34,7 +35,9 @@ def build_report():
     st.sidebar.markdown("**Name: BotOneStepOrder**")
     bot_config = bot_input.config()
 
-    backtester_result = backtest(symbol, date_from, date_to, bid_ask_spread, bot_config)
+    backtester_result = report_backtester.backtest(
+        symbol, date_from, date_to, bid_ask_spread, bot_config
+    )
 
     (
         summary_tab,
@@ -59,20 +62,4 @@ def build_report():
             
             2023 🌕 To the Moon
         """
-    )
-
-
-def backtest(symbol, date_from, date_to, bid_ask_spread, bot_config):
-    tickers = load_tickers(symbol, date_from, date_to, bid_ask_spread)
-    return backtester_test(bot_config, tickers)
-
-
-def backtester_test(bot_config, tickers):
-    bot = BotOneStepOrder(bot_config)
-    return Backtester(tickers).test(bot)
-
-
-def load_tickers(symbol, date_from, date_to, bid_ask_spread):
-    return binance_ticker_repository.load_tickers(
-        symbol, date_from, date_to, bid_ask_spread
     )
