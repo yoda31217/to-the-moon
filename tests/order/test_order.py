@@ -13,6 +13,17 @@ class TestOrder:
         with pytest.raises(ValueError):
             Order(MarketTicker(100, 200.0, 300.0), OrderSide.BUY, -0.5, -1.5)
 
+    def test_throw_on_close_already_closed_order(self):
+        with pytest.raises(Exception):
+            entry_ticker = MarketTicker(100, 999, 1_000)
+            order = Order(entry_ticker, OrderSide.BUY, 999_999, -999_999)
+
+            exit_ticker = MarketTicker(200, 1_999, 2_000)
+            order.close(exit_ticker)
+
+            exit_ticker_2 = MarketTicker(300, 2_999, 3_000)
+            order.close(exit_ticker_2)
+
     def test_calculate_possible_pnl_with_new_ticker_on_closed_return_calculated_value(
         self,
     ):
