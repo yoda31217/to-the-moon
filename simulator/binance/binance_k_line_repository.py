@@ -3,10 +3,10 @@ import os
 from urllib.request import urlretrieve
 import pandas as pd
 
-from k_line import KLinesDataFrame
+from market.market_k_line import MarketKLinesDataFrame
 
 
-def load_k_lines(symbol: str, date_from: date, date_to: date) -> KLinesDataFrame:
+def load_k_lines(symbol: str, date_from: date, date_to: date) -> MarketKLinesDataFrame:
     if date_to < date_from:
         raise Exception(
             f"Date 'from'={date_from} cannot be greaterthan date 'to'={date_to}."
@@ -18,14 +18,14 @@ def load_k_lines(symbol: str, date_from: date, date_to: date) -> KLinesDataFrame
 
 
 def _join_k_lines_data_frames(
-    k_lines_data_frames: list[KLinesDataFrame],
-) -> KLinesDataFrame:
+    k_lines_data_frames: list[MarketKLinesDataFrame],
+) -> MarketKLinesDataFrame:
     return pd.concat(k_lines_data_frames).sort_values(by=["open_timestamp_millis"])
 
 
 def _load_k_lines_data_frames(
     symbol: str, date_from: date, date_to: date
-) -> list[KLinesDataFrame]:
+) -> list[MarketKLinesDataFrame]:
     date_iso_strs: list[str] = (
         pd.date_range(date_from, date_to, freq="d").strftime("%Y-%m-%d").to_list()
     )
@@ -38,7 +38,7 @@ def _load_k_lines_data_frames(
     ]
 
 
-def _load_k_lines_data_frame(symbol: str, date_iso_str: str) -> KLinesDataFrame:
+def _load_k_lines_data_frame(symbol: str, date_iso_str: str) -> MarketKLinesDataFrame:
     k_lines_file_path = _load_k_lines_to_file_if_needed(symbol, date_iso_str)
     return pd.read_csv(
         k_lines_file_path,
