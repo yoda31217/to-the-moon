@@ -1,5 +1,6 @@
 from datetime import date
 import os
+from typing import cast
 from urllib.request import urlretrieve
 import pandas as pd
 
@@ -45,24 +46,27 @@ def _load_k_lines_data_frames(
 
 def _load_k_lines_data_frame(symbol: str, date_iso_str: str) -> MarketKLinesDataFrame:
     k_lines_file_path = _load_k_lines_to_file_if_needed(symbol, date_iso_str)
-    return pd.read_csv(  # pyright: ignore [reportUnknownMemberType]
-        k_lines_file_path,
-        sep=",",
-        header=0,
-        names=[
-            "open_timestamp_millis",
-            "open_price",
-            "high_price",
-            "low_price",
-            "close_price",
-            "volume",
-            "close_timestamp_millis",
-            "quote_asset_volume",
-            "trades_count",
-            "taker_buy_base_asset_volume",
-            "taker_buy_quote_asset_volume",
-            "ignore",
-        ],
+    return cast(
+        MarketKLinesDataFrame,
+        pd.read_csv(  # pyright: ignore [reportUnknownMemberType]
+            k_lines_file_path,
+            sep=",",
+            header=0,
+            names=[
+                "open_timestamp_millis",
+                "open_price",
+                "high_price",
+                "low_price",
+                "close_price",
+                "volume",
+                "close_timestamp_millis",
+                "quote_asset_volume",
+                "trades_count",
+                "taker_buy_base_asset_volume",
+                "taker_buy_quote_asset_volume",
+                "ignore",
+            ],
+        ),
     )
 
 

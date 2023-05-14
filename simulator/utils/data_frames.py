@@ -1,11 +1,11 @@
-from typing import TypeVar
+from typing import TypeVar, cast
 import pandas as pd
 
 DF = TypeVar("DF", bound=pd.DataFrame)
 
 
 def concat(data_frames: list[DF]) -> DF:
-    return pd.concat(data_frames)  # pyright: ignore [reportUnknownMemberType]
+    return cast(DF, pd.concat(data_frames))  # pyright: ignore [reportUnknownMemberType]
 
 
 def sort_by(data_frame: DF, column: str) -> DF:

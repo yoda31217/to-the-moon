@@ -1,4 +1,5 @@
-import altair as alt# pyright: ignore [[reportUnknownMemberType]
+from typing import cast
+import altair as alt  # pyright: ignore [[reportUnknownMemberType]
 import pandas as pd
 from streamlit.delta_generator import DeltaGenerator
 
@@ -87,4 +88,6 @@ def bars(
 
 
 def altair_value(value: str) -> dict[str, str]:
-    return alt.value(value)  # pyright: ignore [reportUnknownMemberType]
+    return cast(
+        dict[str, str], alt.value(value)  # pyright: ignore [reportUnknownMemberType]
+    )
