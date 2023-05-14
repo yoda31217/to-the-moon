@@ -4,6 +4,7 @@ from urllib.request import urlretrieve
 import pandas as pd
 
 from market.market_k_line import MarketKLinesDataFrame
+from utils import data_frames
 
 
 def load_k_lines(symbol: str, date_from: date, date_to: date) -> MarketKLinesDataFrame:
@@ -20,7 +21,9 @@ def load_k_lines(symbol: str, date_from: date, date_to: date) -> MarketKLinesDat
 def _join_k_lines_data_frames(
     k_lines_data_frames: list[MarketKLinesDataFrame],
 ) -> MarketKLinesDataFrame:
-    return pd.concat(k_lines_data_frames).sort_values(by=["open_timestamp_millis"])
+    return data_frames.sort_by(
+        data_frames.concat(k_lines_data_frames), "open_timestamp_millis"
+    )
 
 
 def _load_k_lines_data_frames(

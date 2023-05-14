@@ -1,6 +1,12 @@
-from typing import Any
+from typing import TypeVar
 import pandas as pd
 
+DF = TypeVar("DF", bound=pd.DataFrame)
 
-def add_row(balances: pd.DataFrame, row: list[Any]):
-    balances.loc[len(balances.index)] = row  # type: ignore
+
+def concat(data_frames: list[DF]) -> DF:
+    return pd.concat(data_frames)  # pyright: ignore
+
+
+def sort_by(data_frame: DF, column: str) -> DF:
+    return data_frame.sort_values(by=[column])  # pyright: ignore
