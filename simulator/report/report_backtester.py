@@ -1,10 +1,10 @@
 from datetime import date
 
-import pandas as pd
 import streamlit as st
 from backtester.backtester import Backtester
 from binance import binance_ticker_repository
 from bot.bot_one_step_order import BotOneStepOrder
+from market.market_ticker import MarketTikersDataFrame
 
 
 @st.cache_data
@@ -20,7 +20,7 @@ def test(
 
 
 @st.cache_data
-def backtester_test(bot_config: dict[str, object], tickers: pd.DataFrame):
+def backtester_test(bot_config: dict[str, object], tickers: MarketTikersDataFrame):
     bot = BotOneStepOrder(bot_config)
     return Backtester(tickers).test(bot)
 
