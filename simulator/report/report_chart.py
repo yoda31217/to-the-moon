@@ -1,6 +1,5 @@
 import altair as alt
 import pandas as pd
-import streamlit as st
 from streamlit.delta_generator import DeltaGenerator
 
 
@@ -39,7 +38,7 @@ def line(
                 title=value_label,  # type: ignore
                 scale=alt.Scale(zero=False),  # type: ignore
             ),
-            color=alt.value("#4dabf5"),
+            color=altair_value("#4dabf5"),
         )
         .transform_sample(samples_count),
         use_container_width=True,
@@ -76,10 +75,14 @@ def bars(
             ),
             color=alt.condition(
                 alt.datum[value_column_name] > 0,
-                alt.value("#4dabf5"),
-                alt.value("#ff784e"),
+                altair_value("#4dabf5"),
+                altair_value("#ff784e"),
             ),
         )
         .transform_sample(samples_count),
         use_container_width=True,
     )
+
+
+def altair_value(value: str) -> dict[str, str]:
+    return alt.value(value)
