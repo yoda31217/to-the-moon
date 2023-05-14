@@ -9,7 +9,7 @@ from backtester.backtester_result import BacktesterResult
 
 from streamlit.delta_generator import DeltaGenerator
 
-from utils import dicts
+from utils import data_frames, dicts
 
 
 def summary(
@@ -96,8 +96,8 @@ def pnl_chart(
         positions_sort_timestamp_column = report_input.positions_sort_timestamp_column(
             "pnl_chart", tab
         )
-        sorted_positions = result.positions.sort_values(
-            by=[positions_sort_timestamp_column]
+        sorted_positions = data_frames.sort_by(
+            result.positions, positions_sort_timestamp_column
         )
 
         match pnl_chart_type:
@@ -153,7 +153,7 @@ def positions_table(positions: pd.DataFrame, tab: DeltaGenerator):
     positions_sort_timestamp_column = report_input.positions_sort_timestamp_column(
         "positions_table", tab
     )
-    tab.dataframe(positions.sort_values(by=[positions_sort_timestamp_column]))
+    tab.dataframe(data_frames.sort_by(positions, positions_sort_timestamp_column))
 
 
 def bot_summary(bot: Bot, tab: DeltaGenerator):
