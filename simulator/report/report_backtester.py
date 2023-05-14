@@ -20,7 +20,7 @@ def test(
 
 
 @st.cache_data
-def backtester_test(bot_config: dict, tickers: pd.DataFrame):
+def backtester_test(bot_config: dict[str, object], tickers: pd.DataFrame):
     bot = BotOneStepOrder(bot_config)
     return Backtester(tickers).test(bot)
 

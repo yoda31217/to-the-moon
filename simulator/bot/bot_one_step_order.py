@@ -1,3 +1,4 @@
+from typing import cast
 from order.order_side import OrderSide
 from order.order import Order
 from bot.bot import Bot
@@ -15,16 +16,16 @@ class BotOneStepOrder(Bot):
 
     # TODO generify parameters and name generation,
     # to be able to dinamicaly create them and report.
-    def __init__(self, config: dict) -> None:
+    def __init__(self, config: dict[str, object]) -> None:
         super().__init__(config)
 
         self.check_point_ticker = None
-        self.step_to_price_ratio = config["step_to_price_ratio"]
-        self.tp_to_entry_price_ratio = config["tp_to_entry_price_ratio"]
-        self.sl_to_entry_price_ratio = config["sl_to_entry_price_ratio"]
-        self.inverted = config["inverted"]
-        self.order_quantity = config["order_quantity"]
-        self.order_leverage = config["order_leverage"]
+        self.step_to_price_ratio = cast(float, config["step_to_price_ratio"])
+        self.tp_to_entry_price_ratio = cast(float, config["tp_to_entry_price_ratio"])
+        self.sl_to_entry_price_ratio = cast(float, config["sl_to_entry_price_ratio"])
+        self.inverted = cast(bool, config["inverted"])
+        self.order_quantity = cast(float, config["order_quantity"])
+        self.order_leverage = cast(float, config["order_leverage"])
 
     def process_ticker(
         self,
