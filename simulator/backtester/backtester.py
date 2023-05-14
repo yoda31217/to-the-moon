@@ -1,4 +1,3 @@
-import timeit
 from typing import NamedTuple, cast
 import pandas as pd
 from backtester.backtester_result import BacktesterResult
@@ -6,7 +5,6 @@ from backtester.backtester_result import BacktesterResult
 from order.order import Order
 from bot.bot import Bot
 from market.market_ticker import MarketTicker
-from utils.data_frames import data_frame_add_row
 
 TickersDataFrameRowTuple = NamedTuple(
     "Employee", timestamp=int, bid_price=float, ask_price=float
