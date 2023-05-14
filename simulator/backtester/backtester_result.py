@@ -113,13 +113,13 @@ class BacktesterResult:
         return series.avg(self.positions.quantity)
 
     def get_positions_initial_margin_sum(self):
-        return self.positions.initial_margin.sum()
+        return series.sum(self.positions.initial_margin)
 
     def get_positions_average_roe(self):
         return series.avg(self.positions.roe)
 
     def get_positions_pnl_sum(self):
-        return self.positions.pnl.sum() if self.get_positions_count() > 0 else 0
+        return series.sum(self.positions.pnl) if self.get_positions_count() > 0 else 0
 
     def get_average_tickers_price_change(self):
         return series.avg(self.tickers.ask_price.diff().abs())
