@@ -11,7 +11,7 @@
   },
   "python.autoComplete.extraPaths": ["${workspaceFolder}/simulator"],
   "python.formatting.provider": "black",
-  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.typeCheckingMode": "strict",
   "python.analysis.extraPaths": ["${workspaceFolder}/simulator"],
   "python.analysis.autoImportCompletions": true,
   "python.analysis.completeFunctionParens": true,
