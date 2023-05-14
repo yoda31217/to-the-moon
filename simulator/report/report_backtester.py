@@ -9,7 +9,11 @@ from bot.bot_one_step_order import BotOneStepOrder
 
 @st.cache_data
 def test(
-    symbol: str, date_from: date, date_to: date, bid_ask_spread: float, bot_config: dict
+    symbol: str,
+    date_from: date,
+    date_to: date,
+    bid_ask_spread: float,
+    bot_config: dict[str, object],
 ):
     tickers = load_tickers(symbol, date_from, date_to, bid_ask_spread)
     return backtester_test(bot_config, tickers)

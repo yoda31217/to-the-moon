@@ -1,4 +1,3 @@
-from typing import cast
 import uuid
 
 from order.order_side import OrderSide
@@ -81,7 +80,7 @@ class Order:
     def close(self, ticker: MarketTicker):
         if not self.is_open:
             raise Exception(f"Failed to close already closed order.")
-        
+
         self.exit_ticker = ticker
         exit_price = self._get_possible_exit_price(ticker)
         self.exit_price = exit_price

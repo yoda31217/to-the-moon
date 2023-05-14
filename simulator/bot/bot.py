@@ -5,9 +5,9 @@ from market.market_ticker import MarketTicker
 
 
 class Bot(ABC):
-    config: dict
+    config: dict[str, object]
 
-    def __init__(self, config: dict) -> None:
+    def __init__(self, config: dict[str, object]) -> None:
         super().__init__()
         self.config = config
 
