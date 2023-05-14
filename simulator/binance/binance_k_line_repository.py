@@ -3,8 +3,10 @@ import os
 from urllib.request import urlretrieve
 import pandas as pd
 
+from k_line import KLinesDataFrame
 
-def load_k_lines(symbol: str, date_from: date, date_to: date) -> pd.DataFrame:
+
+def load_k_lines(symbol: str, date_from: date, date_to: date) -> KLinesDataFrame:
     if date_to < date_from:
         raise Exception(
             f"Date 'from'={date_from} cannot be greaterthan date 'to'={date_to}."
