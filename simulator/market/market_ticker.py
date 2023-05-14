@@ -1,4 +1,4 @@
-from typing import Iterable, NamedTuple, cast
+from typing import Iterable, NamedTuple
 import pandas as pd
 
 

@@ -1,4 +1,4 @@
-from typing import Iterable, cast
+from typing import cast
 import pandas as pd
 from backtester.backtester_result import BacktesterResult
 
@@ -28,7 +28,7 @@ class Backtester:
         orders: list[Order] = []
         closed_orders: list[Order] = []
 
-        balances = [[0, 0, 0]] * (len(self.tickers))
+        balances: list[list[float]] = [[0, 0, 0]] * (len(self.tickers))
 
         closed_orders_count_cache = 0.0
         closed_orders_margin_balance_cache = 0.0
