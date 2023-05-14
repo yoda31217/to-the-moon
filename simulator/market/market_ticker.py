@@ -1,3 +1,4 @@
+from typing import Iterable, NamedTuple, cast
 import pandas as pd
 
 
@@ -16,7 +17,17 @@ class MarketTicker:
             )
 
 
+MarketTickersDataFrameRowTuple = NamedTuple(
+    "Pandas", timestamp=int, bid_price=float, ask_price=float
+)
+
+
 class MarketTikersDataFrame(pd.DataFrame):
     timestamp: pd.Series[int]
     bid_price: pd.Series[float]
     ask_price: pd.Series[float]
+
+    def itertuples(  # pyright: ignore [reportIncompatibleMethodOverride]
+        self,
+    ) -> Iterable[MarketTickersDataFrameRowTuple]:
+        return self.itertuples()

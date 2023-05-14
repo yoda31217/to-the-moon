@@ -1,13 +1,13 @@
-from typing import NamedTuple, cast
+from typing import Iterable, cast
 import pandas as pd
 from backtester.backtester_result import BacktesterResult
 
 from order.order import Order
 from bot.bot import Bot
-from market.market_ticker import MarketTicker, MarketTikersDataFrame
-
-TickersDataFrameRowTuple = NamedTuple(
-    "Employee", timestamp=int, bid_price=float, ask_price=float
+from market.market_ticker import (
+    MarketTicker,
+    MarketTickersDataFrameRowTuple,
+    MarketTikersDataFrame,
 )
 
 
@@ -104,7 +104,7 @@ class Backtester:
             order.notify(ticker)
 
     @staticmethod
-    def _to_ticker(ticker_row: TickersDataFrameRowTuple):
+    def _to_ticker(ticker_row: MarketTickersDataFrameRowTuple):
         return MarketTicker(
             ticker_row.timestamp, ticker_row.bid_price, ticker_row.ask_price
         )
