@@ -19,7 +19,7 @@ def summary(
     result: BacktesterResult,
     tab: DeltaGenerator,
 ):
-    tab.table(
+    tab.table(  # pyright: ignore reportUnknownMemberType
         pd.DataFrame(
             {
                 "Property": [
@@ -153,7 +153,9 @@ def positions_table(positions: pd.DataFrame, tab: DeltaGenerator):
     positions_sort_timestamp_column = report_input.positions_sort_timestamp_column(
         "positions_table", tab
     )
-    tab.dataframe(data_frames.sort_by(positions, positions_sort_timestamp_column))
+    tab.dataframe(  # pyright: ignore reportUnknownMemberType
+        data_frames.sort_by(positions, positions_sort_timestamp_column)
+    )
 
 
 def bot_summary(bot: Bot, tab: DeltaGenerator):
