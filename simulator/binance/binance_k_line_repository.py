@@ -18,15 +18,15 @@ def load_k_lines(symbol: str, date_from: date, date_to: date) -> KLinesDataFrame
 
 
 def _join_k_lines_data_frames(
-    k_lines_data_frames: list[pd.DataFrame],
-) -> pd.DataFrame:
+    k_lines_data_frames: list[KLinesDataFrame],
+) -> KLinesDataFrame:
     return pd.concat(k_lines_data_frames).sort_values(by=["open_timestamp_millis"])
 
 
 def _load_k_lines_data_frames(
     symbol: str, date_from: date, date_to: date
-) -> list[pd.DataFrame]:
-    date_iso_strs = (
+) -> list[KLinesDataFrame]:
+    date_iso_strs: list[str] = (
         pd.date_range(date_from, date_to, freq="d").strftime("%Y-%m-%d").to_list()
     )
 
@@ -38,7 +38,7 @@ def _load_k_lines_data_frames(
     ]
 
 
-def _load_k_lines_data_frame(symbol: str, date_iso_str: str):
+def _load_k_lines_data_frame(symbol: str, date_iso_str: str) -> KLinesDataFrame:
     k_lines_file_path = _load_k_lines_to_file_if_needed(symbol, date_iso_str)
     return pd.read_csv(
         k_lines_file_path,
@@ -61,7 +61,7 @@ def _load_k_lines_data_frame(symbol: str, date_iso_str: str):
     )
 
 
-def _load_k_lines_to_file_if_needed(symbol, date_iso_str) -> str:
+def _load_k_lines_to_file_if_needed(symbol: str, date_iso_str: str) -> str:
     file_path = (
         f"./data/futures/um/daily/klines/{symbol}/1m/{symbol}-1m-{date_iso_str}.zip"
     )
@@ -74,7 +74,7 @@ def _load_k_lines_to_file_if_needed(symbol, date_iso_str) -> str:
 
 
 # https://www.binance.com/en/landing/data
-def _load_k_lines_to_file(symbol, date_iso_str, file_path):
+def _load_k_lines_to_file(symbol: str, date_iso_str: str, file_path: str):
     url = (
         f"https://data.binance.vision"
         + f"/data/futures/um/daily/klines/{symbol}/1m/{symbol}-1m-{date_iso_str}.zip"
