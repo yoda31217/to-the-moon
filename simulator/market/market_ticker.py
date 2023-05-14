@@ -1,3 +1,6 @@
+import pandas as pd
+
+
 class MarketTicker:
     timestamp: int
     ask_price: float
@@ -11,3 +14,9 @@ class MarketTicker:
             raise ValueError(
                 f"Ask price (${ask_price}) should be > than bid price (${bid_price})."
             )
+
+
+class MarketTikersDataFrame(pd.DataFrame):
+    timestamp: pd.Series[int]
+    bid_price: pd.Series[float]
+    ask_price: pd.Series[float]
