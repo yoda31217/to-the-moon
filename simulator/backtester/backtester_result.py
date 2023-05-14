@@ -3,7 +3,7 @@ import pandas as pd
 from bot.bot import Bot
 
 from order.order import Order
-from market.market_ticker import MarketTicker
+from market.market_ticker import MarketTicker, MarketTikersDataFrame
 from utils import series
 
 
@@ -24,14 +24,14 @@ class BacktesterResultPositionsDataFrame(pd.DataFrame):
 class BacktesterResult:
     bot: Bot
     positions: BacktesterResultPositionsDataFrame
-    tickers: pd.DataFrame
+    tickers: MarketTikersDataFrame
     balances: pd.DataFrame
 
     def __init__(
         self,
         bot: Bot,
         closed_orders: list[Order],
-        tickers: pd.DataFrame,
+        tickers: MarketTikersDataFrame,
         balances: pd.DataFrame,
     ) -> None:
         super().__init__()
