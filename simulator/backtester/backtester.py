@@ -4,7 +4,7 @@ from backtester.backtester_result import BacktesterResult
 
 from order.order import Order
 from bot.bot import Bot
-from market.market_ticker import MarketTicker
+from market.market_ticker import MarketTicker, MarketTikersDataFrame
 
 TickersDataFrameRowTuple = NamedTuple(
     "Employee", timestamp=int, bid_price=float, ask_price=float
@@ -13,9 +13,9 @@ TickersDataFrameRowTuple = NamedTuple(
 
 class Backtester:
     tickers: list[MarketTicker]
-    tickers_data_frame: pd.DataFrame
+    tickers_data_frame: MarketTikersDataFrame
 
-    def __init__(self, tickers_data_frame: pd.DataFrame) -> None:
+    def __init__(self, tickers_data_frame: MarketTikersDataFrame) -> None:
         self.tickers = list(
             (
                 self._to_ticker(ticker_row)
@@ -57,8 +57,7 @@ class Backtester:
                 closed_orders_count_cache = len(closed_orders)
 
             orders_margin_balance = sum(
-                cast(float, order.calculate_possible_pnl(new_ticker))
-                for order in orders
+                order.calculate_possible_pnl(new_ticker) for order in orders
             )
 
             margin_balance = orders_margin_balance + closed_orders_margin_balance
@@ -99,7 +98,7 @@ class Backtester:
         orders.extend(open_orders)
 
     @staticmethod
-    def _notify_orders(ticker, orders: list[Order]):
+    def _notify_orders(ticker: MarketTicker, orders: list[Order]):
         order: Order
         for order in orders:
             order.notify(ticker)
