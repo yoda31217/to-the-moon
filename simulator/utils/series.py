@@ -1,5 +1,5 @@
 import pandas as pd
 
 
-def avg(series: pd.Series[float] | pd.Series[int]):
+def avg(series: pd.Series[int | float]):
     return series.mean()  # pyright: ignore
