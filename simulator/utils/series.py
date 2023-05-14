@@ -18,3 +18,7 @@ def min(series: pd.Series[T]) -> T:
 
 def max(series: pd.Series[T]) -> T:
     return series.max()  # pyright: ignore reportUnknownMemberType
+
+
+def cumsum(series: pd.Series[T]) -> T:
+    return series.cumsum()  # pyright: ignore reportUnknownMemberType

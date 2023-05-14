@@ -2,6 +2,8 @@ import altair as alt
 import pandas as pd
 from streamlit.delta_generator import DeltaGenerator
 
+from utils import series
+
 
 # TODO fix types
 def line(
@@ -13,13 +15,13 @@ def line(
     samples_count: int = 10_000,
     is_cumulative: bool = False,
 ):
+    value_series: pd.Series[float] = data_frame[value_column_name]
+
     formatted_data_frame = pd.DataFrame(
         {
             "Date Time": data_frame[timestamp_column_name],
             value_column_name: (
-                data_frame[value_column_name].cumsum()
-                if is_cumulative
-                else data_frame[value_column_name]
+                series.cumsum(value_series) if is_cumulative else value_series
             ),
         }
     )
@@ -73,7 +75,7 @@ def bars(
                 shorthand=value_column_name + ":Q",  # type: ignore
                 title=value_label,  # type: ignore
             ),
-            color=alt.condition(
+            color=alt.condition(  # pyright: ignore reportUnknownMemberType
                 alt.datum[value_column_name] > 0,
                 altair_value("#4dabf5"),
                 altair_value("#ff784e"),
@@ -85,4 +87,4 @@ def bars(
 
 
 def altair_value(value: str) -> dict[str, str]:
-    return alt.value(value)
+    return alt.value(value)  # pyright: ignore reportUnknownMemberType
