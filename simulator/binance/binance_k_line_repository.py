@@ -32,7 +32,7 @@ def _load_k_lines_data_frames(
     date_iso_strs: list[str] = (
         pd.date_range(date_from, date_to, freq="d")
         .strftime("%Y-%m-%d")
-        .to_list()  # pyright: ignore reportUnknownMemberType
+        .to_list()  # pyright: ignore [reportUnknownMemberType]
     )
 
     if len(date_iso_strs) > 31:
@@ -45,7 +45,7 @@ def _load_k_lines_data_frames(
 
 def _load_k_lines_data_frame(symbol: str, date_iso_str: str) -> MarketKLinesDataFrame:
     k_lines_file_path = _load_k_lines_to_file_if_needed(symbol, date_iso_str)
-    return pd.read_csv(  # pyright: ignore reportUnknownMemberType
+    return pd.read_csv(  # pyright: ignore [reportUnknownMemberType]
         k_lines_file_path,
         sep=",",
         header=0,

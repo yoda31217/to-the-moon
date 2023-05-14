@@ -1,4 +1,4 @@
-import altair as alt
+import altair as alt# pyright: ignore [[reportUnknownMemberType]
 import pandas as pd
 from streamlit.delta_generator import DeltaGenerator
 
@@ -75,7 +75,7 @@ def bars(
                 shorthand=value_column_name + ":Q",  # type: ignore
                 title=value_label,  # type: ignore
             ),
-            color=alt.condition(  # pyright: ignore reportUnknownMemberType
+            color=alt.condition(  # pyright: ignore [reportUnknownMemberType]
                 alt.datum[value_column_name] > 0,
                 altair_value("#4dabf5"),
                 altair_value("#ff784e"),
@@ -87,4 +87,4 @@ def bars(
 
 
 def altair_value(value: str) -> dict[str, str]:
-    return alt.value(value)  # pyright: ignore reportUnknownMemberType
+    return alt.value(value)  # pyright: ignore [reportUnknownMemberType]
