@@ -125,6 +125,6 @@ class BacktesterResult:
         return series.avg(self.tickers.ask_price.diff().abs())
 
     def get_interval_days(self) -> float:
-        min_timestamp = self.tickers.timestamp.min()
-        max_timestamp = self.tickers.timestamp.max()
+        min_timestamp = series.min(self.tickers.timestamp)
+        max_timestamp = series.max(self.tickers.timestamp)
         return (max_timestamp - min_timestamp) / (1.0 * 24 * 60 * 60 * 1000)

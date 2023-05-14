@@ -10,3 +10,11 @@ def avg(series: pd.Series[T]) -> float:
 
 def sum(series: pd.Series[T]) -> T:
     return series.sum()  # pyright: ignore
+
+
+def min(series: pd.Series[T]) -> T:
+    return series.min()  # pyright: ignore
+
+
+def max(series: pd.Series[T]) -> T:
+    return series.max()  # pyright: ignore
