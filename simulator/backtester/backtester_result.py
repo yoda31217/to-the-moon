@@ -5,20 +5,21 @@ from bot.bot import Bot
 from order.order import Order
 from market.market_ticker import MarketTicker, MarketTikersDataFrame
 from utils import series
+from utils.series import TypedSeries
 
 
 class BacktesterResultPositionsDataFrame(pd.DataFrame):
-    entry_timestamp: pd.Series[int]
-    exit_timestamp: pd.Series[int]
-    durarion_millis: pd.Series[int]
-    side: pd.Series[str]
-    entry_price: pd.Series[float]
-    exit_price: pd.Series[float]
-    price_margin: pd.Series[float]
-    quantity: pd.Series[float]
-    initial_margin: pd.Series[float]
-    pnl: pd.Series[float]
-    roe: pd.Series[float]
+    entry_timestamp: TypedSeries[int]
+    exit_timestamp: TypedSeries[int]
+    durarion_millis: TypedSeries[int]
+    side: TypedSeries[str]
+    entry_price: TypedSeries[float]
+    exit_price: TypedSeries[float]
+    price_margin: TypedSeries[float]
+    quantity: TypedSeries[float]
+    initial_margin: TypedSeries[float]
+    pnl: TypedSeries[float]
+    roe: TypedSeries[float]
 
 
 class BacktesterResult:

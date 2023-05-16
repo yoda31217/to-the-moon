@@ -1,6 +1,8 @@
 from typing import Iterable, NamedTuple
 import pandas as pd
 
+from utils.series import TypedSeries
+
 
 class MarketTicker:
     timestamp: int
@@ -23,9 +25,9 @@ MarketTickersDataFrameRowTuple = NamedTuple(
 
 
 class MarketTikersDataFrame(pd.DataFrame):
-    timestamp: pd.Series[int]
-    bid_price: pd.Series[float]
-    ask_price: pd.Series[float]
+    timestamp: TypedSeries[int]
+    bid_price: TypedSeries[float]
+    ask_price: TypedSeries[float]
 
     def itertuples(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
