@@ -4,7 +4,6 @@ from bot.bot import Bot
 
 from order.order import Order
 from market.market_ticker import MarketTicker, MarketTikersDataFrame
-from utils import series
 from utils.series import TypedSeries
 
 

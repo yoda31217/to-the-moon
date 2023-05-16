@@ -26,3 +26,13 @@ class TypedSeries(pd.Series, Generic[T]):  # pyright: ignore [reportMissingTypeA
         self,
     ) -> T:  # pyright: ignore [reportGeneralTypeIssues]
         pass
+
+    def abs(
+        self,
+    ) -> "TypedSeries[T]":  # pyright: ignore [reportGeneralTypeIssues]
+        pass
+
+    def diff(  # pyright: ignore [reportIncompatibleMethodOverride]
+        self,
+    ) -> "TypedSeries[T]":  # pyright: ignore [reportGeneralTypeIssues]
+        pass
