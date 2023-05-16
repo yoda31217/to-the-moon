@@ -31,6 +31,7 @@ class MarketTikersDataFrame(pd.DataFrame):
 
     def itertuples(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
-    ) -> Iterable[MarketTickersDataFrameRowTuple]:
-        return super().itertuples()  # pyright: ignore [
-        # reportUnknownVariableType, reportUnknownMemberType]
+    ) -> Iterable[
+        MarketTickersDataFrameRowTuple
+    ]:  # pyright: ignore [reportGeneralTypeIssues]
+        pass
