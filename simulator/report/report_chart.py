@@ -3,7 +3,7 @@ import altair as alt  # pyright: ignore [[reportUnknownMemberType]
 import pandas as pd
 from streamlit.delta_generator import DeltaGenerator
 
-from utils import series
+from utils.series import TypedSeries
 
 
 # TODO fix types
@@ -16,13 +16,15 @@ def line(
     samples_count: int = 10_000,
     is_cumulative: bool = False,
 ):
-    value_series: pd.Series[float] = data_frame[value_column_name]
+    value_series: TypedSeries[float] = cast(
+        TypedSeries[float], data_frame[value_column_name]
+    )
 
     formatted_data_frame = pd.DataFrame(
         {
             "Date Time": data_frame[timestamp_column_name],
             value_column_name: (
-                series.cumsum(value_series) if is_cumulative else value_series
+                value_series.cumsum() if is_cumulative else value_series
             ),
         }
     )

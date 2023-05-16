@@ -1,11 +1,7 @@
-from typing import Generic, Literal, TypeVar
+from typing import Generic, TypeVar
 import pandas as pd
 
 T = TypeVar("T", float, int, str)
-
-
-def cumsum(series: "pd.Series[T]") -> "pd.Series[T]":
-    return series.cumsum()  # pyright: ignore [reportUnknownMemberType]
 
 
 class TypedSeries(pd.Series, Generic[T]):  # pyright: ignore [reportMissingTypeArgument]
@@ -33,6 +29,11 @@ class TypedSeries(pd.Series, Generic[T]):  # pyright: ignore [reportMissingTypeA
         pass
 
     def diff(  # pyright: ignore [reportIncompatibleMethodOverride]
+        self,
+    ) -> "TypedSeries[T]":  # pyright: ignore [reportGeneralTypeIssues]
+        pass
+
+    def cumsum(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
     ) -> "TypedSeries[T]":  # pyright: ignore [reportGeneralTypeIssues]
         pass
