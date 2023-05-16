@@ -119,8 +119,8 @@ class BacktesterResult:
     def get_positions_average_roe(self):
         return self.positions.roe.mean()
 
-    def get_positions_pnl_sum(self) -> float:
-        return series.sum(self.positions.pnl) if self.get_positions_count() > 0 else 0
+    def get_positions_pnl_sum(self):
+        return self.positions.pnl.sum() if self.get_positions_count() > 0 else 0
 
     def get_average_tickers_price_change(self):
         return self.tickers.ask_price.diff().abs().mean()
