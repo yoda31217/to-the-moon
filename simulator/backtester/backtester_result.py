@@ -99,31 +99,31 @@ class BacktesterResult:
         return len(self.positions.index)
 
     def get_positions_average_price_margin(self) -> float:
-        return series.avg(self.positions.price_margin)
+        return self.positions.price_margin.mean()
 
     def get_positions_average_pnl(self):
-        return series.avg(self.positions.pnl)
+        return self.positions.pnl.mean()
 
     def get_positions_average_duration_millis(self):
-        return series.avg(self.positions.durarion_millis)
+        return self.positions.durarion_millis.mean()
 
     def get_positions_average_initial_margin(self):
-        return series.avg(self.positions.initial_margin)
+        return self.positions.initial_margin.mean()
 
     def get_positions_average_quantity(self):
-        return series.avg(self.positions.quantity)
+        return self.positions.quantity.mean()
 
     def get_positions_initial_margin_sum(self):
         return series.sum(self.positions.initial_margin)
 
     def get_positions_average_roe(self):
-        return series.avg(self.positions.roe)
+        return self.positions.roe.mean()
 
     def get_positions_pnl_sum(self):
         return series.sum(self.positions.pnl) if self.get_positions_count() > 0 else 0
 
     def get_average_tickers_price_change(self):
-        return series.avg(self.tickers.ask_price.diff().abs())
+        return self.tickers.ask_price.diff().abs().mean()
 
     def get_interval_days(self) -> float:
         min_timestamp = series.min(self.tickers.timestamp)

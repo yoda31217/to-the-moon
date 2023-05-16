@@ -4,10 +4,6 @@ import pandas as pd
 T = TypeVar("T", float, int, str)
 
 
-def avg(series: "pd.Series[T]") -> float:
-    return series.mean()  # pyright: ignore [reportUnknownMemberType]
-
-
 def sum(series: "pd.Series[T]") -> T:
     return series.sum()  # pyright: ignore [reportUnknownMemberType]
 
@@ -25,4 +21,5 @@ def cumsum(series: "pd.Series[T]") -> "pd.Series[T]":
 
 
 class TypedSeries(pd.Series, Generic[T]):  # pyright: ignore [reportMissingTypeArgument]
-    pass
+    def mean(self) -> float:  # pyright: ignore [reportIncompatibleMethodOverride]
+        return super().mean()  # pyright: ignore [reportUnknownMemberType]
