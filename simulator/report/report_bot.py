@@ -1,4 +1,4 @@
-from typing import Type, TypedDict
+from typing import Callable, Type, TypedDict
 from bot import bot_one_step_order_input
 import streamlit as st
 
@@ -11,9 +11,15 @@ class ReportBotConfig(TypedDict):
     bot_config: dict[str, object]
 
 
-def config() -> ReportBotConfig:
-    st.sidebar.markdown("**Name: BotOneStepOrder**")
-    return {
+bot_name_to_config_builder: dict[str, Callable[[], ReportBotConfig]] = {
+    BotOneStepOrder.__name__: lambda: {
         "bot_constructor": BotOneStepOrder,
         "bot_config": bot_one_step_order_input.config(),
     }
+}
+
+
+def config() -> ReportBotConfig:
+    bot_name = BotOneStepOrder.__name__
+    st.sidebar.markdown(f"**Name: {bot_name}")
+    return bot_name_to_config_builder[bot_name]()
