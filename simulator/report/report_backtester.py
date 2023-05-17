@@ -3,7 +3,6 @@ from datetime import date
 import streamlit as st
 from backtester.backtester import Backtester
 from binance import binance_ticker_repository
-from bot.bot_one_step_order import BotOneStepOrder
 from market.market_ticker import MarketTikersDataFrame
 from report.report_bot import ReportBotConfig
 

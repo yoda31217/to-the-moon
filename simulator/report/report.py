@@ -28,7 +28,6 @@ def build_report():
     bid_ask_spread = report_input.bid_ask_spread()
 
     st.sidebar.header("Bot")
-    st.sidebar.markdown("**Name: BotOneStepOrder**")
     report_bot_config = report_bot.config()
 
     backtester_result = report_backtester.test(
