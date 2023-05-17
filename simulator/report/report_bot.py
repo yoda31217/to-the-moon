@@ -11,8 +11,8 @@ class ReportBotConfig(TypedDict):
     bot_config: dict[str, object]
 
 
-bot_name_to_config_builder: dict[str, Callable[[], ReportBotConfig]] = {
-    BotOneStepOrder.__name__: lambda: {
+bot_name_to_config_builder: dict[Type[Bot], Callable[[], ReportBotConfig]] = {
+    BotOneStepOrder: lambda: {
         "bot_constructor": BotOneStepOrder,
         "bot_config": bot_one_step_order_input.config(),
     }
@@ -26,7 +26,7 @@ def config() -> ReportBotConfig:
 
 def input_bot_name():
     return cast(
-        str,
+        Type[Bot],
         st.sidebar.selectbox(
             "Name", options=list(bot_name_to_config_builder.keys()), index=0
         ),
