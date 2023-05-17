@@ -1,4 +1,4 @@
-from typing import Callable, Type, TypedDict
+from typing import Callable, Type, TypedDict, cast
 from bot import bot_one_step_order_input
 import streamlit as st
 
@@ -20,6 +20,13 @@ bot_name_to_config_builder: dict[str, Callable[[], ReportBotConfig]] = {
 
 
 def config() -> ReportBotConfig:
-    bot_name = BotOneStepOrder.__name__
+    bot_name = input_bot_name()
     st.sidebar.markdown(f"**Name: {bot_name}")
     return bot_name_to_config_builder[bot_name]()
+
+
+def input_bot_name():
+    return cast(
+        str,
+        st.sidebar.selectbox("Name", options=[BotOneStepOrder.__name__], index=0),
+    )
