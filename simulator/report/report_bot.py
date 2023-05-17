@@ -21,7 +21,6 @@ bot_name_to_config_builder: dict[str, Callable[[], ReportBotConfig]] = {
 
 def config() -> ReportBotConfig:
     bot_name = input_bot_name()
-    st.sidebar.markdown(f"**Name: {bot_name}")
     return bot_name_to_config_builder[bot_name]()
 
 
