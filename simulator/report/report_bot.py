@@ -27,5 +27,7 @@ def config() -> ReportBotConfig:
 def input_bot_name():
     return cast(
         str,
-        st.sidebar.selectbox("Name", options=[BotOneStepOrder.__name__], index=0),
+        st.sidebar.selectbox(
+            "Name", options=list(bot_name_to_config_builder.keys()), index=0
+        ),
     )
