@@ -7,6 +7,7 @@ from report.report import build_report
 try:
     build_report(
         {
+            # Add any number of new bot(s) here.
             BotOneStepOrder: lambda: {
                 "bot_constructor": BotOneStepOrder,
                 "bot_config": bot_one_step_order_input.config(),
