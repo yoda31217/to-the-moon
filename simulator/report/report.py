@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Callable
 
 import streamlit as st
 from report import report_backtester, report_bot
@@ -7,7 +8,8 @@ import report.report_result as report_result
 from utils import gits
 
 
-def build_report():
+
+def build_report(bot_repository: report_bot.ReportBotRepository):
     st.set_page_config(
         page_title=f"To the Moon: crypto trading bot Backtester",
         page_icon="🌕",
@@ -28,7 +30,7 @@ def build_report():
     bid_ask_spread = report_input.bid_ask_spread()
 
     st.sidebar.header("Bot")
-    report_bot_config = report_bot.config()
+    report_bot_config = report_bot.config(bot_repository)
 
     backtester_result = report_backtester.test(
         symbol, date_from, date_to, bid_ask_spread, report_bot_config
