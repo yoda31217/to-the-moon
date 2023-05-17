@@ -1,7 +1,7 @@
 from typing import Callable, Type, TypedDict, cast
 import streamlit as st
 
-from bot.bot import Bot
+from bot.bot import Bot, BotConfig
 
 
 BotConstructor = Type[Bot]
@@ -9,7 +9,7 @@ BotConstructor = Type[Bot]
 
 class ReportBotConfig(TypedDict):
     bot_constructor: BotConstructor
-    bot_config: dict[str, object]
+    bot_config: BotConfig
 
 
 ReportBotConfigBuilder = Callable[[], ReportBotConfig]

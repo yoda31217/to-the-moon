@@ -1,7 +1,7 @@
 from typing import cast
 from order.order_side import OrderSide
 from order.order import Order
-from bot.bot import Bot
+from bot.bot import Bot, BotConfig
 from market.market_ticker import MarketTicker
 
 
@@ -16,7 +16,7 @@ class BotOneStepOrder(Bot):
 
     # TODO generify parameters and name generation,
     # to be able to dinamicaly create them and report.
-    def __init__(self, config: dict[str, object]) -> None:
+    def __init__(self, config: BotConfig) -> None:
         super().__init__(config)
 
         self.check_point_ticker = None
