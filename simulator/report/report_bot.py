@@ -14,16 +14,16 @@ class ReportBotConfig(TypedDict):
 
 ReportBotConfigBuilder = Callable[[], ReportBotConfig]
 
-ReportBotRepository = dict[BotConstructor, ReportBotConfigBuilder]
+ReportBotRepository = dict[str, ReportBotConfigBuilder]
 
 
 def config(repository: ReportBotRepository) -> ReportBotConfig:
-    bot_constructor = input_bot_constructor(repository)
-    return repository[bot_constructor]()
+    bot_name = input_bot_name(repository)
+    return repository[bot_name]()
 
 
-def input_bot_constructor(repository: ReportBotRepository):
+def input_bot_name(repository: ReportBotRepository):
     return cast(
-        BotConstructor,
+        str,
         st.sidebar.selectbox("Name", options=list(repository.keys()), index=0),
     )
