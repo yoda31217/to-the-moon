@@ -1,12 +1,10 @@
 from datetime import date
-from typing import Callable
 
 import streamlit as st
 from report import report_backtester, report_bot
 import report.report_input as report_input
 import report.report_result as report_result
 from utils import gits
-
 
 
 def build_report(bot_repository: report_bot.ReportBotRepository):
