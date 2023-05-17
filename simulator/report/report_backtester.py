@@ -22,7 +22,7 @@ def test(
 
 @st.cache_data
 def backtester_test(report_bot_config: ReportBotConfig, tickers: MarketTikersDataFrame):
-    bot = BotOneStepOrder(report_bot_config['bot_config'])
+    bot = report_bot_config['bot_constructor'](report_bot_config['bot_config'])
     return Backtester(tickers).test(bot)
 
 
