@@ -1,9 +1,8 @@
 from datetime import date
 
 import streamlit as st
-from report import report_backtester
+from report import report_backtester, report_bot
 import report.report_input as report_input
-import bot.bot_one_step_order_input as bot_input
 import report.report_result as report_result
 from utils import gits
 
@@ -30,10 +29,10 @@ def build_report():
 
     st.sidebar.header("Bot")
     st.sidebar.markdown("**Name: BotOneStepOrder**")
-    bot_config = bot_input.config()
+    report_bot_config = report_bot.config()
 
     backtester_result = report_backtester.test(
-        symbol, date_from, date_to, bid_ask_spread, bot_config
+        symbol, date_from, date_to, bid_ask_spread, report_bot_config
     )
 
     (
