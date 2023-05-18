@@ -5,7 +5,7 @@ from bot.bot import Bot, BotConfig
 from market.market_ticker import MarketTicker
 
 
-class BotOneStepOrder(Bot):
+class BotGrid(Bot):
     check_point_ticker: MarketTicker | None
     step_to_price_ratio: float
     tp_to_entry_price_ratio: float
