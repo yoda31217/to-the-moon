@@ -14,8 +14,6 @@ class BotOneStepOrder(Bot):
     order_quantity: float
     order_leverage: float
 
-    # TODO generify parameters and name generation,
-    # to be able to dinamicaly create them and report.
     def __init__(self, config: BotConfig) -> None:
         super().__init__(config)
 
