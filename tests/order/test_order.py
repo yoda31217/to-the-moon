@@ -42,7 +42,7 @@ class TestOrder:
         order = Order(entry_ticker, OrderSide.BUY, 0.1, -999999)
         order.close(exit_ticker)
 
-        new_ticker = MarketTicker(200, 500, 600.0)
+        new_ticker = MarketTicker(300, 500, 600.0)
 
         order.notify(new_ticker)
 
