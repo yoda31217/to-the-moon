@@ -216,11 +216,11 @@ class TestOrder:
             (90, 100, 120, 130, OrderSide.BUY, 1, 1, 20),
             (90, 100, 120, 130, OrderSide.BUY, 0.1, 1, 2),
             (90, 100, 120, 130, OrderSide.BUY, 1, 2, 20),
-            (90, 100, 120, 130, OrderSide.BUY, 0.1, 2, 2),
+            (90, 100, 125, 130, OrderSide.BUY, 1, 1, 20),
             (100, 110, 70, 80, OrderSide.SELL, 1, 1, 20),
             (100, 110, 70, 80, OrderSide.SELL, 0.1, 1, 2),
             (100, 110, 70, 80, OrderSide.SELL, 1, 2, 20),
-            (100, 110, 70, 80, OrderSide.SELL, 0.1, 2, 2),
+            (100, 110, 70, 75, OrderSide.SELL, 1, 1, 20),
         ],
     )
     def test_calculate_possible_pnl_return_correct_value(
@@ -235,7 +235,7 @@ class TestOrder:
         expected_possible_pnl: float,
     ):
         entry_ticker = MarketTicker(100, entry_ticker_bid_price, entry_ticker_ask_price)
-        order = Order(entry_ticker, order_side, 999_999, -999_999, quantity, leverage)
+        order = Order(entry_ticker, order_side, 0.2, -0.2, quantity, leverage)
 
         new_ticker = MarketTicker(200, new_ticker_bid_price, new_ticker_ask_price)
 
