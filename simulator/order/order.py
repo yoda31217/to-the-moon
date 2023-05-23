@@ -99,7 +99,7 @@ class Order:
             else possible_exit_ticker.bid_price
         )
 
-    def notify(self, new_ticker: MarketTicker):
+    def auto_close_if_needed(self, new_ticker: MarketTicker):
         if not self.is_open:
             return
 

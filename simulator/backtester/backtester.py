@@ -101,7 +101,7 @@ class Backtester:
     def _notify_orders(ticker: MarketTicker, orders: list[Order]):
         order: Order
         for order in orders:
-            order.notify(ticker)
+            order.auto_close_if_needed(ticker)
 
     @staticmethod
     def _to_ticker(ticker_row: MarketTickersDataFrameRowTuple):

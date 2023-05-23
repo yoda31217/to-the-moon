@@ -36,7 +36,7 @@ class TestOrder:
 
         assert order.calculate_possible_pnl(new_ticker) == 1200.0 - 300.0
 
-    def test_do_not_auto_close_again_order_on_notify(self):
+    def test_do_not_auto_close_already_closed_order(self):
         entry_ticker = MarketTicker(100, 200.0, 300.0)
         exit_ticker = MarketTicker(200, 100.0, 200.0)
         order = Order(entry_ticker, OrderSide.BUY, 0.1, -999999)
@@ -44,7 +44,7 @@ class TestOrder:
 
         new_ticker = MarketTicker(300, 500, 600.0)
 
-        order.notify(new_ticker)
+        order.auto_close_if_needed(new_ticker)
 
         assert not order.is_open
         assert order.exit_price == 100
@@ -172,7 +172,7 @@ class TestOrder:
             (200, 300, 120, 220, OrderSide.SELL, 0.1, 999, -0.1, False),
         ],
     )
-    def test_order_clossing_after_notify_is_correct(
+    def test_order_auto_close_if_needed_after_is_correct(
         self,
         entry_ticker_bid_price: float,
         entry_ticker_ask_price: float,
@@ -193,7 +193,7 @@ class TestOrder:
             quantity,
         )
         new_ticker = MarketTicker(200, new_ticker_bid_price, new_ticker_ask_price)
-        order.notify(new_ticker)
+        order.auto_close_if_needed(new_ticker)
 
         assert order.is_open == expected_is_open
 
