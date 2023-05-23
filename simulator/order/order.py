@@ -90,9 +90,8 @@ class Order:
         if not self.is_open:
             raise Exception(f"Failed to close already closed order.")
 
-        exit_price = self._get_possible_exit_price(ticker)
-        self.exit_price = exit_price
-        self.pnl = self.calculate_possible_pnl(exit_price)
+        self.exit_price = self._get_possible_exit_price(ticker)
+        self.pnl = self.calculate_possible_pnl(self.exit_price)
         self.roe = self.pnl / self.initial_margin
         self.is_open = False
 
