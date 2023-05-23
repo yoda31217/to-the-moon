@@ -25,8 +25,6 @@ class Order:
     pnl: float | None
     _tp_price: float
     _sl_price: float
-    _tp: float
-    _sl: float
     is_open: bool
     roe: float | None
 
@@ -63,13 +61,11 @@ class Order:
         self.exit_price = None
         self.initial_margin = self.entry_price * quantity / leverage
         self.pnl = None
-        self._tp = tp_to_entry_price_ratio * self.entry_price * quantity
         self._tp_price = (
             (1 + tp_to_entry_price_ratio) * self.entry_price * quantity
             if side == OrderSide.BUY
             else (1 - tp_to_entry_price_ratio) * self.entry_price * quantity
         )
-        self._sl = sl_to_entry_price_ratio * self.entry_price * quantity
         self._sl_price = (
             (1 - tp_to_entry_price_ratio) * self.entry_price * quantity
             if side == OrderSide.BUY
