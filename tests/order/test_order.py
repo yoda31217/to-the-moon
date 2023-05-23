@@ -214,13 +214,16 @@ class TestOrder:
         """,
         [
             (90, 100, 120, 130, OrderSide.BUY, 1, 1, 20),
+            (90, 100, 125, 130, OrderSide.BUY, 1, 1, 20),
             (90, 100, 120, 130, OrderSide.BUY, 0.1, 1, 2),
             (90, 100, 120, 130, OrderSide.BUY, 1, 2, 20),
-            (90, 100, 125, 130, OrderSide.BUY, 1, 1, 20),
+            (90, 100, 120, 130, OrderSide.BUY, 0.1, 2, 2),
             (100, 110, 70, 80, OrderSide.SELL, 1, 1, 20),
+            (100, 110, 70, 75, OrderSide.SELL, 1, 1, 20),
             (100, 110, 70, 80, OrderSide.SELL, 0.1, 1, 2),
             (100, 110, 70, 80, OrderSide.SELL, 1, 2, 20),
-            (100, 110, 70, 75, OrderSide.SELL, 1, 1, 20),
+            (100, 110, 70, 80, OrderSide.SELL, 0.1, 2, 2),
+
         ],
     )
     def test_calculate_possible_pnl_return_correct_value(
