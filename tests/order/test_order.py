@@ -129,7 +129,7 @@ class TestOrder:
     ):
         entry_ticker = MarketTicker(100, entry_ticker_bid_price, entry_ticker_ask_price)
         exit_ticker = MarketTicker(200, exit_ticker_bid_price, exit_ticker_ask_price)
-        order = Order(entry_ticker, order_side, 999_999, -999_999, quantity, leverage)
+        order = Order(entry_ticker, order_side, 0.2, -0.2, quantity, leverage)
         order.close(exit_ticker)
 
         assert order.roe == expected_roe
@@ -141,8 +141,8 @@ class TestOrder:
         assert order.entry_ticker == entry_ticker
         assert order.side == order_side
         assert order.id != None
-        assert order.tp_to_entry_price_ratio == 999_999
-        assert order.sl_to_entry_price_ratio == -999_999
+        assert order.tp_to_entry_price_ratio == 0.2
+        assert order.sl_to_entry_price_ratio == -0.2
         assert order.quantity == quantity
         assert order.leverage == leverage
 
