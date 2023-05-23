@@ -157,20 +157,21 @@ class TestOrder:
         tp_to_entry_price_ratio,
         sl_to_entry_price_ratio,
         expected_is_open,
+        expected_exit_price,
         """,
         [
-            (200, 300, 329, 430, OrderSide.BUY, 1, 0.1, -999, True),
-            (200, 300, 330, 430, OrderSide.BUY, 1, 0.1, -999, False),
-            (200, 300, 330, 430, OrderSide.BUY, 0.1, 0.1, -999, False),
-            (200, 300, 271, 370, OrderSide.BUY, 1, 999, -0.1, True),
-            (200, 300, 270, 370, OrderSide.BUY, 1, 999, -0.1, False),
-            (200, 300, 270, 370, OrderSide.BUY, 0.1, 999, -0.1, False),
-            (200, 300, 80, 181, OrderSide.SELL, 1, 0.1, -999, True),
-            (200, 300, 80, 180, OrderSide.SELL, 1, 0.1, -999, False),
-            (200, 300, 80, 180, OrderSide.SELL, 0.1, 0.1, -999, False),
-            (200, 300, 120, 219, OrderSide.SELL, 1, 999, -0.1, True),
-            (200, 300, 120, 221, OrderSide.SELL, 1, 999, -0.1, False),
-            (200, 300, 120, 221, OrderSide.SELL, 0.1, 999, -0.1, False),
+            (200, 300, 329, 430, OrderSide.BUY, 1, 0.1, -999, True, None),
+            (200, 300, 330, 430, OrderSide.BUY, 1, 0.1, -999, False, 330),
+            (200, 300, 330, 430, OrderSide.BUY, 0.1, 0.1, -999, False, 330),
+            (200, 300, 271, 370, OrderSide.BUY, 1, 999, -0.1, True, None),
+            (200, 300, 270, 370, OrderSide.BUY, 1, 999, -0.1, False, 270),
+            (200, 300, 270, 370, OrderSide.BUY, 0.1, 999, -0.1, False, 270),
+            (200, 300, 80, 181, OrderSide.SELL, 1, 0.1, -999, True, None),
+            (200, 300, 80, 180, OrderSide.SELL, 1, 0.1, -999, False, 180),
+            (200, 300, 80, 180, OrderSide.SELL, 0.1, 0.1, -999, False, 180),
+            (200, 300, 120, 219, OrderSide.SELL, 1, 999, -0.1, True, None),
+            (200, 300, 120, 221, OrderSide.SELL, 1, 999, -0.1, False, 220),
+            (200, 300, 120, 221, OrderSide.SELL, 0.1, 999, -0.1, False, 220),
         ],
     )
     def test_order_auto_close_if_needed_after_is_correct(
@@ -184,6 +185,7 @@ class TestOrder:
         tp_to_entry_price_ratio: float,
         sl_to_entry_price_ratio: float,
         expected_is_open: bool,
+        expected_exit_price: bool,
     ):
         entry_ticker = MarketTicker(100, entry_ticker_bid_price, entry_ticker_ask_price)
         order = Order(
@@ -197,6 +199,7 @@ class TestOrder:
         order.auto_close_if_needed(new_ticker)
 
         assert order.is_open == expected_is_open
+        assert order.exit_price == pytest.approx(expected_exit_price)
 
     @pytest.mark.parametrize(
         """
