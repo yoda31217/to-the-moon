@@ -111,11 +111,22 @@ class Order:
             self.close(new_ticker)
 
     def _get_possible_exit_price(self, possible_exit_ticker: MarketTicker):
-        return (
-            possible_exit_ticker.ask_price
-            if self.side == OrderSide.SELL
-            else possible_exit_ticker.bid_price
-        )
+        if self.side == OrderSide.BUY:
+            possible_exit_price = possible_exit_ticker.bid_price
+            if possible_exit_price > self._tp_price:
+                return self._tp_price
+            elif possible_exit_price < self._sl_price:
+                return self._sl_price
+            else:
+                return possible_exit_price
+        else:
+            possible_exit_price = possible_exit_ticker.ask_price
+            if possible_exit_price < self._tp_price:
+                return self._tp_price
+            elif possible_exit_price > self._sl_price:
+                return self._sl_price
+            else:
+                return possible_exit_price
 
     def _should_auto_close(self, possible_exit_ticker: MarketTicker):
         possible_exit_price = self._get_possible_exit_price(possible_exit_ticker)
