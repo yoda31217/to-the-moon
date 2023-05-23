@@ -103,19 +103,19 @@ class Order:
         self.roe = self.pnl / self.initial_margin
         self.is_open = False
 
-    def _get_possible_exit_price(self, possible_exit_ticker: MarketTicker):
-        return (
-            possible_exit_ticker.ask_price
-            if self.side == OrderSide.SELL
-            else possible_exit_ticker.bid_price
-        )
-
     def auto_close_if_needed(self, new_ticker: MarketTicker):
         if not self.is_open:
             return
 
         if self._should_auto_close(new_ticker):
             self.close(new_ticker)
+
+    def _get_possible_exit_price(self, possible_exit_ticker: MarketTicker):
+        return (
+            possible_exit_ticker.ask_price
+            if self.side == OrderSide.SELL
+            else possible_exit_ticker.bid_price
+        )
 
     def _should_auto_close(self, possible_exit_ticker: MarketTicker):
         possible_exit_price = self._get_possible_exit_price(possible_exit_ticker)
