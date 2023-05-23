@@ -68,12 +68,23 @@ class Order:
         self.quantity = quantity
         self.leverage = leverage
 
-    def calculate_possible_pnl(self, possible_exit_ticker: MarketTicker) -> float:
+    def calculate_possible_pnl(
+        self, possible_exit_ticker_or_price: MarketTicker | float
+    ) -> float:
         if self.pnl != None:
             return self.pnl
 
-        possible_exit_price = self._get_possible_exit_price(possible_exit_ticker)
-        return self._calculate_possible_pnl(possible_exit_price)
+        possible_exit_price = (
+            self._get_possible_exit_price(possible_exit_ticker_or_price)
+            if isinstance(possible_exit_ticker_or_price, MarketTicker)
+            else possible_exit_ticker_or_price
+        )
+
+        return (
+            possible_exit_price - self.entry_price
+            if self.side == OrderSide.BUY
+            else self.entry_price - possible_exit_price
+        ) * self.quantity
 
     def close(self, ticker: MarketTicker):
         if not self.is_open:
@@ -81,16 +92,9 @@ class Order:
 
         exit_price = self._get_possible_exit_price(ticker)
         self.exit_price = exit_price
-        self.pnl = self._calculate_possible_pnl(exit_price)
+        self.pnl = self.calculate_possible_pnl(exit_price)
         self.roe = self.pnl / self.initial_margin
         self.is_open = False
-
-    def _calculate_possible_pnl(self, possible_exit_price: float):
-        return (
-            possible_exit_price - self.entry_price
-            if self.side == OrderSide.BUY
-            else self.entry_price - possible_exit_price
-        ) * self.quantity
 
     def _get_possible_exit_price(self, possible_exit_ticker: MarketTicker):
         return (
@@ -108,5 +112,5 @@ class Order:
 
     def _should_auto_close(self, possible_exit_ticker: MarketTicker):
         possible_exit_price = self._get_possible_exit_price(possible_exit_ticker)
-        possible_pnl = self._calculate_possible_pnl(possible_exit_price)
+        possible_pnl = self.calculate_possible_pnl(possible_exit_price)
         return possible_pnl >= self._tp or possible_pnl <= self._sl
