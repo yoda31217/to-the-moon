@@ -47,7 +47,7 @@ class TestOrder:
         order.notify(new_ticker)
 
         assert not order.is_open
-        assert order.exit_ticker == exit_ticker
+        assert order.exit_price == 100
 
     @pytest.mark.parametrize(
         """
