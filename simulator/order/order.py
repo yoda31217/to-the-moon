@@ -123,5 +123,7 @@ class Order:
 
     def _should_auto_close(self, possible_exit_ticker: MarketTicker):
         possible_exit_price = self._get_possible_exit_price(possible_exit_ticker)
-        possible_pnl = self.calculate_possible_pnl(possible_exit_price)
-        return possible_pnl >= self._tp or possible_pnl <= self._sl
+        return (
+            possible_exit_price >= self._tp_price
+            or possible_exit_price <= self._sl_price
+        )
