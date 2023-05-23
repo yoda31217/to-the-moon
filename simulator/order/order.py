@@ -71,9 +71,9 @@ class Order:
     def calculate_possible_pnl(self, possible_exit_ticker: MarketTicker) -> float:
         if self.pnl != None:
             return self.pnl
-        else:
-            possible_exit_price = self._get_possible_exit_price(possible_exit_ticker)
-            return self._calculate_possible_pnl(possible_exit_price)
+
+        possible_exit_price = self._get_possible_exit_price(possible_exit_ticker)
+        return self._calculate_possible_pnl(possible_exit_price)
 
     def close(self, ticker: MarketTicker):
         if not self.is_open:
