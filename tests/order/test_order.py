@@ -80,7 +80,6 @@ class TestOrder:
         assert order.entry_price == expected_entry_price
         assert order.exit_price == None
         assert order.entry_ticker == entry_ticker
-        assert order.exit_ticker == None
         assert order.side == order_side
         assert order.id != None
         assert order.tp_to_entry_price_ratio == 999_999
@@ -139,7 +138,6 @@ class TestOrder:
         assert order.entry_price == expected_entry_price
         assert order.exit_price == expected_exit_price
         assert order.entry_ticker == entry_ticker
-        assert order.exit_ticker == exit_ticker
         assert order.side == order_side
         assert order.id != None
         assert order.tp_to_entry_price_ratio == 999_999

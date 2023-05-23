@@ -12,7 +12,6 @@ class Order:
     id: uuid.UUID
     side: OrderSide
     entry_ticker: MarketTicker
-    exit_ticker: MarketTicker | None
     # TODO: migrate to TP/SL prices.
     # Problem here, that our TP  = real_TP - entry_price
     tp_to_entry_price_ratio: float
@@ -41,7 +40,6 @@ class Order:
         self.id = uuid.uuid4()
         self.side = side
         self.entry_ticker = entry_ticker
-        self.exit_ticker = None
         self.tp_to_entry_price_ratio = tp_to_entry_price_ratio
         self.sl_to_entry_price_ratio = sl_to_entry_price_ratio
 
@@ -81,7 +79,6 @@ class Order:
         if not self.is_open:
             raise Exception(f"Failed to close already closed order.")
 
-        self.exit_ticker = ticker
         exit_price = self._get_possible_exit_price(ticker)
         self.exit_price = exit_price
         self.pnl = self._calculate_possible_pnl(exit_price)
