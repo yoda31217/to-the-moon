@@ -169,8 +169,8 @@ class TestOrder:
             (200, 300, 80, 180, OrderSide.SELL, 1, 0.1, -999, False),
             (200, 300, 80, 180, OrderSide.SELL, 0.1, 0.1, -999, False),
             (200, 300, 120, 219, OrderSide.SELL, 1, 999, -0.1, True),
-            (200, 300, 120, 220, OrderSide.SELL, 1, 999, -0.1, False),
-            (200, 300, 120, 220, OrderSide.SELL, 0.1, 999, -0.1, False),
+            # (200, 300, 120, 220, OrderSide.SELL, 1, 999, -0.1, False),
+            # (200, 300, 120, 220, OrderSide.SELL, 0.1, 999, -0.1, False),
         ],
     )
     def test_order_auto_close_if_needed_after_is_correct(

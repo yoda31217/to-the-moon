@@ -62,14 +62,14 @@ class Order:
         self.initial_margin = self.entry_price * quantity / leverage
         self.pnl = None
         self._tp_price = (
-            (1 + tp_to_entry_price_ratio) * self.entry_price * quantity
+            (1 + tp_to_entry_price_ratio) * self.entry_price
             if side == OrderSide.BUY
-            else (1 - tp_to_entry_price_ratio) * self.entry_price * quantity
+            else (1 - tp_to_entry_price_ratio) * self.entry_price
         )
         self._sl_price = (
-            (1 - tp_to_entry_price_ratio) * self.entry_price * quantity
+            (1 + sl_to_entry_price_ratio) * self.entry_price
             if side == OrderSide.BUY
-            else (1 + tp_to_entry_price_ratio) * self.entry_price * quantity
+            else (1 - sl_to_entry_price_ratio) * self.entry_price
         )
         self.is_open = True
         self.roe = None
@@ -130,7 +130,13 @@ class Order:
 
     def _should_auto_close(self, possible_exit_ticker: MarketTicker):
         possible_exit_price = self._get_possible_exit_price(possible_exit_ticker)
-        return (
-            possible_exit_price >= self._tp_price
-            or possible_exit_price <= self._sl_price
-        )
+        if self.side == OrderSide.BUY:
+            return (
+                possible_exit_price >= self._tp_price
+                or possible_exit_price <= self._sl_price
+            )
+        else:
+            return (
+                possible_exit_price <= self._tp_price
+                or possible_exit_price >= self._sl_price
+            )
