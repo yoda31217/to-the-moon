@@ -2,6 +2,7 @@ import pytest
 from market.market_ticker import MarketTicker
 from order.order import Order
 from order.order_side import OrderSide
+from utils import tests
 
 
 class TestOrder:
@@ -203,7 +204,7 @@ class TestOrder:
         order.auto_close_if_needed(new_ticker)
 
         assert order.is_open == expected_is_open
-        assert order.exit_price == pytest.approx(expected_exit_price)
+        assert order.exit_price == tests.approximately(expected_exit_price)
 
     @pytest.mark.parametrize(
         """
@@ -227,7 +228,6 @@ class TestOrder:
             (100, 110, 70, 80, OrderSide.SELL, 0.1, 1, 2),
             (100, 110, 70, 80, OrderSide.SELL, 1, 2, 20),
             (100, 110, 70, 80, OrderSide.SELL, 0.1, 2, 2),
-
         ],
     )
     def test_calculate_possible_pnl_return_correct_value(
