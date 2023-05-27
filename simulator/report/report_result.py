@@ -59,9 +59,12 @@ def summary(
                     ),
                     "{:,.2f}, {:,.2f}".format(
                         result.get_positions_mean_quantity(),
-                        result.get_positions_median_quantity()
-                        ),
-                    "{:,.2f}".format(result.get_positions_average_initial_margin()),
+                        result.get_positions_median_quantity(),
+                    ),
+                    "{:,.2f}, {:,.2f}".format(
+                        result.get_positions_mean_initial_margin(),
+                        result.get_positions_median_initial_margin(),
+                    ),
                     "{:,.2f}, {:,.2f}".format(
                         result.get_positions_mean_pnl(),
                         result.get_positions_median_pnl(),
