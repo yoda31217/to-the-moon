@@ -61,8 +61,8 @@ def summary(
                     "{:,.2f}".format(result.get_positions_average_initial_margin()),
                     "{:,.2f}, {:,.2f}, {:,.2f}".format(
                         result.get_positions_mean_pnl(),
-                        result.get_positions_mean_pnl(),
-                        result.get_positions_mean_pnl(),
+                        result.get_positions_median_pnl(),
+                        result.get_positions_mode_pnl(),
                     ),
                     "{:,.2f}".format(result.get_positions_average_roe() * 100.0),
                     "{:,.2f}".format(result.get_positions_initial_margin_sum()),

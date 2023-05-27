@@ -103,6 +103,12 @@ class BacktesterResult:
     def get_positions_mean_pnl(self):
         return self.positions.pnl.mean()
 
+    def get_positions_median_pnl(self):
+        return self.positions.pnl.median()
+
+    def get_positions_mode_pnl(self):
+        return self.positions.pnl.mode().median()
+
     def get_positions_average_duration_millis(self):
         return self.positions.durarion_millis.mean()
 
