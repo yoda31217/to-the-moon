@@ -47,7 +47,7 @@ def summary(
                         date_from, date_to, result.get_interval_days()
                     ),
                     "{:.2f}".format(result.get_average_tickers_price_change()),
-                    "1 minute",
+                    "1",
                     "{:,}".format(result.get_positions_count()),
                     "{:,.2f}".format(
                         result.get_positions_count() / result.get_interval_days()
@@ -82,10 +82,10 @@ def summary(
                     "-",
                     "Days",
                     "$",
-                    "Interval",
+                    "Minute",
                     "Count",
                     "Count / day",
-                    "Milliseconds",
+                    "Duration",
                     "Quantity",
                     "$",
                     "$",
