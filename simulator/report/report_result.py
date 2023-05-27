@@ -27,7 +27,7 @@ def summary(
                     "Market",
                     "Symbol",
                     "Test interval",
-                    "Tickers average price change",
+                    "Tickers price change mean, median",
                     "Tickers average interval",
                     "Positions count",
                     "Positions count / day",
@@ -46,7 +46,10 @@ def summary(
                     "{} - {} ({:.1f})".format(
                         date_from, date_to, result.get_interval_days()
                     ),
-                    "{:.2f}".format(result.get_average_tickers_price_change()),
+                    "{:.2f}, {:.2f}".format(
+                        result.get_mean_tickers_price_change(),
+                        result.get_median_tickers_price_change(),
+                        ),
                     "1",
                     "{:,}".format(result.get_positions_count()),
                     "{:,.2f}".format(

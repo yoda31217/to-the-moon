@@ -133,8 +133,11 @@ class BacktesterResult:
     def get_positions_pnl_sum(self):
         return self.positions.pnl.sum() if self.get_positions_count() > 0 else 0
 
-    def get_average_tickers_price_change(self):
+    def get_mean_tickers_price_change(self):
         return self.tickers.ask_price.diff().abs().mean()
+
+    def get_median_tickers_price_change(self):
+        return self.tickers.ask_price.diff().abs().median()
 
     def get_interval_days(self) -> float:
         min_timestamp = self.tickers.timestamp.min()
