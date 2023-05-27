@@ -121,7 +121,7 @@ class BacktesterResult:
     def get_positions_initial_margin_sum(self):
         return self.positions.initial_margin.sum()
 
-    def get_positions_average_roe(self):
+    def get_positions_mean_roe(self):
         return self.positions.roe.mean()
 
     def get_positions_pnl_sum(self):
