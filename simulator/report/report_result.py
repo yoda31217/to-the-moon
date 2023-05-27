@@ -59,11 +59,11 @@ def summary(
                     ),
                     "{:,.2f}".format(result.get_positions_average_quantity()),
                     "{:,.2f}".format(result.get_positions_average_initial_margin()),
-                    "{:,.2f}, {:,.2f}, {:,.2f}".format(
+                    "{:,.2f}, {:,.2f}".format(
                         result.get_positions_mean_pnl(),
                         result.get_positions_median_pnl(),
                     ),
-                    "{:,.2f}, {:,.2f}, {:,.2f}".format(
+                    "{:,.2f}, {:,.2f}".format(
                         result.get_positions_mean_roe() * 100.0,
                         result.get_positions_median_roe() * 100.0,
                     ),
