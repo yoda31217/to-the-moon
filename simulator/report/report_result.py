@@ -57,7 +57,10 @@ def summary(
                             milliseconds=result.get_positions_average_duration_millis()
                         )
                     ),
-                    "{:,.2f}".format(result.get_positions_average_quantity()),
+                    "{:,.2f}, {:,.2f}".format(
+                        result.get_positions_mean_quantity(),
+                        result.get_positions_median_quantity()
+                        ),
                     "{:,.2f}".format(result.get_positions_average_initial_margin()),
                     "{:,.2f}, {:,.2f}".format(
                         result.get_positions_mean_pnl(),

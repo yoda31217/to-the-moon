@@ -112,8 +112,11 @@ class BacktesterResult:
     def get_positions_average_initial_margin(self):
         return self.positions.initial_margin.mean()
 
-    def get_positions_average_quantity(self):
+    def get_positions_mean_quantity(self):
         return self.positions.quantity.mean()
+
+    def get_positions_median_quantity(self):
+        return self.positions.quantity.median()
 
     def get_positions_initial_margin_sum(self):
         return self.positions.initial_margin.sum()
