@@ -10,6 +10,16 @@ class TypedSeries(pd.Series, Generic[T]):  # pyright: ignore [reportMissingTypeA
     ) -> float:  # pyright: ignore [reportGeneralTypeIssues]
         pass
 
+    def median(  # pyright: ignore [reportIncompatibleMethodOverride]
+        self,
+    ) -> float:  # pyright: ignore [reportGeneralTypeIssues]
+        pass
+
+    def mode(  # pyright: ignore [reportIncompatibleMethodOverride]
+        self,
+    ) -> float:  # pyright: ignore [reportGeneralTypeIssues]
+        pass
+
     def sum(self) -> T:  # pyright: ignore [reportGeneralTypeIssues]
         pass
 
