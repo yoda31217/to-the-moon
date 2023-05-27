@@ -32,10 +32,9 @@ def summary(
                     "Positions count",
                     "Positions count / day",
                     "Positions average duration",
-                    "Positions average price margin",
                     "Positions average quantity",
                     "Positions average initial margin",
-                    "Positions PNL mean, median, mode ($)",
+                    "Positions PNL mean, median, mode",
                     "Positions average ROE",
                     "Positions initial margin sum",
                     "Positions PNL sum",
@@ -44,10 +43,10 @@ def summary(
                     "Binance",
                     "USDⓈ-M Futures",
                     symbol,
-                    "{} - {} ({:.1f} days)".format(
+                    "{} - {} ({:.1f})".format(
                         date_from, date_to, result.get_interval_days()
                     ),
-                    "{:.2f} $".format(result.get_average_tickers_price_change()),
+                    "{:.2f}".format(result.get_average_tickers_price_change()),
                     "1 minute",
                     "{:,}".format(result.get_positions_count()),
                     "{:,.2f}".format(
@@ -58,19 +57,33 @@ def summary(
                             milliseconds=result.get_positions_average_duration_millis()
                         )
                     ),
-                    "{:,.2f}$ (abosolute)".format(
-                        result.get_positions_average_price_margin()
-                    ),
                     "{:,.2f}".format(result.get_positions_average_quantity()),
-                    "{:,.2f} $".format(result.get_positions_average_initial_margin()),
+                    "{:,.2f}".format(result.get_positions_average_initial_margin()),
                     "{:,.2f}, {:,.2f}, {:,.2f}".format(
                         result.get_positions_mean_pnl(),
                         result.get_positions_mean_pnl(),
                         result.get_positions_mean_pnl(),
                     ),
-                    "{:,.2f} %".format(result.get_positions_average_roe() * 100.0),
-                    "{:,.2f} $".format(result.get_positions_initial_margin_sum()),
-                    "{:,.2f} $".format(result.get_positions_pnl_sum()),
+                    "{:,.2f}".format(result.get_positions_average_roe() * 100.0),
+                    "{:,.2f}".format(result.get_positions_initial_margin_sum()),
+                    "{:,.2f}".format(result.get_positions_pnl_sum()),
+                ],
+                "Units": [
+                    "-",
+                    "-",
+                    "-",
+                    "Days",
+                    "$",
+                    "Interval",
+                    "Count",
+                    "Count / day",
+                    "Milliseconds",
+                    "Quantity",
+                    "$",
+                    "$",
+                    "%",
+                    "$",
+                    "$",
                 ],
             }
         )
