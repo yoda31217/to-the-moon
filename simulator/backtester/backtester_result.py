@@ -106,8 +106,11 @@ class BacktesterResult:
     def get_positions_median_pnl(self):
         return self.positions.pnl.median()
 
-    def get_positions_average_duration_millis(self):
+    def get_positions_mean_duration_millis(self):
         return self.positions.durarion_millis.mean()
+
+    def get_positions_median_duration_millis(self):
+        return self.positions.durarion_millis.median()
 
     def get_positions_mean_initial_margin(self):
         return self.positions.initial_margin.mean()

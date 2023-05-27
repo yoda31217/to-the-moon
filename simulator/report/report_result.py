@@ -31,7 +31,7 @@ def summary(
                     "Tickers average interval",
                     "Positions count",
                     "Positions count / day",
-                    "Positions average duration",
+                    "Positions duration mean, median",
                     "Positions quantity mean, median",
                     "Positions initial margin mean, median",
                     "Positions PNL mean, median",
@@ -49,7 +49,7 @@ def summary(
                     "{:.2f}, {:.2f}".format(
                         result.get_mean_tickers_price_change(),
                         result.get_median_tickers_price_change(),
-                        ),
+                    ),
                     "1",
                     "{:,}".format(result.get_positions_count()),
                     "{:,.2f}".format(
@@ -57,7 +57,13 @@ def summary(
                     ),
                     str(
                         timedelta(
-                            milliseconds=result.get_positions_average_duration_millis()
+                            milliseconds=result.get_positions_mean_duration_millis()
+                        )
+                    )
+                    + ", "
+                    + str(
+                        timedelta(
+                            milliseconds=result.get_positions_median_duration_millis()
                         )
                     ),
                     "{:,.2f}, {:,.2f}".format(
