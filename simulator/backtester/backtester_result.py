@@ -106,9 +106,6 @@ class BacktesterResult:
     def get_positions_median_pnl(self):
         return self.positions.pnl.median()
 
-    def get_positions_mode_pnl(self):
-        return self.positions.pnl.mode().median()
-
     def get_positions_average_duration_millis(self):
         return self.positions.durarion_millis.mean()
 
@@ -123,6 +120,9 @@ class BacktesterResult:
 
     def get_positions_mean_roe(self):
         return self.positions.roe.mean()
+
+    def get_positions_median_roe(self):
+        return self.positions.roe.median()
 
     def get_positions_pnl_sum(self):
         return self.positions.pnl.sum() if self.get_positions_count() > 0 else 0
