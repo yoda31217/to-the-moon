@@ -100,7 +100,7 @@ class BacktesterResult:
     def get_positions_average_price_margin(self) -> float:
         return self.positions.price_margin.mean()
 
-    def get_positions_average_pnl(self):
+    def get_positions_mean_pnl(self):
         return self.positions.pnl.mean()
 
     def get_positions_average_duration_millis(self):
