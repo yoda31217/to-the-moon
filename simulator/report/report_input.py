@@ -70,7 +70,6 @@ def positions_histogram_attribute(tab: DeltaGenerator):
                 "price_margin",
                 "exit_price",
                 "entry_price",
-                "side",
                 "durarion_millis",
             ],
             index=0,
