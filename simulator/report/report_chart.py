@@ -89,6 +89,35 @@ def bars(
     )
 
 
+def histogram(
+    tab: DeltaGenerator,
+    data_frame: pd.DataFrame,
+    value_column_name: str,
+    value_label: str,
+):
+    tab.altair_chart(
+        alt.Chart(data_frame)  # type: ignore
+        .mark_bar()  # type: ignore
+        .encode(
+            x=alt.X(
+                shorthand=value_column_name + ":Q",  # type: ignore
+                title=value_label,  # type: ignore
+                bin=True,
+            ),
+            y=alt.Y(
+                shorthand="count()",  # type: ignore
+                title="Count",  # type: ignore
+            ),
+            # color=alt.condition(  # pyright: ignore [reportUnknownMemberType]
+            #     alt.datum[value_column_name] > 0,
+            #     altair_value("#4dabf5"),
+            #     altair_value("#ff784e"),
+            # ),
+        ),
+        use_container_width=True,
+    )
+
+
 def altair_value(value: str) -> dict[str, str]:
     return cast(
         dict[str, str], alt.value(value)  # pyright: ignore [reportUnknownMemberType]
