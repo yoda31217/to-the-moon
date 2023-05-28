@@ -102,17 +102,13 @@ def histogram(
             x=alt.X(
                 shorthand=value_column_name + ":Q",  # type: ignore
                 title=value_label,  # type: ignore
-                bin=True,
+                bin=True,  # type: ignore
             ),
             y=alt.Y(
                 shorthand="count()",  # type: ignore
                 title="Count",  # type: ignore
             ),
-            # color=alt.condition(  # pyright: ignore [reportUnknownMemberType]
-            #     alt.datum[value_column_name] > 0,
-            #     altair_value("#4dabf5"),
-            #     altair_value("#ff784e"),
-            # ),
+            color=altair_value("#4dabf5"),
         ),
         use_container_width=True,
     )
