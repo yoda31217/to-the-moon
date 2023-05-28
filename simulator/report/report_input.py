@@ -55,3 +55,24 @@ def positions_sort_timestamp_column(key_prefix: str, tab: DeltaGenerator):
             key=f"{key_prefix}_positions_sort_timestamp_column",
         ),
     )
+
+
+def positions_chart_attribute(tab: DeltaGenerator):
+    return cast(
+        str,
+        tab.selectbox(
+            "Position(s) attribute",
+            options=[
+                "roe",
+                "pnl",
+                "initial_margin",
+                "quantity",
+                "price_margin",
+                "exit_price",
+                "entry_price",
+                "side",
+                "durarion_millis",
+            ],
+            index=0,
+        ),
+    )
