@@ -57,7 +57,7 @@ def positions_sort_timestamp_column(key_prefix: str, tab: DeltaGenerator):
     )
 
 
-def positions_chart_attribute(tab: DeltaGenerator):
+def positions_histogram_attribute(tab: DeltaGenerator):
     return cast(
         str,
         tab.selectbox(

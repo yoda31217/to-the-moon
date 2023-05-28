@@ -38,7 +38,7 @@ def build_report(bot_repository: report_bot.ReportBotRepository):
     (
         summary_tab,
         positions_tab,
-        positions_chart_tab,
+        positions_histogram_tab,
         positions_pnl_tab,
         balance_tab,
         tickers_tab,
@@ -47,7 +47,7 @@ def build_report(bot_repository: report_bot.ReportBotRepository):
         [
             "Summary",
             "Positions",
-            "Positions Chart",
+            "Positions Histogram",
             "Positions PNL",
             "Balance",
             "Tickers",
@@ -57,7 +57,7 @@ def build_report(bot_repository: report_bot.ReportBotRepository):
 
     report_result.summary(symbol, date_from, date_to, backtester_result, summary_tab)
     report_result.positions_table(backtester_result.positions, positions_tab)
-    report_result.positions_chart(backtester_result, positions_chart_tab)
+    report_result.positions_histogram(backtester_result, positions_histogram_tab)
     report_result.pnl_chart(backtester_result, positions_pnl_tab)
     report_result.balances_chart(backtester_result, balance_tab)
     report_result.tickers_chart(backtester_result.tickers, tickers_tab)
