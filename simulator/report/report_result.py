@@ -197,3 +197,6 @@ def bot_summary(bot: Bot, tab: DeltaGenerator):
     tab.text(bot.get_name())
     tab.subheader("Config")
     tab.code(dicts.to_json(bot.config))
+
+def positions_chart(result: BacktesterResult, tab: DeltaGenerator):
+    pass

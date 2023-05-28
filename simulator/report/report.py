@@ -5,6 +5,7 @@ from report import report_backtester, report_bot
 import report.report_input as report_input
 import report.report_result as report_result
 from utils import gits
+import altair as alt  # pyright: ignore [[reportUnknownMemberType]
 
 
 def build_report(bot_repository: report_bot.ReportBotRepository):
@@ -37,15 +38,27 @@ def build_report(bot_repository: report_bot.ReportBotRepository):
     (
         summary_tab,
         positions_tab,
+        positions_chart_tab,
         positions_pnl_tab,
         balance_tab,
         tickers_tab,
         bot_tab,
-    ) = st.tabs(["Summary", "Positions", "Positions PNL", "Balance", "Tickers", "Bot"])
+    ) = st.tabs(
+        [
+            "Summary",
+            "Positions",
+            "Positions Chart",
+            "Positions PNL",
+            "Balance",
+            "Tickers",
+            "Bot",
+        ]
+    )
 
     report_result.summary(symbol, date_from, date_to, backtester_result, summary_tab)
-    report_result.pnl_chart(backtester_result, positions_pnl_tab)
     report_result.positions_table(backtester_result.positions, positions_tab)
+    report_result.positions_chart(backtester_result, positions_chart_tab)
+    report_result.pnl_chart(backtester_result, positions_pnl_tab)
     report_result.balances_chart(backtester_result, balance_tab)
     report_result.tickers_chart(backtester_result.tickers, tickers_tab)
     report_result.bot_summary(backtester_result.bot, bot_tab)
