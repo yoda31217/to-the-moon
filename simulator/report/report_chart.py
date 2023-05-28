@@ -94,6 +94,7 @@ def histogram(
     data_frame: pd.DataFrame,
     value_column_name: str,
     value_label: str,
+    entities_label: str,
 ):
     tab.altair_chart(
         alt.Chart(data_frame)  # type: ignore
@@ -106,7 +107,7 @@ def histogram(
             ),
             y=alt.Y(
                 shorthand="count()",  # type: ignore
-                title="Count",  # type: ignore
+                title=entities_label + " Count",  # type: ignore
             ),
             color=altair_value("#4dabf5"),
         ),

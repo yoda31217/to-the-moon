@@ -199,4 +199,4 @@ def bot_summary(bot: Bot, tab: DeltaGenerator):
     tab.code(dicts.to_json(bot.config))
 
 def positions_chart(result: BacktesterResult, tab: DeltaGenerator):
-    report_chart.histogram(tab, result.positions, "pnl", "pnl")
+    report_chart.histogram(tab, result.positions, "pnl", "pnl", "Position(s)")
