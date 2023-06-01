@@ -16,8 +16,8 @@
   "python.analysis.autoImportCompletions": true,
   "python.analysis.completeFunctionParens": true,
   "python.analysis.diagnosticMode": "workspace",
-  "python.analysis.exclude": [".venv", "poc"],
-  "python.analysis.ignore": [".venv", "poc"],
+  "python.analysis.exclude": [".venv", "poc"], // remove permanent errors in python fls
+  "python.analysis.ignore": [".venv", "poc"], // remove errors on edit in python files
   "python.testing.pytestArgs": ["tests"],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
