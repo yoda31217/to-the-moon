@@ -15,13 +15,16 @@ def test(
     bid_ask_spread: float,
     report_bot_config: ReportBotConfig,
 ):
+    if (date_to - date_from).days > 31:
+        raise Exception(f"Date 'to' - 'from' interval should be <= 31 days.")
+
     tickers = load_tickers(symbol, date_from, date_to, bid_ask_spread)
     return backtester_test(report_bot_config, tickers)
 
 
 @st.cache_data
 def backtester_test(report_bot_config: ReportBotConfig, tickers: MarketTikersDataFrame):
-    bot = report_bot_config['bot_constructor'](report_bot_config['bot_config'])
+    bot = report_bot_config["bot_constructor"](report_bot_config["bot_config"])
     return Backtester(tickers).test(bot)
 
 

@@ -14,9 +14,6 @@ def load_k_lines(symbol: str, date_from: date, date_to: date) -> MarketKLinesDat
             f"Date 'from'={date_from} cannot be greaterthan date 'to'={date_to}."
         )
 
-    if (date_to - date_from).days > 31:
-        raise Exception(f"Date 'from' - 'to' interval should be <= 31 days.")
-
     k_lines_data_frames = _load_k_lines_data_frames(symbol, date_from, date_to)
     k_lines_data_frame = _join_k_lines_data_frames(k_lines_data_frames)
     return k_lines_data_frame
