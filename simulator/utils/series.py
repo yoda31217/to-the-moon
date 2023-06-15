@@ -20,7 +20,9 @@ class TypedSeries(pd.Series, Generic[T]):  # pyright: ignore [reportMissingTypeA
     ) -> "TypedSeries[T]":  # pyright: ignore [reportGeneralTypeIssues]
         pass
 
-    def sum(self) -> T:  # pyright: ignore [reportGeneralTypeIssues]
+    def sum(  # pyright: ignore [reportIncompatibleMethodOverride]
+        self,
+    ) -> T:  # pyright: ignore [reportGeneralTypeIssues]
         pass
 
     def min(  # pyright: ignore [reportIncompatibleMethodOverride]
