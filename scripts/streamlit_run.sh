@@ -8,4 +8,4 @@ cd "$(dirname "$0")"
 
 cd ..
 
-streamlit run ./simulator/src/main.py
+streamlit run ./src/simulator/main.py
