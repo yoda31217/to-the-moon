@@ -8,4 +8,4 @@ cd "$(dirname "$0")"
 
 cd ..
 
-python3 ./perf_tests/backtester/perf_test_backtester.py
+python3 ./perf_tests/simulator/backtester/perf_test_backtester.py
