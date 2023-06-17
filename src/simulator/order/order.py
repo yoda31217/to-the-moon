@@ -1,7 +1,7 @@
 import uuid
 
-from order.order_side import OrderSide
-from market.market_ticker import MarketTicker
+from simulator.order.order_side import OrderSide
+from simulator.market.market_ticker import MarketTicker
 
 
 # According to:

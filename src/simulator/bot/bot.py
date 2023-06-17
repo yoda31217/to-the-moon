@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from order.order import Order
-from market.market_ticker import MarketTicker
+from simulator.order.order import Order
+from simulator.market.market_ticker import MarketTicker
 
 BotConfig = dict[str, object]
 

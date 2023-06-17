@@ -1,10 +1,10 @@
 from typing import cast
 import pandas as pd
-from backtester.backtester_result import BacktesterResult
+from simulator.backtester.backtester_result import BacktesterResult
 
-from order.order import Order
-from bot.bot import Bot
-from market.market_ticker import (
+from simulator.order.order import Order
+from simulator.bot.bot import Bot
+from simulator.market.market_ticker import (
     MarketTicker,
     MarketTickersDataFrameRowTuple,
     MarketTikersDataFrame,

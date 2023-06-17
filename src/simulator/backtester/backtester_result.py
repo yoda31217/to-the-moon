@@ -1,10 +1,10 @@
 from typing import cast
 import pandas as pd
-from bot.bot import Bot
+from simulator.bot.bot import Bot
 
-from order.order import Order
-from market.market_ticker import MarketTicker, MarketTikersDataFrame
-from utils.series import TypedSeries
+from simulator.order.order import Order
+from simulator.market.market_ticker import MarketTicker, MarketTikersDataFrame
+from simulator.utils.series import TypedSeries
 
 
 class BacktesterResultPositionsDataFrame(pd.DataFrame):

@@ -2,8 +2,8 @@ from datetime import date
 from typing import cast
 import pandas as pd
 
-from binance import binance_k_line_repository
-from market.market_ticker import MarketTikersDataFrame
+from simulator.binance import binance_k_line_repository
+from simulator.market.market_ticker import MarketTikersDataFrame
 
 
 def load_tickers(

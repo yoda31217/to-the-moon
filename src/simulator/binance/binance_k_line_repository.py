@@ -4,8 +4,8 @@ from typing import cast
 from urllib.request import urlretrieve
 import pandas as pd
 
-from market.market_k_line import MarketKLinesDataFrame
-from utils import data_frames
+from simulator.market.market_k_line import MarketKLinesDataFrame
+from simulator.utils import data_frames
 
 
 def load_k_lines(symbol: str, date_from: date, date_to: date) -> MarketKLinesDataFrame:

@@ -1,6 +1,6 @@
 import pandas as pd
 
-from utils.series import TypedSeries
+from simulator.utils.series import TypedSeries
 
 
 class MarketKLinesDataFrame(pd.DataFrame):
