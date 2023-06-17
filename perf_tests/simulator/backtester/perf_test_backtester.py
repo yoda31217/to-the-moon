@@ -1,8 +1,8 @@
 from datetime import date
 
-from backtester.backtester import Backtester
-from binance import binance_ticker_repository
-from bot.bot_one_step_order import BotOneStepOrder
+from simulator.backtester.backtester import Backtester
+from simulator.binance import binance_ticker_repository
+from simulator.bot.bot_one_step_order import BotOneStepOrder
 import cProfile, pstats
 from pstats import SortKey
 
