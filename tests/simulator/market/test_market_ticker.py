@@ -1,6 +1,6 @@
 import pytest
 
-from market.market_ticker import MarketTicker
+from simulator.market.market_ticker import MarketTicker
 
 
 class TestMarketTicker:

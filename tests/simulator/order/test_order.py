@@ -1,8 +1,8 @@
 import pytest
-from market.market_ticker import MarketTicker
-from order.order import Order
-from order.order_side import OrderSide
-from utils import tests
+from simulator.market.market_ticker import MarketTicker
+from simulator.order.order import Order
+from simulator.order.order_side import OrderSide
+from simulator.utils import tests
 
 
 class TestOrder:
