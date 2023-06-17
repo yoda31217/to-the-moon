@@ -1,7 +1,7 @@
 from typing import Callable, Type, TypedDict, cast
 import streamlit as st
 
-from bot.bot import Bot, BotConfig
+from simulator.bot.bot import Bot, BotConfig
 
 
 BotConstructor = Type[Bot]

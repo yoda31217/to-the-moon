@@ -1,9 +1,9 @@
 from venv import logger
 import streamlit as st
-from bot import bot_grid_input, bot_one_step_order_input
-from bot.bot_grid import BotGrid
-from bot.bot_one_step_order import BotOneStepOrder
-from report.report import build_report
+from simulator.bot import bot_grid_input, bot_one_step_order_input
+from simulator.bot.bot_grid import BotGrid
+from simulator.bot.bot_one_step_order import BotOneStepOrder
+from simulator.report.report import build_report
 
 try:
     build_report(

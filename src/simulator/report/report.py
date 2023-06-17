@@ -1,11 +1,11 @@
 from datetime import date
-
-import streamlit as st
-from report import report_backtester, report_bot
-import report.report_input as report_input
-import report.report_result as report_result
-from utils import gits
 import altair as alt  # pyright: ignore [[reportUnknownMemberType]
+import streamlit as st
+
+from simulator.report import report_backtester, report_bot
+import simulator.report.report_input as report_input
+import simulator.report.report_result as report_result
+from simulator.utils import gits
 
 
 def build_report(bot_repository: report_bot.ReportBotRepository):

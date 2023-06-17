@@ -1,10 +1,10 @@
 from datetime import date
 
 import streamlit as st
-from backtester.backtester import Backtester
-from binance import binance_ticker_repository
-from market.market_ticker import MarketTikersDataFrame
-from report.report_bot import ReportBotConfig
+from simulator.backtester.backtester import Backtester
+from simulator.binance import binance_ticker_repository
+from simulator.market.market_ticker import MarketTikersDataFrame
+from simulator.report.report_bot import ReportBotConfig
 
 
 @st.cache_data

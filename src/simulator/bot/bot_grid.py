@@ -1,8 +1,8 @@
 from typing import cast
-from order.order_side import OrderSide
-from order.order import Order
-from bot.bot import Bot, BotConfig
-from market.market_ticker import MarketTicker
+from simulator.order.order_side import OrderSide
+from simulator.order.order import Order
+from simulator.bot.bot import Bot, BotConfig
+from simulator.market.market_ticker import MarketTicker
 
 
 class BotGrid(Bot):

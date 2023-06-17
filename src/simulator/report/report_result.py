@@ -2,14 +2,13 @@ from datetime import date
 from datetime import timedelta
 import pandas as pd
 from bot.bot import Bot
-
-from report import report_input
-import report.report_chart as report_chart
-from backtester.backtester_result import BacktesterResult
-
 from streamlit.delta_generator import DeltaGenerator
 
-from utils import data_frames, dicts
+
+from simulator.report import report_input
+import simulator.report.report_chart as report_chart
+from simulator.backtester.backtester_result import BacktesterResult
+from simulator.utils import data_frames, dicts
 
 
 def summary(

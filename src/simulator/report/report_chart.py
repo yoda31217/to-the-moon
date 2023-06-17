@@ -3,7 +3,7 @@ import altair as alt  # pyright: ignore [[reportUnknownMemberType]
 import pandas as pd
 from streamlit.delta_generator import DeltaGenerator
 
-from utils.series import TypedSeries
+from simulator.utils.series import TypedSeries
 
 
 # TODO fix types
