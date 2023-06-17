@@ -9,15 +9,15 @@
     "**/.idea": true,
     "**/.ipynb_checkpoints": true
   },
-  "python.autoComplete.extraPaths": ["${workspaceFolder}/src/simulator"],
+  "python.autoComplete.extraPaths": ["${workspaceFolder}/src"],
   "python.formatting.provider": "black",
   "python.analysis.typeCheckingMode": "strict",
-  "python.analysis.extraPaths": ["${workspaceFolder}/src/simulator"],
+  "python.analysis.extraPaths": ["${workspaceFolder}/src"],
   "python.analysis.autoImportCompletions": true,
   "python.analysis.completeFunctionParens": true,
   "python.analysis.diagnosticMode": "workspace",
-  "python.analysis.exclude": [".venv", "poc"], // remove permanent errors in python fls
-  "python.analysis.ignore": [".venv", "poc"], // remove errors on edit in python files
+  "python.analysis.exclude": [".venv", "poc"],
+  "python.analysis.ignore": [".venv", "poc"],
   "python.testing.pytestArgs": ["tests"],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
