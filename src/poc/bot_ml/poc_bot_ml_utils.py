@@ -62,6 +62,10 @@ def validate_k_lines(
 
     validate_k_lines_positive_float_column(k_lines, "close_price")
 
+    validate_k_lines_index_diff_is_60s(k_lines)
+
+
+def validate_k_lines_index_diff_is_60s(k_lines):
     assert (
         (k_lines.index.to_series() - k_lines.index.to_series().shift(1))
         .iloc[1:]
