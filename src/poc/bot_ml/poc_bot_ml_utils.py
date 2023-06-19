@@ -60,8 +60,7 @@ def validate_k_lines(
     validate_k_lines_no_na_cells(k_lines)
     validate_k_lines_no_null_cells(k_lines)
 
-    assert k_lines.dtypes["close_price"] == float64
-    assert len(k_lines[k_lines["close_price"] <= 0]) == 0
+    validate_k_lines_positive_float_column(k_lines, "close_price")
 
     assert (
         (k_lines.index.to_series() - k_lines.index.to_series().shift(1))
@@ -69,6 +68,11 @@ def validate_k_lines(
         .dt.total_seconds()
         == 60
     ).all()
+
+
+def validate_k_lines_positive_float_column(k_lines, name):
+    assert k_lines.dtypes[name] == float64
+    assert len(k_lines[k_lines[name] <= 0]) == 0
 
 
 def validate_k_lines_no_null_cells(k_lines):
