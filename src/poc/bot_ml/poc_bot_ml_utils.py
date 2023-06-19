@@ -26,7 +26,7 @@ def calculate_target_actions(prices: Series, window: int, price_increase_ratio: 
     )
 
 
-def calculate_and_set_target_actions(
+def calculate_and_set_target_actions_feature(
     features: DataFrame, window: int, price_increase_ratio: float
 ):
     features["target_actions"] = calculate_target_actions(
