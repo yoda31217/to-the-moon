@@ -1,4 +1,4 @@
-from pandas import Series
+from pandas import DataFrame, Series
 
 
 def target_action(prices: Series, price_increase_ratio: float):
@@ -23,4 +23,12 @@ def calculate_target_actions(prices: Series, window: int, price_increase_ratio: 
         prices.shift(-window)
         .rolling(window + 1)
         .apply(target_action, args=(price_increase_ratio,))
+    )
+
+
+def calculate_and_set_target_actions(
+    features: DataFrame, window: int, price_increase_ratio: float
+):
+    features["target_actions"] = calculate_target_actions(
+        features["close_price"], window, price_increase_ratio
     )
