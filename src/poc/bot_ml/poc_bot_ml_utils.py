@@ -1,3 +1,5 @@
+from datetime import date
+from numpy import float64
 from pandas import DataFrame, Series, to_datetime
 
 
@@ -48,3 +50,24 @@ def to_cleared_k_lines(raw_k_lines: DataFrame):
     k_lines.index = to_datetime(raw_k_lines["open_timestamp_millis"], unit="ms")
     k_lines.index.name = "open_datetime"
     return k_lines
+
+
+def validate_k_lines(
+    k_lines: DataFrame, interval_date_from: date, interval_date_to: date
+):
+    interval_minutes = ((interval_date_to - interval_date_from).days + 1) * 24 * 60
+
+    assert len(k_lines) == interval_minutes
+
+    assert len(k_lines[k_lines.isna().any(axis=1)]) == 0
+    assert len(k_lines[k_lines.isnull().any(axis=1)]) == 0
+
+    assert k_lines.dtypes["close_price"] == float64
+    assert len(k_lines[k_lines["close_price"] <= 0]) == 0
+
+    assert (
+        (k_lines.index.to_series() - k_lines.index.to_series().shift(1))
+        .iloc[1:]
+        .dt.total_seconds()
+        == 60
+    ).all()
