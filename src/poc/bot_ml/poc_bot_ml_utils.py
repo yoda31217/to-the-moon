@@ -1,4 +1,4 @@
-from pandas import DataFrame, Series
+from pandas import DataFrame, Series, to_datetime
 
 
 def target_action(prices: Series, price_increase_ratio: float):
@@ -32,3 +32,19 @@ def calculate_and_set_target_actions_feature(
     features["target_actions"] = calculate_target_actions(
         features["close_price"], window, price_increase_ratio
     )
+
+
+def to_cleared_k_lines(raw_k_lines: DataFrame):
+    k_lines = raw_k_lines[
+        [
+            # "open_price",
+            # "low_price",
+            # "high_price",
+            "close_price",
+            # "volume",
+            # "trades_count"
+        ]
+    ]
+    k_lines.index = to_datetime(raw_k_lines["open_timestamp_millis"], unit="ms")
+    k_lines.index.name = "open_datetime"
+    return k_lines
