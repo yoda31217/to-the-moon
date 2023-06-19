@@ -55,9 +55,7 @@ def to_cleared_k_lines(raw_k_lines: DataFrame):
 def validate_k_lines(
     k_lines: DataFrame, interval_date_from: date, interval_date_to: date
 ):
-    interval_minutes = ((interval_date_to - interval_date_from).days + 1) * 24 * 60
-
-    assert len(k_lines) == interval_minutes
+    validate_k_lines_rows_count(k_lines, interval_date_from, interval_date_to)
 
     assert len(k_lines[k_lines.isna().any(axis=1)]) == 0
     assert len(k_lines[k_lines.isnull().any(axis=1)]) == 0
@@ -71,3 +69,15 @@ def validate_k_lines(
         .dt.total_seconds()
         == 60
     ).all()
+
+
+def validate_k_lines_rows_count(
+    k_lines, interval_date_from: date, interval_date_to: date
+):
+    assert len(k_lines) == calculate_interval_minutes(
+        interval_date_from, interval_date_to
+    )
+
+
+def calculate_interval_minutes(interval_date_from: date, interval_date_to: date):
+    return ((interval_date_to - interval_date_from).days + 1) * 24 * 60
