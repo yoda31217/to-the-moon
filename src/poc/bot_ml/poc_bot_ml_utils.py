@@ -57,8 +57,8 @@ def validate_k_lines(
 ):
     validate_k_lines_rows_count(k_lines, interval_date_from, interval_date_to)
 
-    assert len(k_lines[k_lines.isna().any(axis=1)]) == 0
-    assert len(k_lines[k_lines.isnull().any(axis=1)]) == 0
+    validate_k_lines_no_na_cells(k_lines)
+    validate_k_lines_no_null_cells(k_lines)
 
     assert k_lines.dtypes["close_price"] == float64
     assert len(k_lines[k_lines["close_price"] <= 0]) == 0
@@ -69,6 +69,14 @@ def validate_k_lines(
         .dt.total_seconds()
         == 60
     ).all()
+
+
+def validate_k_lines_no_null_cells(k_lines):
+    assert len(k_lines[k_lines.isnull().any(axis=1)]) == 0
+
+
+def validate_k_lines_no_na_cells(k_lines):
+    assert len(k_lines[k_lines.isna().any(axis=1)]) == 0
 
 
 def validate_k_lines_rows_count(
