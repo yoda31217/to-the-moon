@@ -16,3 +16,11 @@ def will_values_increase_or_decrease(values: Series, increase_ratio: float):
             return -1
 
     return 0
+
+
+def calculate_target_actions(prices: Series, window: int, price_increase_ratio: float):
+    return (
+        prices.shift(-window)
+        .rolling(window + 1)
+        .apply(will_values_increase_or_decrease, args=(price_increase_ratio,))
+    )
