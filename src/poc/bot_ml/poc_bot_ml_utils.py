@@ -1,4 +1,7 @@
-def will_values_increase_or_decrease(values, increase_ratio):
+from pandas import Series
+
+
+def will_values_increase_or_decrease(values: Series, increase_ratio: float):
     decrease_ratio = 1.0 - (increase_ratio - 1.0)
 
     value_0 = values.iloc[0]
