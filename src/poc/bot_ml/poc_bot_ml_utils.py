@@ -34,6 +34,7 @@ def calculate_and_set_target_action_feature(
     features["target_action"] = calculate_target_action(
         features["close_price"], window, price_increase_ratio
     )
+    features["target_action_name"] = features["target_action"].apply(lambda target_action: str(target_action) + ' - a')
 
 
 def to_cleared_k_lines(raw_k_lines: DataFrame):
