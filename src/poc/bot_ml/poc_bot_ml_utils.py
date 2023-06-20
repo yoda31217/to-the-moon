@@ -20,7 +20,7 @@ def target_action(prices: Series, price_increase_ratio: float):
     return 0
 
 
-def calculate_target_actions(prices: Series, window: int, price_increase_ratio: float):
+def calculate_target_action(prices: Series, window: int, price_increase_ratio: float):
     return (
         prices.shift(-window)
         .rolling(window + 1)
@@ -28,10 +28,10 @@ def calculate_target_actions(prices: Series, window: int, price_increase_ratio: 
     )
 
 
-def calculate_and_set_target_actions_feature(
+def calculate_and_set_target_action_feature(
     features: DataFrame, window: int, price_increase_ratio: float
 ):
-    features["target_actions"] = calculate_target_actions(
+    features["target_action"] = calculate_target_action(
         features["close_price"], window, price_increase_ratio
     )
 
