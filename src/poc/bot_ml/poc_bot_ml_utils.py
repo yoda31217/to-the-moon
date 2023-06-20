@@ -96,4 +96,12 @@ def validate_k_lines_rows_count(
 
 
 def calculate_interval_minutes(interval_date_from: date, interval_date_to: date):
-    return ((interval_date_to - interval_date_from).days + 1) * 24 * 60.0
+    return calculate_interval_hours(interval_date_from, interval_date_to) * 60.0
+
+
+def calculate_interval_hours(interval_date_from, interval_date_to):
+    return calculate_interval_days(interval_date_from, interval_date_to) * 24.0
+
+
+def calculate_interval_days(interval_date_from, interval_date_to):
+    return (interval_date_to - interval_date_from).days + 1.0
