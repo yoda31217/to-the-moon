@@ -28,26 +28,11 @@ def calculate_target_action(prices: Series, window: int, price_increase_ratio: f
     )
 
 
-def target_action_to_name(target_action: float):
-    match target_action:
-        case 0.0:
-            return "SKIPP"
-        case 1.0:
-            return "BUY"
-        case -1.0:
-            return "SELL"
-        case default:
-            return "UNKNOWN"
-
-
 def calculate_and_set_target_action_feature(
     features: DataFrame, window: int, price_increase_ratio: float
 ):
     features["target_action"] = calculate_target_action(
         features["close_price"], window, price_increase_ratio
-    )
-    features["target_action_name"] = features["target_action"].apply(
-        target_action_to_name
     )
 
 
